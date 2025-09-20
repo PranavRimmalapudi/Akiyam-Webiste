@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Aikyam • Menifee</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet" />
+<style>
+  /* ===========================================================
+     Aikyam — Fixes & Upgrades (FINAL)
+     - ✅ Dark/Light mode now works (CSS variables switch on <body.light>)
+     - ✅ Gallery reworked (robust, always animates; with fallbacks)
+     - ✅ Background “product zoom” effect using the SAME logo image
+     - Layout tuned for 1440–1512px Mac screens; perfectly centered
+     - Clear REPLACE comments for all images
+     =========================================================== */
+
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Montserrat',sans-serif;}
+  /* ---- THEME TOKENS (DARK by default) ---- */
+  :root{
+    --maxw: 1320px;
+    --pad-section: 92px;
+    --header-h: 72px;
+    --accent:#ffcc00; --accent-2:#ff9900;
+    --bg:#000; --fg:#fff;
+    --muted: rgba(255,255,255,.72);
+    --card: rgba(255,255,255,.06);
+    --brd: rgba(255,255,255,.14);
+    --shadow: 0 10px 30px rgba(0,0,0,.35);
+    --shadow-2: 0 18px 42px rgba(255,204,0,.25);
+  }
+  /* ---- LIGHT THEME OVERRIDES ---- */
+  body.light{
+    --bg:#ffffff; --fg:#0f1115;
+    --muted:#5b667a;
+    --card:#f5f7fb;
+    --brd:#e5e9f2;
+    --shadow: 0 10px 26px rgba(0,0,0,.08);
+    --shadow-2: 0 18px 38px rgba(0,0,0,.06);
+  }
+
+  html,body{height:100%;}
+  html{scrollbar-gutter: stable both-edges;}
+  body{background:var(--bg);color:var(--fg);overflow-x:hidden;line-height:1.75;cursor:auto;}
+
+  /* Fixed top tricolor */
+  .tricolor{position:fixed;inset:0 auto auto 0;height:4px;width:100%;z-index:1500;
+    background:linear-gradient(90deg,#FF9933 0 33%, #ffffff 33% 66%, #138808 66% 100%);
+    box-shadow:0 0 20px rgba(255,153,0,.4);}
+
+  /* ---- GLOBAL BACKGROUND ZOOM (Apple-like product grow on scroll) ---- */
+  #bg-zoom{
+    position:fixed; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    pointer-events:none; z-index:0; opacity:.30; /* subtle in dark; light will tweak below */
+    transition:opacity .3s ease;
+  }
+  body.light #bg-zoom{ opacity:.30; }
+  #bg-zoom img{
+    /* REPLACE with the same logo you use below if your path differs */
+    width:min(1200px, 90vw); height:auto; transform:scale(1); will-change:transform, filter;
+    filter:drop-shadow(0 0 60px rgba(255,153,0,.25));
+    transition:filter .3s ease;
+  }
+
+  /* ---- HEADER ---- */
+  header{
+    position:fixed;top:4px;left:0;right:0;height:var(--header-h);
+    display:flex;align-items:center;justify-content:center;background:var(--bg);z-index:1400;
+    border-bottom:1px solid var(--brd);backdrop-filter:saturate(120%) blur(8px);
+  }
+  .header-inner{width:var(--maxw);margin-inline:auto;display:flex;align-items:center;justify-content:space-between;padding:0 12px;}
+  .logo{font-size:28px;font-weight:900;color:var(--accent-2);letter-spacing:.4px;cursor:pointer}
+  .logo small{display:block;font-weight:700;font-size:11px;letter-spacing:.14em;color:var(--muted)}
+  nav a{display:inline-block;margin:0 14px;font-weight:800;color:var(--fg);opacity:.92;transition:.25s;text-decoration:none;}
+  nav a:hover{color:var(--accent);text-shadow:0 0 12px rgba(255,204,0,.85),0 0 22px rgba(255,153,0,.5);}
+  .theme-toggle{border:1px solid var(--brd);background:var(--card);color:var(--fg);padding:8px 12px;border-radius:999px;font-weight:800;cursor:pointer;}
+
+  #scroll-progress{position:fixed;top:calc(var(--header-h) + 6px);left:0;height:3px;width:0;background:var(--accent);box-shadow:0 0 12px rgba(255,204,0,.9);z-index:999;}
+
+  /* ---- SECTIONS ---- */
+  :root{ --gutter: clamp(26px, 3.5vw, 42px); }
+  section{padding:var(--pad-section) var(--gutter);min-height:520px;position:relative; z-index:1;}
+  .container{width:var(--maxw);margin-inline:auto;position:relative;}
+  section::after{content:'';position:absolute;left:50%;transform:translateX(-50%);bottom:0;width:76%;height:1px;
+    background:linear-gradient(90deg,transparent,var(--brd),transparent);opacity:.5}
+
+  h2.section-title{text-align:center;font-size:44px;letter-spacing:.6px;font-weight:900;margin-bottom:30px;}
+  h2.section-title::after{content:'';display:block;width:220px;height:4px;margin:14px auto 0;border-radius:999px;
+    background:radial-gradient(closest-side,var(--accent),transparent);filter:blur(.4px);animation:underlinePulse 3s ease-in-out infinite;}
+  @keyframes underlinePulse{0%,100%{transform:scaleX(.9);opacity:.85} 50%{transform:scaleX(1.15);opacity:1}}
+
+  /* ---------- HERO (rotating sunbeam section only) ---------- */
+  .hero{min-height:760px;padding-top:calc(var(--header-h) + 38px);display:flex;align-items:center;justify-content:center;flex-direction:column;}
+  .hero .container{display:flex;align-items:center;justify-content:space-between;gap:44px;}
+  .hero-left{flex:1;min-width:320px}
+  .hero-right{flex:1;display:flex;align-items:center;justify-content:center;position:relative}
+  .tagline{font-size:20px;color:var(--muted);margin-bottom:16px}
+  .cta-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
+  .btn{padding:12px 16px;border:none;background:#fff;color:#121212;font-weight:900;border-radius:999px;cursor:pointer;transition:.25s;font-size:14px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;position:relative;overflow:hidden;}
+  .btn:hover{transform:translateY(-2px);box-shadow:0 12px 24px rgba(0,0,0,.25),0 0 16px var(--accent),0 0 24px var(--accent-2);}
+  .btn.secondary{background:var(--card);color:var(--fg);border:1px solid var(--brd)}
+  .btn.mini{padding:8px 12px;font-size:12px;}
+  .btn .r{position:absolute;border-radius:50%;transform:translate(-50%,-50%);pointer-events:none;background:rgba(255,255,255,.35);animation:rip .6s ease-out forwards;}
+  @keyframes rip{from{width:0;height:0;opacity:.6}to{width:420px;height:420px;opacity:0}}
+
+  .sunburst{position:absolute;width:640px;height:640px;border-radius:50%;z-index:0;filter:saturate(1.05);}
+  .sunburst::before{content:'';position:absolute;inset:0;border-radius:50%;
+    background:radial-gradient(circle at 50% 50%, rgba(255,153,0,.18), transparent 60%);
+    box-shadow:0 0 36px 8px rgba(255,204,0,.18) inset;}
+  .sunburst .sweep{
+    position:absolute;inset:0;border-radius:50%;
+    background:conic-gradient(from 0deg, rgba(255,204,0,.45) 0deg, rgba(255,204,0,.18) 14deg, rgba(255,204,0,0) 40deg 360deg);
+    filter:blur(1px);
+    animation:beam-spin var(--beamspd,10s) linear infinite;
+  }
+  @keyframes beam-spin{to{transform:rotate(360deg)}}
+
+  .hero-logo-wrap{position:relative;z-index:1;filter:drop-shadow(0 0 22px rgba(255,153,0,.22)) drop-shadow(0 0 48px rgba(255,153,0,.08));}
+  /* REPLACE THIS LOGO IMAGE with your own logo file, e.g., assets/logo.png */
+  .hero-logo{width:560px;max-width:90%;
+    -webkit-mask-image:radial-gradient(circle at 50% 50%, rgba(255,255,255,1) 62%, rgba(255,255,255,.35) 78%, transparent 90%);
+            mask-image:radial-gradient(circle at 50% 50%, rgba(255,255,255,1) 62%, rgba(255,255,255,.35) 78%, transparent 90%);
+    transition:transform .3s ease;}
+
+  .countdown{display:flex;gap:10px;margin-top:12px;font-weight:900;}
+  .countdown .k{padding:8px 12px;border-radius:12px;background:var(--card);border:1px solid var(--brd);min-width:80px;text-align:center}
+  .next-title{font-size:18px;font-weight:900;margin-top:16px}
+
+  /* ---------- PERSON CARDS (Core & Board share this) ---------- */
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:26px;width:100%;margin:6px auto 22px;}
+  .person-card{background:var(--card);padding:26px;border:1px solid var(--brd);border-radius:18px;text-align:center;backdrop-filter:blur(4px);transition:transform .35s ease, box-shadow .35s ease; box-shadow:var(--shadow);}
+  .person-card:hover{transform:translateY(-8px) scale(1.03);box-shadow:var(--shadow-2);}
+  .person-card img{width:180px;height:180px;border-radius:50%;object-fit:cover;margin-bottom:12px;transition:.4s ease;}
+  .person-card:hover img{transform:rotate(5deg) scale(1.05);}
+  .person-card .name{font-weight:900;font-size:21px;}
+  .person-card .role{opacity:.9;margin-top:4px;}
+  .chip-mini{padding:6px 10px;border-radius:999px;background:var(--card);border:1px solid var(--brd);font-size:12px}
+
+  /* ---------- EVENTS (VERTICAL CARD SCROLLERS) ---------- */
+  .events-3col{
+    display:grid;
+    grid-template-columns:minmax(340px, 1fr) minmax(420px, 560px) minmax(360px, 1fr);
+    gap:22px;align-items:start;
+  }
+  @media (max-width:1200px){.events-3col{grid-template-columns:1fr;}}
+
+  .subhead{font-size:22px;font-weight:900;margin:0 0 10px;text-align:center;}
+
+  .vloop{height:580px;overflow:hidden;position:relative;border-radius:16px;border:1px solid var(--brd);background:var(--card);}
+  .vtrack{display:grid;gap:16px;animation:vscroll var(--vspd,36s) linear infinite;will-change:transform;padding:16px;}
+  @keyframes vscroll{0%{transform:translateY(0)}100%{transform:translateY(-50%)}}
+
+  .event-card{background:var(--bg);border:1px solid var(--brd);border-radius:14px;overflow:hidden;box-shadow:var(--shadow);}
+  .event-thumb{position:relative;height:160px;overflow:hidden;}
+  .event-thumb img{width:100%;height:100%;object-fit:cover;transform:scale(1.02);}
+  .event-body{padding:12px 14px 14px;}
+  .event-meta{display:flex;align-items:center;gap:10px;font-size:12px;opacity:.9;margin:4px 0 6px;}
+  .pill{display:inline-block;padding:4px 8px;border-radius:999px;font-weight:800;font-size:11px;background:var(--card);border:1px solid var(--brd);}
+  .event-title{font-weight:900;font-size:16px;margin-bottom:4px;}
+  .event-desc{font-size:13px;opacity:.9;}
+  .event-actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+  .btn.secondary{background:var(--card);color:var(--fg);border:1px solid var(--brd);}
+
+  /* ---------- CALENDAR ---------- */
+  .calendar-card{background:var(--card);border:1px solid var(--brd);border-radius:16px;overflow:hidden;max-width:880px;margin:0 auto;box-shadow:var(--shadow);}
+  .calendar-head{padding:12px 14px;border-bottom:1px solid var(--brd);display:flex;align-items:center;justify-content:space-between;}
+  .calendar-grid{display:grid;grid-template-columns:repeat(7, 1fr);gap:6px;padding:12px;}
+  .cal-cell{aspect-ratio:1/1;border:1px solid var(--brd);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:12px;opacity:.9;background:var(--bg);}
+  .cal-cell.mute{opacity:.25}
+  .cal-cell.has{background:rgba(255,204,0,.12);border-color:rgba(255,204,0,.35);}
+  .schedule{padding:12px;border-top:1px solid var(--brd);}
+  .sch-item{padding:12px;border:1px solid var(--brd);border-radius:12px;margin-bottom:10px;background:var(--bg);}
+
+  /* ---------- GALLERY (robust, always animates) ---------- */
+  #gallery .wrap{overflow:hidden;border-radius:16px;border:1px solid var(--brd);background:var(--card);box-shadow:var(--shadow);}
+  .gtrack{ display:flex; gap:22px; padding:18px; will-change:transform; }
+  .gslide{ flex:0 0 auto; width:440px; height:268px; border-radius:16px; overflow:hidden; position:relative; background:#0b0b0b; box-shadow:var(--shadow); }
+  .gslide img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; animation:ken 12s ease-in-out infinite alternate; }
+  .gslide .label{ position:absolute; left:10px; bottom:10px; background:rgba(0,0,0,.5); border:1px solid var(--brd); border-radius:10px; padding:6px 10px; font-size:13px; font-weight:800; }
+  @keyframes ken{0%{transform:scale(1.05)}100%{transform:scale(1.12) translate(8px,-6px)}}
+
+  /* ---------- Forms & misc ---------- */
+  #donate .donate-form{width:860px;margin:0 auto;display:flex;flex-direction:column;gap:16px;}
+  input,select,textarea{padding:18px;border-radius:12px;border:1px solid #3a3a3a;background:#0e0e0e;color:#fff;font-size:18px;}
+  body.light input, body.light select, body.light textarea{background:#fff;color:#0f1115;border-color:#d7dce6;}
+  input:focus,select:focus,textarea:focus{border-color:var(--accent-2);box-shadow:0 0 12px var(--accent);}
+  #register .reg-wrap{width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start;}
+  @media (max-width:1100px){#register .reg-wrap{grid-template-columns:1fr}}
+  .card{background:var(--card);border:1px solid var(--brd);border-radius:18px;padding:22px;box-shadow:var(--shadow);}
+  .split{display:flex;gap:18px;}
+  .hint{font-size:12px;color:var(--muted);}
+  .total{font-weight:900;font-size:20px;margin-top:8px;}
+  #contact-section .contact{width:980px;margin:0 auto;text-align:center;font-size:22px;display:flex;flex-direction:column;gap:10px;}
+  #contact-section a{color:var(--accent);font-weight:900;text-decoration:none;}
+  #contact-section a:hover{color:var(--accent-2);text-shadow:0 0 10px rgba(255,153,0,.9);}
+  footer{background:var(--bg);color:var(--fg);text-align:center;padding:28px;margin-top:20px;border-top:1px solid var(--brd); z-index:1; position:relative;}
+
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease, transform .6s ease;}
+  .reveal.show{opacity:1;transform:translateY(0);}
+  #toTop{position:fixed;right:18px;bottom:84px;width:46px;height:46px;border-radius:50%;
+    background:rgba(0,0,0,.7);border:1px solid rgba(255,255,255,.2);
+    display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;cursor:pointer;
+    box-shadow:0 0 16px rgba(255,204,0,.25);z-index:1200;opacity:0;transform:translateY(12px);transition:.3s;}
+  body.light #toTop{ background:#ffffff; color:#0f1115; border-color:#d7dce6; }
+  #toTop.show{opacity:1;transform:translateY(0);}
+  #toast{position:fixed;left:50%;bottom:72px;transform:translateX(-50%);background:rgba(0,0,0,.76);
+    border:1px solid rgba(255,255,255,.18);padding:10px 14px;border-radius:10px;font-weight:800;letter-spacing:.3px;
+    opacity:0;transition:opacity .25s, transform .25s;z-index:1200;pointer-events:none;}
+  body.light #toast{background:#16181d;color:#fff;border-color:#2a2f3a;}
+  #toast.show{opacity:1;transform:translateX(-50%) translateY(-6px);}
+</style>
+</head>
+<body>
+
+<div class="tricolor" aria-hidden="true"></div>
+
+<!-- GLOBAL BACKGROUND ZOOM LAYER -->
+<div id="bg-zoom" aria-hidden="true">
+  <!-- REPLACE to match your logo path; use same file as .hero-logo -->
+  <img id="bgZoomImg" src="pictures/6.png" alt="">
+</div>
+
+<header class="reveal">
+  <div class="header-inner">
+    <!--<div class="logo">AIKYAM <small>Riverside County</small></div>-->
+    <div>
+
+      <div class="sunburst" aria-hidden="true" style="width:80px;height:80px;" ><div class="sweep"></div></div>
+      <div class="hero-logo-wrap" id="heroWrap" style=" margin: 3px;">
+        <!-- REPLACE this with your logo (the same file also powers the background zoom above) -->
+        <img class="hero-logo" id="heroLogo" src="pictures/5-modified.png" alt="Aikyam Logo" style="width:70px;height:70px;">
+      </div>
+    </div>
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#core">Core Team</a>
+      <a href="#board">Board</a>
+      <a href="#events">Events</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#reviews-section">Reviews</a>
+      <a href="#register">Register</a>
+      <a href="#donate">Donate</a>
+      <a href="#contact-section">Contact</a>
+    </nav>
+    <button class="theme-toggle" id="themeToggle"> ☀/🌙</button>
+  </div>
+</header>
+
+<div id="scroll-progress"></div>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="container">
+    <div class="hero-left">
+      <h1 style="font-size:56px;line-height:1.1;">Unity in Diversity,<br/>Community in Action</h1>
+      <p class="tagline">Aikyam brings Menifee families together to celebrate culture, volunteer, and create chances for kids to shine.</p>
+      <div class="next-title">Next up: <span id="nextEventTitle">—</span></div>
+      <div class="countdown" id="countdown" aria-label="countdown"></div>
+      <div class="cta-row">
+        <a class="btn" href="#events">See Events</a>
+        <a class="btn secondary" href="#register">Register / Donate</a>
+        <a class="btn secondary" target="_blank" rel="noopener" href="https://www.youtube.com/@BalaramnaiduDowney">YouTube</a>
+      </div>
+    </div>
+    <div class="hero-right"style="visibility: hidden;"> 
+      <div class="sunburst" aria-hidden="true"><div class="sweep"></div></div>
+      <div class="hero-logo-wrap" id="heroWrap">
+        <!-- REPLACE this with your logo (the same file also powers the background zoom above) -->
+        <img class="hero-logo" id="heroLogo" src="pictures/6.png" alt="Aikyam Logo">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CORE TEAM -->
+<section id="core" class="reveal">
+  <div class="container">
+    <h2 class="section-title">Core Team</h2>
+    <div class="cards" id="coreCards"></div>
+    <div class="mv">
+      <h4>Mission</h4>
+      <p>To inspire and empower the next generation by nurturing cultural pride, fostering community unity, and creating opportunities for children and families to celebrate, learn, and grow together.</p>
+      <h4 style="margin-top:10px;">Vision</h4>
+      <p>A vibrant, inclusive home where every family belongs, every child leads with pride, and our diversity strengthens the city we love.</p>
+    </div>
+  </div>
+</section>
+
+<!-- BOARD OF DIRECTORS -->
+<section id="board" class="reveal">
+  <div class="container">
+    <h2 class="section-title">Board of Directors</h2>
+    <div class="cards" id="boardCards"></div>
+  </div>
+</section>
+
+<!-- EVENTS (Past • Calendar • Upcoming) -->
+<section id="events" class="reveal">
+  <div class="container">
+    <h2 class="section-title">Events</h2>
+
+    <div class="events-3col">
+      <!-- Left: PAST (vertical) -->
+      <div class="col l">
+        <h3 class="subhead">Past Events</h3>
+        <div class="vloop" id="pastVLoop" style="--vspd:38s"></div>
+      </div>
+
+      <!-- Middle: CALENDAR -->
+      <div class="col m">
+        <h3 class="subhead">Calendar</h3>
+        <div class="calendar-card">
+          <div class="calendar-head">
+            <strong>Mini Calendar</strong>
+            <span class="pill" id="calendarMonth"></span>
+          </div>
+          <div class="calendar-grid" id="calendarGrid" aria-label="Mini Calendar"></div>
+          <div class="schedule" id="upcomingSchedule" aria-label="Upcoming schedule"></div>
+        </div>
+      </div>
+
+      <!-- Right: UPCOMING (vertical) -->
+      <div class="col r">
+        <h3 class="subhead">Upcoming Events</h3>
+        <div class="vloop" id="upVLoop" style="--vspd:44s"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery" class="reveal">
+  <div class="container">
+    <h2 class="section-title">Moments</h2>
+    <div class="wrap">
+      <div class="gtrack" id="gtrack">
+        <!-- REPLACE these with your gallery images (or keep fallbacks below) -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section id="reviews-section" class="reveal">
+  <div class="container">
+    <h2 class="section-title">Member Reviews</h2>
+    <div class="reviews" style="display:flex;gap:18px;justify-content:center;align-items:stretch;width:var(--maxw);margin:0 auto;">
+      <div class="review" style="flex:1;background:var(--card);border:1px solid var(--brd);padding:24px;border-radius:16px;">“Wonderful platform to celebrate culture and connect with families.”</div>
+      <div class="review" style="flex:1;background:var(--card);border:1px solid var(--brd);padding:24px;border-radius:16px;">“Kids loved participating in the festivities and activities.”</div>
+      <div class="review" style="flex:1;background:var(--card);border:1px solid var(--brd);padding:24px;border-radius:16px;">“Great community spirit and well organized events.”</div>
+    </div>
+  </div>
+</section>
+
+<!-- REGISTER -->
+<section id="register" class="reveal">
+  <div class="container">
+    <h2 class="section-title">Register for an Event</h2>
+    <div class="reg-wrap">
+      <div class="card">
+        <form id="regForm" autocomplete="on">
+          <div class="split">
+            <div style="flex:1">
+              <label for="fullName">Full Name</label>
+              <input id="fullName" name="fullName" type="text" required placeholder="Your name">
+            </div>
+            <div style="flex:1">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" required placeholder="you@example.com">
+            </div>
+          </div>
+          <div class="split" style="margin-top:14px;">
+            <div style="flex:1">
+              <label for="phone">Phone</label>
+              <input id="phone" name="phone" type="tel" required placeholder="(xxx) xxx-xxxx">
+            </div>
+            <div style="flex:1">
+              <label for="eventId">Select Event</label>
+              <select id="eventId" name="eventId" required></select>
+            </div>
+          </div>
+          <div class="split" style="margin-top:14px;">
+            <div style="flex:1">
+              <label for="qty">Tickets</label>
+              <input id="qty" name="qty" type="number" min="1" value="1" required>
+              <div class="hint">Student discount applies on site</div>
+            </div>
+            <div style="flex:1">
+              <label for="notes">Notes (optional)</label>
+              <input id="notes" name="notes" type="text" placeholder="Allergies, accessibility, etc.">
+            </div>
+          </div>
+          <div class="total" id="totalDue" style="margin-top:12px;">Total: $0</div>
+          <div class="split" style="margin-top:16px;">
+            <button type="button" class="btn" id="btnRegister">Register (Pay Later)</button>
+            <button type="button" class="btn" id="btnPay">Pay Now</button>
+          </div>
+          <div class="hint" style="margin-top:10px;">Test Mode enabled. Plug in Stripe keys to go live.</div>
+        </form>
+      </div>
+
+      <div class="card">
+        <h3 style="margin-bottom:6px;">Status</h3>
+        <div id="statusBox" class="hint">Fill the form to see a live summary here.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DONATE -->
+<section id="donate" class="reveal">
+  <div class="container">
+    <h2 class="section-title">Support Aikyam</h2>
+    <form class="donate-form" onsubmit="triggerFireworks(event)">
+      <input type="text" placeholder="Your Name" required>
+      <input type="email" placeholder="Your Email" required>
+      <select required>
+        <option value="">Donation Amount</option>
+        <option value="10">$10</option>
+        <option value="25">$25</option>
+        <option value="50">$50</option>
+        <option value="100">$100</option>
+      </select>
+      <button type="submit" class="btn">Donate Now</button>
+    </form>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact-section" class="reveal">
+  <div class="container">
+    <h2 class="section-title">Contact Us</h2>
+    <div class="contact">
+      <p>Email: <a href="mailto:info@aikyam.com">info@aikyam.com</a></p>
+      <p class="hint">Volunteer? Please reach out to <strong>Sowjanya Reddy Jagganna</strong>.</p>
+      <p>Follow us:</p>
+      <p>
+        <a target="_blank" rel="noopener" href="https://www.youtube.com/@BalaramnaiduDowney">YouTube</a> |
+        <a href="#">Facebook</a> |
+        <a href="#">Instagram</a> |
+        <a href="#">Twitter</a>
+      </p>
+    </div>
+  </div>
+</section>
+
+<canvas id="fireworks-canvas"></canvas>
+<div id="toTop" title="Back to top">↑</div>
+<div id="toast"></div>
+
+<footer>
+  &copy; 2025 Aikyam - Menifee, California • All Rights Reserved •
+  <a target="_blank" rel="noopener" href="https://www.youtube.com/@BalaramnaiduDowney" style="color:var(--accent);font-weight:900;">Our YouTube</a>
+</footer>
+
+<script>
+/* ===========================================================
+   JS — Fixes applied
+   - Dark/Light mode switching (CSS variables on body.light)
+   - Background zoom effect on scroll (uses the same logo image)
+   - Gallery rebuilt with robust auto-loop + fallbacks
+   - Vertical event scrollers + calendar
+   =========================================================== */
+
+const SIMULATE_PAYMENTS = true;
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/REPLACE_WITH_YOUR_DEPLOYED_WEB_APP_URL/exec';
+
+/* ---------- Theme toggle (persisted) ---------- */
+const themeToggle = document.getElementById('themeToggle');
+(function initTheme(){
+  const saved = localStorage.getItem('aikyam_theme') || 'dark';
+  if(saved==='light') document.body.classList.add('light');
+  themeToggle.addEventListener('click', ()=>{
+    document.body.classList.toggle('light');
+    localStorage.setItem('aikyam_theme', document.body.classList.contains('light')?'light':'dark');
+  });
+})();
+
+/* ---------- Scroll progress + back-to-top ---------- */
+(function(){
+  const btn=document.getElementById('toTop');
+  const prog=document.getElementById('scroll-progress');
+  function onScroll(){
+    const y=window.scrollY; const h=document.documentElement.scrollHeight - window.innerHeight;
+    const pct=Math.max(0, Math.min(1, y/h)); prog.style.width=(pct*100)+'%';
+    if(y>280) btn.classList.add('show'); else btn.classList.remove('show');
+  }
+  window.addEventListener('scroll',onScroll,{passive:true}); onScroll();
+  btn.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+})();
+
+/* ---------- Button ripple ---------- */
+document.addEventListener('click', (e)=>{
+  const b = e.target.closest('.btn');
+  if(!b) return;
+  const r = document.createElement('span'); r.className='r';
+  const rect=b.getBoundingClientRect(); r.style.left=(e.clientX-rect.left)+'px'; r.style.top=(e.clientY-rect.top)+'px';
+  b.appendChild(r); setTimeout(()=>r.remove(), 620);
+});
+
+/* ---------- Background Zoom (Apple-like) ---------- */
+(function(){
+  const img = document.getElementById('bgZoomImg');
+  function onScroll(){
+    const doc = document.documentElement;
+    const max = Math.max(1, doc.scrollHeight - window.innerHeight);
+    const p = window.scrollY / max;          // 0 at top -> 1 near bottom
+    const scale = 1 + p * 0.8;               // grows up to ~1.8x
+    img.style.transform = `scale(${scale})`;
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+})();
+
+/* ---------- Reveal on scroll ---------- */
+(function(){
+  const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting) e.target.classList.add('show');})},{threshold:.22});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+})();
+
+/* ==============================================
+   IMAGES — REPLACE THESE WITH YOUR REAL FILES
+   - Put event photos in:  assets/events/
+   - Put headshots in:     assets/people/
+   (Local absolute/relative Mac paths also work in dev.)
+   ============================================== */
+
+/* UPCOMING (RIGHT) — REPLACE each `img` with your file path */
+const upcomingEvents = [
+  { id:'evt_ganesh25', title:'Ganesh Chaturthi',
+    start:'2025-09-07T17:00:00', end:'2025-09-07T20:00:00', location:'Menifee Community Center', price:0,
+    img:'assets/events/ganesh.jpg',  /* REPLACE */
+    fallback:'https://images.unsplash.com/photo-1600011689032-8c3e7b80eb75?q=80&w=1200&auto=format&fit=crop',
+    desc:'Community puja, aarthi, and prasadam. Family friendly.' },
+  { id:'evt_service25', title:'Community Service Day',
+    start:'2025-09-28T09:00:00', end:'2025-09-28T12:00:00', location:'Alderwood Park', price:0,
+    img:'assets/events/service-day.jpg', /* REPLACE */
+    fallback:'https://images.unsplash.com/photo-1488459716781-31db52582fe9?q=80&w=1200&auto=format&fit=crop',
+    desc:'Park clean-up & care packages. Service hours for students.' },
+  { id:'evt_navratri25', title:'Navratri Garba Night',
+    start:'2025-10-04T18:30:00', end:'2025-10-04T22:00:00', location:'Heritage Lake Clubhouse', price:15,
+    img:'assets/events/garba.jpg', /* REPLACE */
+    fallback:'https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?q=80&w=1200&auto=format&fit=crop',
+    desc:'Traditional garba & dandiya. Dress in your best!' },
+  { id:'evt_mg_oct31', title:'Meet & Greet',
+    start:'2025-10-31T18:00:00', end:'2025-10-31T19:30:00', location:'TBD', price:0,
+    img:'assets/events/meet-greet.jpg', /* REPLACE */
+    fallback:'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=1200&auto=format&fit=crop',
+    desc:'Casual networking and community-building session.' },
+  { id:'evt_diwali25', title:'Diwali Mela & Cultural Night',
+    tbd:true, location:'TBD', price:25,
+    img:'assets/events/diwali.jpg', /* REPLACE */
+    fallback:'https://images.unsplash.com/photo-1545424273-19f5aa36a2fa?q=80&w=1200&auto=format&fit=crop',
+    desc:'Festival of Lights — November (date TBD).' },
+];
+
+/* COMPLETED (LEFT) — REPLACE each `img` with your file path */
+const completedEvents = [
+  { id:'past_pongal', title:'Pongal Festival', date:'2025-01-18',
+    img:'assets/events/past-pongal.jpg', /* REPLACE */
+    fallback:'https://images.unsplash.com/photo-1542367597-8849eb00b2c2?q=80&w=1200&auto=format&fit=crop',
+    summary:'Harvest celebrations with traditional food & festivities.' },
+  { id:'past_ugadhi', title:'Ugadhi', date:'2025-03-30',
+    img:'assets/events/past-ugadi.jpg', /* REPLACE */
+    fallback:'https://images.unsplash.com/photo-1578926374377-5a3f78c19c6f?q=80&w=1200&auto=format&fit=crop',
+    summary:'Telugu New Year with joy, culture, tradition.' },
+  { id:'past_independence', title:'Independence Day Celebration', date:'2025-08-15',
+    img:'assets/events/past-independence.jpg', /* REPLACE */
+    fallback:'https://images.unsplash.com/photo-1591604466107-ec97de577aff?q=80&w=1200&auto=format&fit=crop',
+    summary:"Pride, parade, and community spirit." },
+];
+
+/* CORE TEAM (REPLACE headshots as needed) */
+const coreTeam = [
+  {name:'Sowjanya Reddy Jagganna', role:'President',     img:'pictures/Sowjanya.jpeg'}, /* REPLACE if you prefer: 'assets/people/sowjanya.jpg' */
+  {name:'Ramesh Jakkampudi',       role:'Vice President',img:'pictures/Ramesh.jpeg'},   /* REPLACE */
+  {name:'Shhiva Pannem',           role:'Secretary',     img:'assets/people/shhiva.jpg'},   /* REPLACE */
+  {name:'Sidhesh Siddegowda',      role:'Treasurer',     img:'assets/people/sidhesh.jpg'},  /* REPLACE */
+];
+
+/* BOARD (same card format as Core; add your own images & roles) */
+const boardMembers = [
+  {name:'Balaram Singamsetty (Bala)', role:'Board of Director', img:'assets/people/bala.jpg'},        /* REPLACE */
+  {name:'Raju Kakani',                role:'Board of Director', img:'assets/people/raju.jpg'},        /* REPLACE */
+  {name:'Vijay Jestadi',              role:'Board of Director', img:'assets/people/vijay.jpg'},       /* REPLACE */
+  {name:'Ramarao Rimmalapudi',        role:'Board of Director', img:'assets/people/ramarao.jpg'},     /* REPLACE */
+  {name:'Ravi Jampana',               role:'Board of Director', img:'assets/people/ravi.jpg'},        /* REPLACE */
+];
+
+/* ---------- Helpers ---------- */
+function makeImage(src, fallback, alt){
+  const im=document.createElement('img');
+  im.src = src; im.alt = alt || '';
+  if(fallback){ im.onerror = ()=>{ if(im.src !== fallback) im.src = fallback; }; }
+  return im;
+}
+
+/* Build a vertical auto-scrolling column (cards) */
+function buildVLoop(hostId, items, renderCard){
+  const host = document.getElementById(hostId);
+  host.innerHTML = '';
+  const track = document.createElement('div'); track.className='vtrack';
+  const dup   = document.createElement('div'); dup.className='vtrack';
+  items.forEach((it, i)=> track.appendChild(renderCard(it, i)));
+  items.forEach((it, i)=> dup.appendChild(renderCard(it, i + items.length)));
+  const wrap = document.createElement('div'); wrap.style.display='grid'; wrap.style.gap='16px';
+  wrap.appendChild(track); wrap.appendChild(dup);
+  host.appendChild(wrap);
+}
+
+/* Event card renderers */
+function renderPastCard(ev){
+  const card = document.createElement('div'); card.className='event-card';
+  const th = document.createElement('div'); th.className='event-thumb';
+  th.appendChild(makeImage(ev.img, ev.fallback, ev.title)); /* REPLACE here if needed */
+  const body = document.createElement('div'); body.className='event-body';
+  body.innerHTML = `
+    <div class="event-title">${ev.title}</div>
+    <div class="event-meta"><span class="pill">Completed</span><span>${new Date(ev.date).toLocaleDateString()}</span></div>
+    <div class="event-desc">${ev.summary}</div>`;
+  card.appendChild(th); card.appendChild(body);
+  return card;
+}
+function makeICSDataURI(ev){
+  const dt = (s)=> new Date(s).toISOString().replace(/[-:]/g,'').split('.')[0]+'Z';
+  const uid = ev.id+'@aikyam';
+  const ics = [
+    'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Aikyam//Events//EN','CALSCALE:GREGORIAN','BEGIN:VEVENT',
+    `UID:${uid}`,`DTSTAMP:${dt(new Date())}`,`DTSTART:${dt(ev.start)}`,`DTEND:${dt(ev.end)}`,
+    `SUMMARY:${ev.title}`,`LOCATION:${ev.location}`,`DESCRIPTION:${ev.desc}`,
+    'END:VEVENT','END:VCALENDAR'
+  ].join('\r\n');
+  return 'data:text/calendar;charset=utf-8,' + encodeURIComponent(ics);
+}
+function renderUpcomingCard(ev){
+  const card = document.createElement('div'); card.className='event-card';
+  const th = document.createElement('div'); th.className='event-thumb';
+  th.appendChild(makeImage(ev.img, ev.fallback, ev.title)); /* REPLACE here if needed */
+  const when = ev.tbd ? 'Date TBD' : new Date(ev.start).toLocaleString([], {month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'});
+  const body = document.createElement('div'); body.className='event-body';
+  body.innerHTML = `
+    <div class="event-title">${ev.title}</div>
+    <div class="event-meta"><span class="pill">${ev.tbd ? 'TBD' : 'Upcoming'}</span><span>${ev.tbd ? 'To be announced' : when}</span></div>
+    <div class="event-desc">${ev.location} • ${ev.price>0 ? '$'+ev.price : 'Free'}</div>
+    <div class="event-actions">
+      ${ev.tbd ? '' : `<a class="btn mini secondary" href="${makeICSDataURI(ev)}" download="${ev.id}.ics">Add to Calendar</a>
+      <a class="btn mini" href="#register" data-ev="${ev.id}">Register</a>`}
+    </div>`;
+  card.appendChild(th); card.appendChild(body);
+  card.querySelectorAll('a[data-ev]').forEach(a=>{
+    a.addEventListener('click', ()=>{
+      const sel = document.getElementById('eventId');
+      sel.value = ev.id; updateTotal();
+    });
+  });
+  return card;
+}
+
+/* ---------- Core & Board ---------- */
+function renderCore(){
+  document.getElementById('coreCards').innerHTML = coreTeam.map(m=>(
+    `<div class="person-card">
+      <!-- REPLACE this headshot path with a local file if you wish -->
+      <img src="${m.img}" alt="${m.name}">
+      <div class="name">${m.name}</div>
+      <div class="role">${m.role}</div>
+      <div style="margin-top:10px;display:flex;justify-content:center;gap:8px;flex-wrap:wrap">
+        <span class="chip-mini">Menifee, CA</span>
+      </div>
+    </div>`
+  )).join('');
+}
+function renderBoard(){
+  document.getElementById('boardCards').innerHTML = boardMembers.map(m=>(
+    `<div class="person-card">
+      <!-- REPLACE this Board headshot path with your local image -->
+      <img src="${m.img}" alt="${m.name}">
+      <div class="name">${m.name}</div>
+      <div class="role">${m.role}</div>
+    </div>`
+  )).join('');
+}
+
+/* ---------- Calendar + schedule ---------- */
+function sameDate(a,b){return a.getFullYear()===b.getFullYear() && a.getMonth()===b.getMonth() && a.getDate()===b.getDate();}
+function eventDateMap(){
+  const m={};
+  upcomingEvents.forEach(ev=>{
+    if(!ev.tbd && ev.start){
+      const d = new Date(ev.start);
+      const key = `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+      m[key]=(m[key]||0)+1;
+    }
+  });
+  return m;
+}
+function renderCalendar(){
+  const grid = document.getElementById('calendarGrid');
+  const monthLbl = document.getElementById('calendarMonth');
+  const now = new Date();
+  const focus = new Date(now.getFullYear(), now.getMonth(), 1);
+  monthLbl.textContent = focus.toLocaleString(undefined,{month:'long', year:'numeric'});
+
+  const startDow = (focus.getDay()+7)%7;
+  const daysInMonth = new Date(focus.getFullYear(), focus.getMonth()+1, 0).getDate();
+  const totalCells = Math.ceil((startDow + daysInMonth)/7)*7;
+  const map = eventDateMap();
+
+  grid.innerHTML = '';
+  for(let i=0;i<totalCells;i++){
+    const cell = document.createElement('div');cell.className='cal-cell';
+    const dayNum = i - startDow + 1;
+    const inMonth = dayNum>=1 && dayNum<=daysInMonth;
+    if(!inMonth){ cell.classList.add('mute'); cell.textContent=''; }
+    else{
+      cell.textContent = dayNum;
+      const d = new Date(focus.getFullYear(), focus.getMonth(), dayNum);
+      if(map[`${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`]) cell.classList.add('has');
+      if(sameDate(d, now)) cell.style.outline='2px solid rgba(255,204,0,.7)';
+    }
+    grid.appendChild(cell);
+  }
+
+  const sched = document.getElementById('upcomingSchedule');
+  const soon = upcomingEvents.slice().sort((a,b)=>{
+    const A = a.tbd ? Infinity : new Date(a.start).getTime();
+    const B = b.tbd ? Infinity : new Date(b.start).getTime();
+    return A-B;
+  });
+  sched.innerHTML='';
+  soon.forEach(ev=>{
+    const d = ev.tbd ? null : new Date(ev.start);
+    const dt = ev.tbd ? 'Date TBD' : `${d.toLocaleDateString(undefined,{month:'short',day:'numeric'})} • ${d.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}`;
+    const icsHref = !ev.tbd ? makeICSDataURI(ev) : '#';
+    const item = document.createElement('div'); item.className='sch-item';
+    item.innerHTML = `
+      <div class="t">${ev.title}</div>
+      <div class="d">${dt} — ${ev.location} • ${ev.price>0 ? '$'+ev.price : 'Free'}</div>
+      <div class="a">
+        ${ev.tbd ? '' : `<a class="btn mini secondary" href="${icsHref}" download="${ev.id}.ics">Add to Calendar</a>
+        <a class="btn mini" href="#register" data-ev="${ev.id}">Register</a>`}
+      </div>`;
+    sched.appendChild(item);
+  });
+  sched.querySelectorAll('a[data-ev]').forEach(a=>{
+    a.addEventListener('click', ()=>{
+      document.getElementById('eventId').value = a.getAttribute('data-ev');
+      updateTotal();
+    });
+  });
+}
+
+/* ---------- REGISTER ---------- */
+function $(id){return document.getElementById(id);}
+function currentSelection(){
+  const ev = upcomingEvents.find(e=>e.id === $('eventId').value);
+  const qty = Math.max(1, parseInt($('qty').value||'1',10));
+  const total = (ev?ev.price:0) * qty;
+  return {ev, qty, total};
+}
+function updateTotal(){
+  const {ev, qty, total} = currentSelection();
+  $('totalDue').textContent = `Total: $${total} ${ev && ev.price===0 ? '(Free event)' : ''}`;
+  $('statusBox').innerHTML = ev
+    ? `<div><strong>${ev.title}</strong></div>
+       <div class="hint">${new Date(ev.start).toLocaleString()} • ${ev.location}</div>
+       <div class="hint">Tickets: ${qty} • Price: $${ev.price} • Total: $${total}</div>`
+    : '<span class="hint">Select an event to see details.</span>';
+}
+function populateEventSelect(){
+  const sel = $('eventId'); sel.innerHTML='';
+  upcomingEvents.filter(e=>!e.tbd && e.start).forEach(ev=>{
+    const when = new Date(ev.start).toLocaleDateString(undefined,{month:'short',day:'numeric'});
+    const opt = document.createElement('option');
+    opt.value = ev.id; opt.textContent = `${when} — ${ev.title} (${ev.price>0 ? '$'+ev.price : 'Free'})`;
+    sel.appendChild(opt);
+  });
+  updateTotal();
+}
+async function postToSheet(payload){
+  if(!APPS_SCRIPT_URL.includes('https://script.google.com/')){return {ok:true, dev:true};}
+  try{const res = await fetch(APPS_SCRIPT_URL, {method:'POST',headers:{'Content-Type':'application/json'},body: JSON.stringify(payload)});return {ok: res.ok};}
+  catch(e){return {ok:false, error:e.message};}
+}
+function formData(){
+  const f = {fullName:$('fullName').value.trim(),email:$('email').value.trim(),phone:$('phone').value.trim(),notes:$('notes').value.trim(),
+             qty: Math.max(1, parseInt($('qty').value||'1',10))};
+  const {ev, total} = currentSelection();
+  if(!ev) throw new Error('Please select an event');
+  return { ...f, eventId: ev.id, eventTitle: ev.title, price: ev.price, total, start: ev.start, end: ev.end, location: ev.location };
+}
+async function handleRegister(status='Pending', paymentId=''){
+  try{
+    const data = formData();
+    const payload = { action:'register', status, paymentId, ...data };
+    await postToSheet(payload);
+    toast(status==='Paid' ? 'Registered & Paid' : 'Registered');
+    $('statusBox').innerHTML = `<div><strong>${data.eventTitle}</strong> — ${status}</div><div class="hint">${data.fullName} • ${data.email}</div><div class="hint">Total: $${data.total} • Tickets: ${data.qty}</div>`;
+  }catch(e){ toast(e.message||'Please complete the form'); }
+}
+async function handlePay(){
+  const ref = 'test_'+Math.random().toString(36).slice(2,10).toUpperCase();
+  await handleRegister('Paid', ref);
+}
+$('btnRegister').addEventListener('click', ()=>handleRegister('Pending'));
+$('btnPay').addEventListener('click', handlePay);
+$('qty').addEventListener('input', updateTotal);
+
+/* ---------- Toast ---------- */
+function toast(msg, ms=1400){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  clearTimeout(toast._h);
+  toast._h=setTimeout(()=>t.classList.remove('show'), ms);
+}
+
+/* ---------- Gallery (robust auto-loop with fallbacks) ---------- */
+(function(){
+  const images = [
+    /* REPLACE these with your gallery paths (real community moments) */
+    {src:'pictures/1.jpg', label:'Moment 1', fallback:'https://images.unsplash.com/photo-1548020356-5a6d8924b7f8?q=80&w=1200&auto=format&fit=crop'},
+    {src:'pictures/2.jpg', label:'Moment 2', fallback:'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=1200&auto=format&fit=crop'},
+    {src:'pictures/3.jpg', label:'Moment 3', fallback:'https://images.unsplash.com/photo-1520975922284-5fbc8da7e2f3?q=80&w=1200&auto=format&fit=crop'},
+    {src:'pictures/4.jpg', label:'Moment 4', fallback:'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?q=80&w=1200&auto=format&fit=crop'},
+  ];
+  const track = document.getElementById('gtrack');
+  function makeSlide(it){
+    const s=document.createElement('div'); s.className='gslide';
+    const im=document.createElement('img'); im.src=it.src; im.alt=it.label;
+    im.onerror=()=>{ if(it.fallback && im.src!==it.fallback) im.src=it.fallback; };
+    const lb=document.createElement('div'); lb.className='label'; lb.textContent=it.label;
+    s.appendChild(im); s.appendChild(lb); return s;
+  }
+  // Duplicate for seamless loop
+  [...images, ...images].forEach(it=> track.appendChild(makeSlide(it)));
+
+  // Auto-translate loop (independent of hover)
+  let x=0; const speed=0.35; // px per frame
+  function loop(){
+    x -= speed;
+    // reset when half the content scrolled (because we doubled)
+    const halfWidth = track.scrollWidth / 2;
+    if(Math.abs(x) >= halfWidth){ x = 0; }
+    track.style.transform = `translateX(${x}px)`;
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+})();
+
+/* ---------- Build Core, Board, Calendar, Events ---------- */
+function renderCalendarAndEvents(){
+  renderCalendar();
+  buildVLoop('pastVLoop', completedEvents, renderPastCard);
+  buildVLoop('upVLoop',   upcomingEvents,  renderUpcomingCard);
+}
+renderCore();
+renderBoard();
+renderCalendarAndEvents();
+populateEventSelect();
+
+/* ---------- Countdown to next upcoming (non-TBD) ---------- */
+function startCountdown(){
+  const target = upcomingEvents.filter(e=>!e.tbd && e.start && new Date(e.start).getTime()>Date.now())
+    .sort((a,b)=>new Date(a.start)-new Date(b.start))[0];
+  const titleEl = document.getElementById('nextEventTitle');
+  const c = document.getElementById('countdown');
+  if(!target){ titleEl.textContent='Stay tuned'; c.innerHTML=''; return; }
+  titleEl.textContent = `${target.title} — ${new Date(target.start).toLocaleDateString(undefined,{month:'short', day:'numeric'})}`;
+  function tick(){
+    const now = Date.now(), t = new Date(target.start).getTime() - now;
+    if(t<=0){ c.innerHTML='<div class="k">Happening now</div>'; return; }
+    const d=Math.floor(t/86400000), h=Math.floor((t%86400000)/3600000), m=Math.floor((t%3600000)/60000), s=Math.floor((t%60000)/1000);
+    c.innerHTML = `<div class="k">${d}<br/><small>days</small></div><div class="k">${h}<br/><small>hrs</small></div><div class="k">${m}<br/><small>min</small></div><div class="k">${s}<br/><small>sec</small></div>`;
+  }
+  tick(); clearInterval(startCountdown._int); startCountdown._int=setInterval(tick,1000);
+}
+startCountdown();
+
+/* ---------- Smooth scroll nav ---------- */
+document.querySelectorAll('nav a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',(e)=>{
+    e.preventDefault();
+    const id=a.getAttribute('href'); const el=document.querySelector(id);
+    if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+  });
+});
+
+/* ---------- Donate fireworks ---------- */
+function triggerFireworks(e){
+  e.preventDefault();
+  const canvas=document.getElementById('fireworks-canvas');
+  const ctx=canvas.getContext('2d');
+  canvas.width=window.innerWidth; canvas.height=window.innerHeight;
+  const particles=[]; for(let i=0;i<140;i++){
+    particles.push({x:canvas.width/2,y:canvas.height/2,vx:(Math.random()-0.5)*10,vy:(Math.random()-0.5)*10,size:Math.random()*3+2,color:`hsl(${Math.random()*360},100%,50%)`});
+  }
+  let count=0;(function animate(){ctx.clearRect(0,0,canvas.width,canvas.height);for(const p of particles){p.x+=p.vx;p.y+=p.vy;p.vy+=0.08;ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(p.x,p.y,p.size,0,Math.PI*2);ctx.fill();} if(++count<70) requestAnimationFrame(animate); else ctx.clearRect(0,0,canvas.width,canvas.height);})();
+  alert('Thank you for donating!');
+}
+
+/* ---------- Hero parallax tiny sway ---------- */
+(function(){
+  const wrap=document.getElementById('heroWrap'); const logo=document.getElementById('heroLogo');
+  if(!wrap||!logo) return; let RAF=null;
+  function onMove(e){const r = wrap.getBoundingClientRect(); const x = (e.clientX - r.left)/r.width - 0.5; const y = (e.clientY - r.top)/r.height - 0.5;
+    if(RAF) cancelAnimationFrame(RAF); RAF = requestAnimationFrame(()=>{logo.style.transform = `translate(${x*14}px, ${y*14}px)`;});}
+  wrap.addEventListener('pointermove', onMove);
+})();
+
+/* ---------- Randomize the hero sunburst speed slightly ---------- */
+document.querySelector('.sunburst .sweep').style.setProperty('--beamspd', (8 + Math.random()*6)+'s');
+</script>
+</body>
+</html>
