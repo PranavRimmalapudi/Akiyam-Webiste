@@ -51,8 +51,14 @@
       display:flex;align-items:center;justify-content:center;background:var(--bg);z-index:1400;
       border-bottom:1px solid var(--brd);backdrop-filter:saturate(120%) blur(8px);}
     .header-inner{width:var(--maxw);margin-inline:auto;display:flex;align-items:center;justify-content:space-between;padding:0 12px;}
-    nav a{display:inline-block;margin:0 14px;font-weight:800;color:var(--fg);opacity:.92;transition:.25s;text-decoration:none;}
+
+    /* ====== NAV (updated for mobile) ====== */
+    nav{ position: relative; }
+    nav .nav-toggle{ display:none; font-size:24px; background:transparent; border:1px solid var(--brd); border-radius:10px; padding:6px 10px; cursor:pointer; color:var(--fg);}
+    nav .nav-links{ display:flex; gap:14px; align-items:center; justify-content:center; flex-wrap:wrap; }
+    nav a{display:inline-block;margin:0 6px;font-weight:800;color:var(--fg);opacity:.92;transition:.25s;text-decoration:none;}
     nav a:hover{color:var(--accent);text-shadow:0 0 12px rgba(255,204,0,.85),0 0 22px rgba(255,153,0,.5);}
+
     .theme-toggle{border:1px solid var(--brd);background:var(--card);color:var(--fg);padding:8px 12px;border-radius:999px;font-weight:800;cursor:pointer;}
     #scroll-progress{position:fixed;top:calc(var(--header-h) + 6px);left:0;height:3px;width:0;background:var(--accent);box-shadow:0 0 12px rgba(255,204,0,.9);z-index:999;}
 
@@ -67,7 +73,7 @@
     @keyframes underlinePulse{0%,100%{transform:scaleX(.9);opacity:.85} 50%{transform:scaleX(1.15);opacity:1}}
 
     .hero{min-height:760px;padding-top:calc(var(--header-h) + 38px);display:flex;align-items:center;justify-content:center;flex-direction:column;}
-    .hero .container{display:flex;align-items:center;justify-content:space-between;gap:44px;}
+    .hero .container{display:flex;align-items:center;justify-content:space-between;gap:44px;flex-wrap:wrap;}
     .hero-left{flex:1;min-width:320px}
     .hero-right{flex:1;display:flex;align-items:center;justify-content:center;position:relative;visibility:hidden;}
     .tagline{font-size:20px;color:var(--muted);margin-bottom:16px}
@@ -96,7 +102,7 @@
               mask-image:radial-gradient(circle at 50% 50%, rgba(255,255,255,1) 62%, rgba(255,255,255,.35) 78%, transparent 90%);
       transition:transform .3s ease;}
 
-    .countdown{display:flex;gap:10px;margin-top:12px;font-weight:900;}
+    .countdown{display:flex;gap:10px;margin-top:12px;font-weight:900;flex-wrap:wrap;}
     .countdown .k{padding:8px 12px;border-radius:12px;background:var(--card);border:1px solid var(--brd);min-width:80px;text-align:center}
     .next-title{font-size:18px;font-weight:900;margin-top:16px}
 
@@ -115,6 +121,7 @@
       gap:22px;align-items:start;
     }
     @media (max-width:1200px){.events-3col{grid-template-columns:1fr;}}
+
     .subhead{font-size:22px;font-weight:900;margin:0 0 10px;text-align:center;}
 
     .vloop{height:580px;overflow:hidden;position:relative;border-radius:16px;border:1px solid var(--brd);background:var(--card);}
@@ -140,7 +147,7 @@
 
     .card{background:var(--card);border:1px solid var(--brd);border-radius:18px;padding:22px;box-shadow:var(--shadow);}
     .hint{font-size:12px;color:var(--muted);}
-    #contact-section .contact{width:980px;margin:0 auto;text-align:center;font-size:22px;display:flex;flex-direction:column;gap:10px;}
+    #contact-section .contact{width:980px;max-width:100%;margin:0 auto;text-align:center;font-size:22px;display:flex;flex-direction:column;gap:10px;}
     #contact-section a{color:var(--accent);font-weight:900;text-decoration:none;}
     #contact-section a:hover{color:var(--accent-2);text-shadow:0 0 10px rgba(255,153,0,.9);}
     footer{background:var(--bg);color:var(--fg);text-align:center;padding:28px;margin-top:20px;border-top:1px solid var(--brd); z-index:1; position:relative;}
@@ -215,7 +222,22 @@
     .rank{font-weight:900; font-size:12px;}
     .rank.gold{color:#ffd700;} .rank.silver{color:#c0c0c0;} .rank.bronze{color:#cd7f32;}
 
-    /* Toast, FAB, etc. */
+    /* ======== MEMBERS (NEW) ======== */
+    #members .reg-wrap{ width:min(1200px,100%); margin:0 auto; display:grid; grid-template-columns:2fr 1fr; gap:18px; align-items:start; }
+    @media (max-width:900px){ #members .reg-wrap{ grid-template-columns:1fr; } }
+    #members .embed-body{ height: min(1000px, 80vh); }
+    #members .card ul{ margin-left:18px; line-height:1.9; }
+
+    /* ======== VENDORS (NEW) ======== */
+    .vendor-card{background:var(--card);padding:22px;border:1px solid var(--brd);border-radius:18px;text-align:center;box-shadow:var(--shadow);transition:.3s;}
+    .vendor-card:hover{transform:translateY(-6px) scale(1.02); box-shadow:var(--shadow-2);}
+    .vendor-card img{width:140px;height:140px;object-fit:cover;border-radius:16px;margin-bottom:10px;border:1px solid var(--brd);}
+    .vendor-card .name{font-weight:900;font-size:18px;}
+    .vendor-card .cat{font-size:12px; opacity:.85; margin-top:2px;}
+    #vendorGrid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:14px; }
+    #vendorMarquee .gslide{ width:280px; height:120px; }
+
+    /* ======== Reveal, Toast, etc. ======== */
     .reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease, transform .6s ease;}
     .reveal.show{opacity:1;transform:translateY(0);}
     #toTop{position:fixed;right:18px;bottom:84px;width:46px;height:46px;border-radius:50%;
@@ -229,7 +251,64 @@
       opacity:0;transition:opacity .25s, transform .25s;z-index:1200;pointer-events:none;}
     body.light #toast{background:#16181d;color:#fff;border-color:#2a2f3a;}
     #toast.show{opacity:1;transform:translateX(-50%) translateY(-6px);}
-  </style>
+
+    /* ==================== Responsive Enhancements ==================== */
+    :root{ --nav-h: 64px; }
+    @media (max-width: 1024px){
+      .section-title{ font-size: clamp(22px, 3.2vw, 32px); }
+      .gslide{ width:360px; height:220px; }
+    }
+    @media (max-width: 768px){
+      nav .nav-toggle{ display:block; position:absolute; left:-8px; top:-2px; }
+      nav .nav-links{ display:none; padding-top: 10px; }
+      header.open nav .nav-links{ display:flex; }
+      header{ min-height: var(--nav-h); }
+      .cards{ grid-template-columns: 1fr 1fr; }
+      .vendor-card img{ width:110px; height:110px; }
+    }
+    @media (max-width: 520px){
+      .cards{ grid-template-columns: 1fr; }
+      .vendor-card{ padding:16px; }
+      .vendor-card img{ width:88px; height:88px; }
+      #members .embed-body{ height: 72vh; }
+    }
+  
+/* ======== CALENDAR STYLES ======== */
+.calendar-card{
+  border:1px solid var(--brd);
+  border-radius:18px;
+  background:var(--card);
+  padding:14px;
+  box-shadow:var(--shadow);
+}
+.calendar-head{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:10px;font-weight:900;
+}
+.calendar-grid{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:4px;
+  text-align:center;
+  margin-bottom:10px;
+}
+.calendar-grid .cal-cell{
+  padding:6px;
+  border-radius:6px;
+  font-size:13px;
+}
+.calendar-grid .cal-cell.has{ background:var(--accent); color:#121212; font-weight:900; }
+.calendar-grid .cal-cell.mute{ opacity:.4; }
+.schedule .sch-item{
+  border-top:1px solid var(--brd);
+  padding:6px 0;
+  font-size:13px;
+}
+.schedule .sch-item .t{ font-weight:900; }
+.schedule .sch-item .d{ opacity:.8; font-size:12px; }
+.schedule .sch-item .a{ margin-top:4px; display:flex; gap:6px; flex-wrap:wrap; }
+
+</style>
 </head>
 
 <body>
@@ -239,7 +318,7 @@
     <img id="bgZoomImg" src="pictures/6.png" alt="">
   </div>
 
-  <header class="reveal">
+  <header class="reveal" id="siteHeader">
     <div class="header-inner">
       <div>
         <div class="sunburst" aria-hidden="true" style="width:80px;height:80px;"><div class="sweep"></div></div>
@@ -247,17 +326,25 @@
           <img class="hero-logo" id="heroLogo" src="pictures/5-modified.png" alt="Aikyam Logo" style="width:70px;height:70px;">
         </div>
       </div>
+
+      <!-- ===== Updated NAV with mobile toggle ===== -->
       <nav>
-        <a href="#home">Home</a>
-        <a href="#core">Core Team</a>
-        <a href="#board">Board</a>
-        <a href="#events">Events</a>
-        <a href="#gallery">Gallery</a>
-        <a href="#reviews-section">Reviews</a>
-        <a href="#register">Register</a>
-        <a href="#donate">Donate</a>
-        <a href="#contact-section">Contact</a>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+        <div class="nav-links">
+          <a href="#home">Home</a>
+          <a href="#core">Core Team</a>
+          <a href="#board">Board</a>
+          <a href="#events">Events</a>
+          <a href="#gallery">Gallery</a>
+          <a href="#reviews-section">Reviews</a>
+          <a href="#members">Members</a>
+          <a href="#vendors">Vendors</a>
+          <a href="#register">Register</a>
+          <a href="#donate">Donate</a>
+          <a href="#contact-section">Contact</a>
+        </div>
       </nav>
+
       <button class="theme-toggle" id="themeToggle"> ☀/🌙</button>
     </div>
   </header>
@@ -353,6 +440,37 @@
     </div>
   </section>
 
+  <!-- ============================== MEMBERS (NEW) =================== -->
+  <section id="members" class="reveal">
+    <div class="container">
+      <h2 class="section-title">Become a Member</h2>
+      <div class="reg-wrap">
+        <div class="embed">
+          <div class="embed-head">
+            <span class="badge">Community Membership</span>
+            <div style="display:flex;gap:10px;align-items:center;">
+              <span class="hint">Prefer a new tab?</span>
+              <a class="btn link" target="_blank" rel="noopener" href="https://forms.gle/jTLazxmQaGQxHDDEA">Open Google Form</a>
+            </div>
+          </div>
+          <div class="embed-body">
+            <iframe src="https://forms.gle/jTLazxmQaGQxHDDEA" allow="payment *; clipboard-write *;"></iframe>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 style="margin-bottom:6px;">Member Perks</h3>
+          <ul>
+            <li>Priority access to cultural nights & kid showcases</li>
+            <li>Member-only updates & volunteer sign-ups</li>
+            <li>Early bird pricing for major events</li>
+            <li>Vendor discounts from our partners</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ============================== REGISTER (EMBED) =================== -->
   <section id="register" class="reveal">
     <div class="container">
@@ -379,6 +497,29 @@
     </div>
   </section>
 
+  <!-- =============================== VENDORS (NEW) ============================ -->
+  <section id="vendors" class="reveal">
+    <div class="container">
+      <h2 class="section-title">Vendors & Partners</h2>
+      <div class="card" style="margin-bottom:14px;">
+        <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center; justify-content:center; margin-bottom:10px;">
+          <span class="pill">Filter:</span>
+          <button class="btn mini secondary" data-filter="All">All</button>
+          <button class="btn mini secondary" data-filter="Food">Food</button>
+          <button class="btn mini secondary" data-filter="Boutique">Boutique</button>
+          <button class="btn mini secondary" data-filter="Education">Education</button>
+          <button class="btn mini secondary" data-filter="Services">Services</button>
+        </div>
+        <div id="vendorGrid"></div>
+        <div class="hint" style="text-align:center; margin-top:8px;">Want to be listed? Email <a href="mailto:info@aikyam.com">info@aikyam.com</a> with your logo, category, and a short blurb.</div>
+      </div>
+
+      <div class="wrap" style="overflow:hidden;border-radius:16px;border:1px solid var(--brd);background:var(--card);box-shadow:var(--shadow);">
+        <div id="vendorMarquee" class="gtrack" style="gap:18px; padding:14px;"></div>
+      </div>
+    </div>
+  </section>
+
   <!-- =============================== DONATE (PRETTY + TOP DONORS) ============================ -->
   <section id="donate" class="reveal">
     <div class="container">
@@ -392,7 +533,6 @@
           <h3>Help power culture, service, and youth leadership</h3>
           <p>Every dollar supports events, kids’ activities, and community service projects in Menifee.</p>
 
-          <!-- Goal progress (static demo — you can update via JS/API later) -->
           <div class="progress" aria-label="progress to goal">
             <div id="donationBar" class="bar"></div>
           </div>
@@ -444,7 +584,6 @@
             <span class="pill">This Month</span>
           </div>
           <div class="donor-list" id="donorList">
-            <!-- Placeholder top 3 — update dynamically later if you wire to a backend -->
             <div class="donor">
               <div class="avatar" aria-hidden="true">🥇</div>
               <div>
@@ -520,6 +659,17 @@
     themeToggle.addEventListener('click', ()=>{
       document.body.classList.toggle('light');
       localStorage.setItem('aikyam_theme', document.body.classList.contains('light')?'light':'dark');
+    });
+  })();
+
+  /* ================== MOBILE NAV TOGGLE ================== */
+  (function(){
+    const header = document.getElementById('siteHeader');
+    const btn = document.getElementById('navToggle');
+    if(!btn) return;
+    btn.addEventListener('click', ()=>{
+      const open = header.classList.toggle('open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
     });
   })();
 
@@ -647,7 +797,7 @@
       `UID:${uid}`,`DTSTAMP:${dt(new Date())}`,`DTSTART:${dt(ev.start)}`,`DTEND:${dt(ev.end)}`,
       `SUMMARY:${ev.title}`,`LOCATION:${ev.location}`,`DESCRIPTION:${ev.desc}`,
       'END:VEVENT','END:VCALENDAR'
-    ].join('\r\n');
+    ].join('\\r\\n');
     return 'data:text/calendar;charset=utf-8,' + encodeURIComponent(ics);
   }
   function renderUpcomingCard(ev){
@@ -772,6 +922,7 @@
     toast._h=setTimeout(()=>t.classList.remove('show'), ms);
   }
 
+  /* =================== GALLERY MARQUEE =================== */
   (function(){
     const images = [
       {src:'pictures/1.jpg', label:'Moment 1', fallback:'https://images.unsplash.com/photo-1548020356-5a6d8924b7f8?q=80&w=1200&auto=format&fit=crop'},
@@ -825,7 +976,6 @@
   startCountdown();
 
   /* ===================== DONATE INTERACTIONS ===================== */
-  // Fake goal meters (update these numbers to match your real totals)
   const GOAL = 5000;
   let raised = 2860;
   let donors = 73;
@@ -839,7 +989,6 @@
   }
   updateProgress();
 
-  // Amount button logic
   const amountButtons = Array.from(document.querySelectorAll('.amount-btn'));
   const customAmount = document.getElementById('customAmount');
   let selectedAmount = null;
@@ -857,7 +1006,6 @@
     selectedAmount = isNaN(v) ? null : v;
   });
 
-  // Fireworks (improved thanks alert removed, use toast)
   function triggerFireworks(){
     const canvas=document.getElementById('fireworks-canvas');
     const ctx=canvas.getContext('2d');
@@ -877,7 +1025,6 @@
     animate();
   }
 
-  // Submit
   const form = document.getElementById('donationForm');
   form.addEventListener('submit', (e)=>{
     e.preventDefault();
@@ -888,13 +1035,11 @@
     let amount = selectedAmount || parseInt(customAmount.value||'0',10);
     if(!amount || amount<=0){ toast('Please choose or enter an amount'); return; }
 
-    // Demo: update counters locally (replace with real checkout later)
     raised += amount;
     donors += 1;
     updateProgress();
     triggerFireworks();
 
-    // If big donor, bubble to leaderboard (demo only)
     const threshold = 250;
     if(amount >= threshold){
       injectDonorToLeaderboard({ name, amount });
@@ -931,6 +1076,73 @@
   })();
 
   document.querySelector('.sunburst .sweep').style.setProperty('--beamspd', (8 + Math.random()*6)+'s');
+
+  /* ========================= VENDORS JS ============================ */
+  const vendors = [
+    { name:'Menifee Motors', cat:'Services', logo:'assets/vendors/menifee-motors.jpg', url:'#', blurb:'Trusted local auto care & sponsors.' },
+    { name:'Spice Route Kitchen', cat:'Food', logo:'assets/vendors/spice-route.jpg', url:'#', blurb:'Homestyle Indian meals & catering.' },
+    { name:'Little Learners Academy', cat:'Education', logo:'assets/vendors/learners.jpg', url:'#', blurb:'After-school & tutoring programs.' },
+    { name:'Saree & Shine Boutique', cat:'Boutique', logo:'assets/vendors/saree-shine.jpg', url:'#', blurb:'Ethnic wear, jewelry & gifts.' },
+    { name:'Chai Junction', cat:'Food', logo:'assets/vendors/chai-junction.jpg', url:'#', blurb:'Masala chai, snacks & sweets.' },
+    { name:'Heritage Lake Realty', cat:'Services', logo:'assets/vendors/heritage-realty.jpg', url:'#', blurb:'Neighborhood real estate experts.' },
+  ];
+
+  function makeVendorCard(v){
+    const div = document.createElement('div');
+    div.className = 'vendor-card';
+    div.innerHTML = `
+      <a href="${v.url}" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;">
+        <img src="${v.logo}" alt="${v.name}" onerror="if(this.src.indexOf('unsplash')===-1){this.src='https://images.unsplash.com/photo-1557683316-973673baf926?w=800&auto=format&fit=crop'}">
+        <div class="name">${v.name}</div>
+        <div class="cat pill">${v.cat}</div>
+        <div class="hint" style="margin-top:6px;">${v.blurb}</div>
+      </a>`;
+    return div;
+  }
+
+  function renderVendors(filter='All'){
+    const grid = document.getElementById('vendorGrid');
+    if(!grid) return;
+    grid.innerHTML = '';
+    vendors
+      .filter(v => filter==='All' || v.cat===filter)
+      .forEach(v => grid.appendChild(makeVendorCard(v)));
+  }
+
+  document.addEventListener('click', (e)=>{
+    const btn = e.target.closest('button[data-filter]');
+    if(!btn) return;
+    const val = btn.getAttribute('data-filter');
+    renderVendors(val);
+    toast(val==='All' ? 'Showing all vendors' : 'Filtered: ' + val);
+  });
+
+  function renderVendorMarquee(){
+    const track = document.getElementById('vendorMarquee');
+    if(!track) return;
+    function makeLogo(v){
+      const s=document.createElement('div'); s.className='gslide'; s.style.width='280px'; s.style.height='120px';
+      const im=document.createElement('img'); im.src=v.logo; im.alt=v.name;
+      im.onerror=()=>{ im.src='https://images.unsplash.com/photo-1557683316-973673baf926?w=800&auto=format&fit=crop'; };
+      const lb=document.createElement('div'); lb.className='label'; lb.textContent=v.name;
+      s.appendChild(im); s.appendChild(lb); return s;
+    }
+    [...vendors, ...vendors].forEach(v=> track.appendChild(makeLogo(v)));
+
+    let x=0; const speed=0.5;
+    function loop(){
+      x -= speed;
+      const halfWidth = track.scrollWidth / 2;
+      if(Math.abs(x) >= halfWidth){ x = 0; }
+      track.style.transform = `translateX(${x}px)`;
+      requestAnimationFrame(loop);
+    }
+    requestAnimationFrame(loop);
+  }
+
+  renderVendors('All');
+  renderVendorMarquee();
   </script>
 </body>
 </html>
+x
