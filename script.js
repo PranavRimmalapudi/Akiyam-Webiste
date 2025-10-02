@@ -254,18 +254,41 @@ async function loadBoardMembers() {
 
 /** Render board member cards. */
 function renderBoard() {
-  const host = document.getElementById('boardCards');
-  if (!host) return;
-  if (!Array.isArray(boardMembers) || boardMembers.length === 0) { host.innerHTML = '<div class="hint">Board will be announced soon.</div>'; return; }
-  host.innerHTML = '';
-  boardMembers.forEach(m => {
+  const boardHost = document.getElementById('boardCards');
+  const chairmanHost = document.getElementById('chairmanCard');
+  
+  if (!boardHost || !chairmanHost) return;
+  
+  if (!boardMembers || (!boardMembers.chairman && (!Array.isArray(boardMembers.members) || boardMembers.members.length === 0))) {
+    boardHost.innerHTML = '<div class="hint">Board will be announced soon.</div>';
+    chairmanHost.innerHTML = '';
+    return;
+  }
+
+  // Render chairman separately
+  chairmanHost.innerHTML = '';
+  if (boardMembers.chairman) {
+    const m = boardMembers.chairman;
     const card = document.createElement('div'); card.className = 'person-card';
     const img = makeImage(m.img, m.fallback, m.name); img.width = 180; img.height = 180;
     const name = document.createElement('div'); name.className = 'name'; name.textContent = m.name;
     const role = document.createElement('div'); role.className = 'role'; role.textContent = m.role;
     card.appendChild(img); card.appendChild(name); card.appendChild(role);
-    host.appendChild(card);
-  });
+    chairmanHost.appendChild(card);
+  }
+
+  // Render other board members
+  boardHost.innerHTML = '';
+  if (Array.isArray(boardMembers.members) && boardMembers.members.length > 0) {
+    boardMembers.members.forEach(m => {
+      const card = document.createElement('div'); card.className = 'person-card';
+      const img = makeImage(m.img, m.fallback, m.name); img.width = 180; img.height = 180;
+      const name = document.createElement('div'); name.className = 'name'; name.textContent = m.name;
+      const role = document.createElement('div'); role.className = 'role'; role.textContent = m.role;
+      card.appendChild(img); card.appendChild(name); card.appendChild(role);
+      boardHost.appendChild(card);
+    });
+  }
 }
 
 /** Date-only equality check. */
