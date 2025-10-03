@@ -425,7 +425,26 @@ function startCountdown() {
 /**
  * App bootstrap: fetch data in parallel, then render the UI.
  */
+/* ===================== LOAD FOOTER ==================== */
+async function loadFooter() {
+  try {
+    const response = await fetch('./common/footer.html');
+    if (response.ok) {
+      const footerHTML = await response.text();
+      const footerContainer = document.getElementById('footerContainer');
+      if (footerContainer) {
+        footerContainer.innerHTML = footerHTML;
+      }
+    }
+  } catch (error) {
+    console.warn('Footer loading failed:', error);
+  }
+}
+
 async function init() {
+  // Load common components first
+  await loadFooter();
+  
   // Show per-section placeholders immediately
   const coreHost = document.getElementById('coreCards');
   const boardHost = document.getElementById('boardCards');
