@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<!--
+  AIKYAM • Join Us Page
+  - Community membership and event registration forms
+-->
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Join Us - AIKYAM • Community Membership & Event Registration</title>
+  <meta name="description"
+    content="Join AIKYAM community for cultural celebrations, family events, and volunteering opportunities. Become a member or register for upcoming events." />
+  <meta name="keywords" content="AIKYAM, join, membership, register, community events, cultural celebrations, volunteering" />
+  <meta name="author" content="AIKYAM" />
+  
+  <!-- Open Graph / Social Media -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Join AIKYAM - Community Membership & Event Registration" />
+  <meta property="og:description" content="Join AIKYAM community for cultural celebrations, family events, and volunteering opportunities." />
+  <meta property="og:image" content="assets/branding/logo.png" />
+  <meta property="og:url" content="https://aikyamfoundation.org/join.html" />
+  
+  <!-- Performance optimizations -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="assets/branding/logo.png" type="image/png" />
+</head>
+
+<body>
+  <div class="tricolor" aria-hidden="true"></div>
+
+  <div id="bg-zoom" aria-hidden="true">
+    <img id="bgZoomImg" src="assets/branding/BgImage.png" alt="">
+  </div>
+
+  <!-- ===== Header & Navigation ===== -->
+  <header class="reveal" id="siteHeader">
+    <div class="header-inner">
+      <div>
+        <div class="sunburst" aria-hidden="true" style="width:80px;height:80px;">
+          <div class="sweep"></div>
+        </div>
+        <div class="hero-logo-wrap" id="heroWrap" style="margin: 3px;">
+          <img class="hero-logo" id="heroLogo" src="assets/branding/logo.png" alt="AIKYAM Logo"
+            style="width:70px;height:70px;">
+        </div>
+      </div>
+
+      <!-- ===== Navigation ===== -->
+      <nav>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+        <div class="nav-links">
+          <a href="home.html#home">Home</a>
+          <a href="home.html#team">Team</a>
+          <a href="home.html#events">Events</a>
+          <a href="home.html#gallery">Gallery</a>
+          <a href="home.html#reviews-section">Reviews</a>
+          <a href="join.html" class="active">Join Us</a>
+          <a href="home.html#vendors">Vendors</a>
+          <a href="donate.html">Donate</a>
+          <a href="home.html#contact-section">Contact</a>
+        </div>
+      </nav>
+
+      <button class="theme-toggle" id="themeToggle"> ☀/🌙</button>
+    </div>
+  </header>
+
+  <div id="scroll-progress"></div>
+
+  <!-- ===== Hero Section ===== -->
+  <section class="hero" id="join">
+    <div class="container">
+      <div class="hero-left">
+        <h1 class="hero-title">Join Our Community</h1>
+        <p class="tagline">Become part of AIKYAM's vibrant community. Join as a member to enjoy exclusive benefits, or register for our upcoming cultural events and celebrations.</p>
+        <div class="cta-row">
+          <a class="btn" href="#membership">Become a Member</a>
+          <a class="btn secondary" href="#registration">Register for Events</a>
+          <a class="btn secondary" href="home.html#home">Back to Home</a>
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="sunburst" aria-hidden="true">
+          <div class="sweep"></div>
+        </div>
+        <div class="hero-logo-wrap">
+          <img class="hero-logo" src="assets/branding/BgImage.png" alt="" aria-hidden="true">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Community Membership ===== -->
+  <section id="membership" class="reveal">
+    <div class="container">
+      <h2 class="section-title">Community Membership</h2>
+      
+      <div class="reg-wrap">
+        <div class="embed">
+          <div class="embed-head">
+            <span class="badge">Community Membership</span>
+            <div style="display:flex;gap:10px;align-items:center;">
+              <span class="hint">Prefer a new tab?</span>
+              <a class="btn link" target="_blank" rel="noopener" href="https://forms.gle/jTLazxmQaGQxHDDEA">Open Google
+                Form</a>
+            </div>
+          </div>
+          <div class="embed-body">
+            <iframe src="https://forms.gle/jTLazxmQaGQxHDDEA" allow="payment *; clipboard-write *;"></iframe>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 style="margin-bottom:6px;">Member Perks</h3>
+          <ul>
+            <li>Priority access to cultural nights & kid showcases</li>
+            <li>Member-only updates & volunteer sign-ups</li>
+            <li>Early bird pricing for major events</li>
+            <li>Vendor discounts from our partners</li>
+            <li>Exclusive community networking opportunities</li>
+            <li>Special recognition at events</li>
+          </ul>
+          
+          <h4 style="margin-top: 15px; margin-bottom: 6px;">Why Join AIKYAM?</h4>
+          <p style="margin-bottom: 10px;">AIKYAM is more than just an organization – we're a family that celebrates unity in diversity. Our community brings together families from all backgrounds to:</p>
+          <ul>
+            <li>Celebrate cultural festivals and traditions</li>
+            <li>Provide platforms for children to showcase their talents</li>
+            <li>Create lasting friendships and connections</li>
+            <li>Give back to the community through volunteering</li>
+            <li>Preserve and share our rich cultural heritage</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+      
+  <!-- ===== Event Registration ===== -->
+  <section id="registration" class="reveal">
+    <div class="container">
+      <h2 class="section-title">Event Registration</h2>
+      
+      <div class="reg-wrap">
+        <div class="embed">
+          <div class="embed-head">
+            <span class="badge">Event Registration</span>
+            <div style="display:flex;gap:10px;align-items:center;">
+              <span class="hint">Prefer a new tab?</span>
+              <a class="btn link" target="_blank" rel="noopener" href="https://forms.gle/QVvLzs9ZRPxx1EYv9">Open Google
+                Form</a>
+            </div>
+          </div>
+          <div class="embed-body">
+            <iframe src="https://forms.gle/QVvLzs9ZRPxx1EYv9" allow="payment *; clipboard-write *;"></iframe>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 style="margin-bottom:6px;">Registration Tips</h3>
+          <div class="hint" style="margin-bottom: 15px;">After you submit, you'll see a confirmation message from Google Forms. If the form doesn't load, click "Open Google Form". Use the membership form above for general community membership, and this form for specific event registrations.</div>
+          
+          <h4 style="margin-bottom: 6px;">What to Expect</h4>
+          <ul>
+            <li>Confirmation email within 24 hours</li>
+            <li>Event details and instructions</li>
+            <li>Parking and venue information</li>
+            <li>What to bring or prepare</li>
+            <li>Contact information for questions</li>
+          </ul>
+          
+          <div style="margin-top: 15px; padding: 10px; background: var(--accent-bg); border-radius: 8px; border-left: 4px solid var(--accent);">
+            <strong>Need Help?</strong> Contact us at <a href="mailto:notifyaikyam@gmail.com">notifyaikyam@gmail.com</a> or reach out to <strong>Sowjanya Reddy Jagganna</strong> for volunteer opportunities.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Quick Links ===== -->
+  <section class="reveal" style="background: var(--card); margin: 40px 0;">
+    <div class="container">
+      <h3 style="text-align: center; margin-bottom: 20px;">Quick Links</h3>
+      <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+        <a href="home.html#events" class="btn secondary">View Events</a>
+        <a href="home.html#team" class="btn secondary">Meet Our Team</a>
+        <a href="home.html#gallery" class="btn secondary">Photo Gallery</a>
+        <a href="home.html#vendors" class="btn secondary">Our Partners</a>
+        <a href="donate.html" class="btn secondary">Donate</a>
+      </div>
+    </div>
+  </section>
+
+  <canvas id="fireworks-canvas"></canvas>
+  <div id="toTop" title="Back to top">↑</div>
+  <div id="toast"></div>
+  
+  <!-- ===== Footer ===== -->
+  <footer>
+    &copy; 2025 AIKYAM, California • All Rights Reserved •
+    <a target="_blank" rel="noopener" href="https://www.youtube.com/@ManaAIKYAM"
+      style="color:var(--accent);font-weight:900;">Our YouTube</a>
+  </footer>
+  <script src="script.js"></script>
+</body>
+
+</html>
