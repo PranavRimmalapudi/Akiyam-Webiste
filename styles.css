@@ -12,22 +12,28 @@
   font-family: 'Montserrat', sans-serif;
 }
 
+/* ======== VARS ======== */
 :root {
-  --maxw: 1320px;
-  --pad-section: 92px;
-  --header-h: 72px;
-  --accent: #ffcc00;
-  --accent-2: #ff9900;
-  --bg: #000;
-  --fg: #fff;
-  --muted: rgba(255, 255, 255, .72);
-  --card: rgba(255, 255, 255, .06);
-  --brd: rgba(255, 255, 255, .14);
-  --shadow: 0 10px 30px rgba(0, 0, 0, .35);
-  --shadow-2: 0 18px 42px rgba(255, 204, 0, .25);
-  --gutter: clamp(26px, 3.5vw, 42px);
-  --success: #21d07a;
-  --danger: #ff5f5f;
+  --bg: hsl(0, 0%, 99%);
+  --text: hsl(0, 0%, 15%);
+  --text-muted: hsl(0, 0%, 45%);
+  --accent: #ff6b35;
+  --secondary: #1a365d;
+  --brd: hsl(0, 0%, 80%);
+  --card: rgba(255, 255, 255, 0.6);
+  --card-alt: rgba(255, 255, 255, 0.8);
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --maxw: 1200px;
+  --header-h: 80px;
+  --gutter: 20px;
+  --font-body: "Montserrat", system-ui, sans-serif;
+  --r: 16px;
+  --transition-fast: 0.2s ease;
+  --transition-medium: 0.3s ease;
+  --transition-slow: 0.4s ease;
+  --border-radius-sm: 8px;
+  --border-radius-md: 12px;
+  --border-radius-lg: 16px;
 }
 
 body.light {

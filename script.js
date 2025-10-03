@@ -5,6 +5,25 @@
 */
 
 
+/* ===================== UTILITY FUNCTIONS ==================== */
+
+// Reusable image fallback handler
+function addImageFallback(img, name) {
+  img.addEventListener('error', () => {
+    const initials = name.split(' ').map(word => word[0]).join('').slice(0, 2);
+    const placeholder = document.createElement('div');
+    placeholder.style.cssText = `
+      width: 180px; height: 180px;
+      background: linear-gradient(135deg, #ffcc00, #ff9900);
+      border-radius: 50%; display: flex; align-items: center; 
+      justify-content: center; color: white; font-weight: 900;
+      font-size: 48px; text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    `;
+    placeholder.textContent = initials;
+    img.parentNode.replaceChild(placeholder, img);
+  });
+}
+
 /* ===================== HEADER LOADING ==================== */
 async function loadHeader() {
   try {
@@ -1030,14 +1049,7 @@ function renderVendorMarquee(vendors) {
 }
 
 function initVendorFilters() {
-  // This will be called after vendors are loaded
-  // Filter buttons are handled by event delegation in the vendors section
-}
-
-// Global vendor filter handling
-function handleVendorFilter(filter, vendors) {
-  renderVendors(vendors, filter);
-  // Show toast message
-  const message = filter === 'All' ? 'Showing all vendors' : 'Filtered: ' + filter;
+  // Initialize vendor filters after vendors are loaded
+  setupVendorFilters();
 }
 
