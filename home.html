@@ -127,11 +127,13 @@
   <section id="reviews-section" class="reveal">
     <div class="container">
       <h2 class="section-title">Member Reviews</h2>
-      <div class="reviews"
-        style="display:flex;gap:18px;justify-content:center;align-items:stretch;width:var(--maxw);margin:0 auto;">
-        <div class="review card">"Wonderful platform to celebrate culture and connect with families."</div>
-        <div class="review card">"Kids loved participating in the festivities and activities."</div>
-        <div class="review card">"Great community spirit and well organized events."</div>
+      <div class="reviews-marquee-wrapper" style="overflow:hidden;width:var(--maxw);margin:0 auto;">
+        <div id="reviewsTrack" class="reviews"
+          style="display:flex;gap:18px;justify-content:center;align-items:stretch;width:var(--maxw);margin:0 auto;will-change:transform;">
+          <div class="review card">"Wonderful platform to celebrate culture and connect with families."</div>
+          <div class="review card">"Kids loved participating in the festivities and activities."</div>
+          <div class="review card">"Great community spirit and well organized events."</div>
+        </div>
       </div>
     </div>
   </section>

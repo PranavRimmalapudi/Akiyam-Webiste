@@ -492,6 +492,7 @@ document.addEventListener('DOMContentLoaded', async function() {
   initBackgroundZoom();
   initRevealOnScroll();
   initGalleryMarquee();
+  setTimeout(initReviewsMarquee, 100);
   initHeroParallax();
   initSunburst();
   initThemeToggle();
@@ -860,6 +861,37 @@ function initGalleryMarquee() {
   requestAnimationFrame(loop);
   
   console.log('✅ AIKYAM: Gallery marquee initialized');
+}
+
+/* ===================== REVIEWS MARQUEE FUNCTIONALITY ==================== */
+
+function initReviewsMarquee() {
+  const track = document.getElementById('reviewsTrack');
+  if (!track) return;
+  
+  // Get existing review cards and duplicate them for seamless loop
+  const originalCards = Array.from(track.children);
+  originalCards.forEach(card => {
+    const clone = card.cloneNode(true);
+    track.appendChild(clone);
+  });
+  
+  // Adjust width to accommodate duplicated content
+  track.style.width = 'calc(var(--maxw) * 2)';
+  track.style.justifyContent = 'flex-start';
+  
+  let x = 0;
+  const speed = 0.3; // Smooth scrolling speed
+  
+  function loop() {
+    x -= speed;
+    const halfWidth = track.scrollWidth / 2;
+    if (Math.abs(x) >= halfWidth) { x = 0; }
+    track.style.transform = `translateX(${x}px)`;
+    requestAnimationFrame(loop);
+  }
+  
+  requestAnimationFrame(loop);
 }
 
 /* ===================== VENDORS FUNCTIONALITY ==================== */
