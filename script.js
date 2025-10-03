@@ -1,5 +1,5 @@
 /*
-  Aikyam Website — Frontend Script
+  AIKYAM Website — Frontend Script
   - Vanilla JS for interactivity and data-driven rendering.
   - Data is fetched from ./data/*.json at runtime (static hosting friendly).
   - Keep behavior side-effect free on load; orchestrate via init().
@@ -8,11 +8,11 @@
 /* ===================== THEME TOGGLE (persisted) ==================== */
 const themeToggle = document.getElementById('themeToggle');
 (function initTheme() {
-  const saved = localStorage.getItem('aikyam_theme') || 'dark';
+  const saved = localStorage.getItem('AIKYAM_theme') || 'dark';
   if (saved === 'light') document.body.classList.add('light');
   themeToggle.addEventListener('click', () => {
     document.body.classList.toggle('light');
-    localStorage.setItem('aikyam_theme', document.body.classList.contains('light') ? 'light' : 'dark');
+    localStorage.setItem('AIKYAM_theme', document.body.classList.contains('light') ? 'light' : 'dark');
   });
 })();
 
@@ -159,9 +159,9 @@ function renderPastCard(ev) {
  */
 function makeICSDataURI(ev) {
   const dt = (s) => new Date(s).toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
-  const uid = ev.id + '@aikyam';
+  const uid = ev.id + '@AIKYAM';
   const ics = [
-    'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Aikyam//Events//EN', 'CALSCALE:GREGORIAN', 'BEGIN:VEVENT',
+    'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//AIKYAM//Events//EN', 'CALSCALE:GREGORIAN', 'BEGIN:VEVENT',
     `UID:${uid}`, `DTSTAMP:${dt(new Date())}`, `DTSTART:${dt(ev.start)}`, `DTEND:${dt(ev.end)}`,
     `SUMMARY:${ev.title}`, `LOCATION:${ev.location}`, `DESCRIPTION:${ev.desc}`,
     'END:VEVENT', 'END:VCALENDAR'

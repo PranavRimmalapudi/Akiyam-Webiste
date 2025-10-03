@@ -1,4 +1,4 @@
-## Aikyam — Menifee (Static Site)
+## AIKYAM — Menifee (Static Site)
 
 This site is a single-page static app powered by HTML/CSS/vanilla JS. All lists (core team, board, vendors, events) are loaded from JSON at runtime. Serve over HTTP for fetch() to work.
 
