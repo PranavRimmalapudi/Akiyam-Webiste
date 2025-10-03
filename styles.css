@@ -1106,7 +1106,7 @@ body.light .avatar {
 /* ======== Reveal, Toast, etc. ======== */
 .reveal {
   opacity: 0;
-  transform: translateY(18px);
+  transform: translateY(8px);
   transition: opacity .6s ease, transform .6s ease;
 }
 
