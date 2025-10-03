@@ -6,6 +6,34 @@
 
 console.log('AIKYAM: Script loaded!');
 
+/* ===================== HEADER LOADING ==================== */
+async function loadHeader() {
+  try {
+    const headerPlaceholder = document.getElementById('header-placeholder');
+    if (!headerPlaceholder) {
+      console.log('AIKYAM: Header placeholder not found');
+      return;
+    }
+    
+    console.log('AIKYAM: Fetching header...');
+    const response = await fetch('./common/header.html');
+    if (!response.ok) {
+      console.error('AIKYAM: Failed to fetch header:', response.status);
+      return;
+    }
+    
+    const headerHTML = await response.text();
+    console.log('AIKYAM: Header HTML loaded, length:', headerHTML.length);
+    headerPlaceholder.innerHTML = headerHTML;
+    
+    // Reinitialize mobile navigation after header is loaded
+    initMobileNav();
+    console.log('AIKYAM: Header loaded successfully');
+  } catch (error) {
+    console.error('AIKYAM: Error loading header:', error);
+  }
+}
+
 /* ===================== THEME INITIALIZATION ==================== */
 (function initTheme() {
   const saved = localStorage.getItem('AIKYAM_theme') || 'dark';
@@ -452,8 +480,11 @@ async function loadData() {
 }
 
 // Initialize when DOM is ready
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
   console.log('AIKYAM: DOM ready, starting initialization...');
+  
+  // Load header first
+  await loadHeader();
   
   // Initialize all UI components
   initScrollProgress();
@@ -464,7 +495,7 @@ document.addEventListener('DOMContentLoaded', function() {
   initHeroParallax();
   initSunburst();
   initThemeToggle();
-  initMobileNav();
+  // Note: initMobileNav is called after header loads, not here
   initVendorFilters();
   console.log('AIKYAM: All UI components initialized');
   

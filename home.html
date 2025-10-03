@@ -10,19 +10,20 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AIKYAM •  Community Events & Cultural Celebrations</title>
   <meta name="description"
     content="Join AIKYAM for cultural celebrations, family events, and community volunteering. Bringing families together through festivals, kids showcases, and community engagement." />
-  <meta name="keywords" content="AIKYAM, community events, cultural celebrations, family activities, volunteering, Indian community, festivals" />
+  <meta name="keywords"
+    content="AIKYAM, community events, cultural celebrations, family activities, volunteering, Indian community, festivals" />
   <meta name="author" content="AIKYAM" />
-  
+
   <!-- Open Graph / Social Media -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="AIKYAM - Community Events & Cultural Celebrations" />
-  <meta property="og:description" content="Join AIKYAM for cultural celebrations, family events, and community volunteering." />
+  <meta property="og:description"
+    content="Join AIKYAM for cultural celebrations, family events, and community volunteering." />
   <meta property="og:image" content="assets/branding/logo.png" />
   <meta property="og:url" content="https://aikyamfoundation.org" />
-  
+
   <!-- Performance optimizations -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -40,46 +41,13 @@
     <img id="bgZoomImg" src="assets/branding/BgImage.png" alt="">
   </div>
 
-  <!-- ===== Header & Navigation ===== -->
-  <header class="reveal" id="siteHeader">
-    <div class="header-inner">
-      <div>
-        <div class="sunburst" aria-hidden="true" style="width:80px;height:80px;">
-          <div class="sweep"></div>
-        </div>
-        <div class="hero-logo-wrap" id="heroWrap" style="margin: 3px;">
-          <img class="hero-logo" id="heroLogo" src="assets/branding/logo.png" alt="AIKYAM Logo"
-            style="width:70px;height:70px;">
-        </div>
-      </div>
-
-      <!-- ===== Navigation ===== -->
-      <nav>
-        <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
-        <div class="nav-links">
-          <a href="#home">Home</a>
-          <a href="#team">Team</a>
-          <a href="#events">Events</a>
-          <a href="gallery.html">Gallery</a>
-          <a href="#reviews-section">Reviews</a>
-          <a href="join.html">Join Us</a>
-          <a href="vendors.html">Vendors</a>
-          <a href="donate.html">Donate</a>
-          <a href="#contact-section">Contact</a>
-        </div>
-      </nav>
-
-      <button class="theme-toggle" id="themeToggle"> ☀/🌙</button>
-    </div>
-  </header>
-
-  <div id="scroll-progress"></div>
+  <!-- Header will be loaded by JavaScript -->
+  <div id="header-placeholder"></div>
 
   <!-- ===== Hero ===== -->
   <section class="hero" id="home">
     <div class="container">
       <div class="hero-left">
-        <h1 class="hero-title">Unity in Diversity,<br />Community in Action</h1>
         <p class="tagline">AIKYAM brings families together to celebrate culture, volunteer, and create chances
           for kids to shine.</p>
         <div class="next-title">Next up: <span id="nextEventTitle">—</span></div>
@@ -87,8 +55,7 @@
         <div class="cta-row">
           <a class="btn" href="#events">See Events</a>
           <a class="btn secondary" href="join.html">Join Us</a>
-          <a class="btn secondary" target="_blank" rel="noopener"
-            href="https://www.youtube.com/@ManaAIKYAM">YouTube</a>
+          <a class="btn secondary" target="_blank" rel="noopener" href="https://www.youtube.com/@ManaAIKYAM">YouTube</a>
         </div>
       </div>
       <div class="hero-right">
@@ -106,16 +73,17 @@
   <section id="team" class="reveal">
     <div class="container">
       <h2 class="section-title">Our Team</h2>
-      
+
       <h3 class="subhead" style="text-align: center; margin-bottom: 20px;">Board of Directors</h3>
       <!-- Chairman in separate row -->
-      <div class="cards" id="chairmanCard" style="justify-content: center; margin-bottom: 30px; display: flex; align-items: center;"></div>
+      <div class="cards" id="chairmanCard"
+        style="justify-content: center; margin-bottom: 30px; display: flex; align-items: center;"></div>
       <!-- Other board members -->
       <div class="cards" id="boardCards" style="margin-bottom: 40px;"></div>
-      
+
       <h3 class="subhead" style="text-align: center; margin-bottom: 20px;">Core Team</h3>
       <div class="cards" id="coreCards"></div>
-      
+
       <div class="mv">
         <h4>Mission</h4>
         <p>To inspire and empower the next generation by nurturing cultural pride, fostering community unity, and
@@ -155,28 +123,23 @@
     </div>
   </section>
 
-
-
   <!-- ===== Member Reviews ===== -->
   <section id="reviews-section" class="reveal">
     <div class="container">
       <h2 class="section-title">Member Reviews</h2>
       <div class="reviews"
         style="display:flex;gap:18px;justify-content:center;align-items:stretch;width:var(--maxw);margin:0 auto;">
-        <div class="review card">“Wonderful platform to celebrate culture and connect with families.”</div>
-        <div class="review card">“Kids loved participating in the festivities and activities.”</div>
-        <div class="review card">“Great community spirit and well organized events.”</div>
+        <div class="review card">"Wonderful platform to celebrate culture and connect with families."</div>
+        <div class="review card">"Kids loved participating in the festivities and activities."</div>
+        <div class="review card">"Great community spirit and well organized events."</div>
       </div>
     </div>
   </section>
 
 
 
-  
+  </section>
 
-
-
-    <!-- ===== Contact ===== -->
 
   <!-- ===== Contact ===== -->
   <section id="contact-section" class="reveal">
@@ -199,7 +162,7 @@
   <canvas id="fireworks-canvas"></canvas>
   <div id="toTop" title="Back to top">↑</div>
   <div id="toast"></div>
-  
+
   <!-- ===== Footer ===== -->
   <footer>
     &copy; 2025 AIKYAM, California • All Rights Reserved •
