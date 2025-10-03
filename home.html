@@ -1,35 +1,87 @@
 <!DOCTYPE html>
-<!--
-  AIKYAM •  Static site
-  - Data is fetched from ./data/*.json by script.js
-  - Sections labeled for easier maintenance
--->
 <html lang="en">
 
 <head>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- Primary Meta Tags -->
+  <title>AIKYAM - Community Events & Cultural Celebrations | California</title>
+  <meta name="title" content="AIKYAM - Community Events & Cultural Celebrations | California" />
   <meta name="description"
-    content="Join AIKYAM for cultural celebrations, family events, and community volunteering. Bringing families together through festivals, kids showcases, and community engagement." />
+    content="Join AIKYAM for cultural celebrations, family events, and community volunteering. Bringing families together through festivals, kids showcases, and community engagement in California." />
   <meta name="keywords"
-    content="AIKYAM, community events, cultural celebrations, family activities, volunteering, Indian community, festivals" />
-  <meta name="author" content="AIKYAM" />
+    content="AIKYAM, community events, cultural celebrations, family activities, volunteering, Indian community, festivals, California, kids showcase, cultural pride" />
+  <meta name="author" content="AIKYAM Foundation" />
+  <meta name="robots" content="index, follow" />
+  <meta name="language" content="English" />
+  <meta name="theme-color" content="#ff6b35" />
+  
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://aikyamfoundation.org/" />
 
-  <!-- Open Graph / Social Media -->
+  <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://aikyamfoundation.org/" />
   <meta property="og:title" content="AIKYAM - Community Events & Cultural Celebrations" />
   <meta property="og:description"
-    content="Join AIKYAM for cultural celebrations, family events, and community volunteering." />
-  <meta property="og:image" content="assets/branding/logo.png" />
-  <meta property="og:url" content="https://aikyamfoundation.org" />
+    content="Join AIKYAM for cultural celebrations, family events, and community volunteering. Bringing families together through festivals, kids showcases, and community engagement." />
+  <meta property="og:image" content="https://aikyamfoundation.org/assets/branding/logo.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:site_name" content="AIKYAM Foundation" />
+  <meta property="og:locale" content="en_US" />
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content="https://aikyamfoundation.org/" />
+  <meta property="twitter:title" content="AIKYAM - Community Events & Cultural Celebrations" />
+  <meta property="twitter:description"
+    content="Join AIKYAM for cultural celebrations, family events, and community volunteering. Bringing families together through festivals, kids showcases, and community engagement." />
+  <meta property="twitter:image" content="https://aikyamfoundation.org/assets/branding/logo.png" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/branding/logo.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/branding/logo.png" />
+  <link rel="apple-touch-icon" href="assets/branding/logo.png" />
 
   <!-- Performance optimizations -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+  <link rel="dns-prefetch" href="https://www.youtube.com" />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet" />
+  
+  <!-- Preload critical resources -->
+  <link rel="preload" href="styles.css" as="style" />
+  <link rel="preload" href="script.js" as="script" />
+  <link rel="preload" href="assets/branding/BgImage.png" as="image" />
+  <link rel="preload" href="common/header.html" as="fetch" crossorigin />
+  
+  <!-- CSS -->
   <link rel="stylesheet" href="styles.css" />
-  <link rel="icon" href="assets/branding/logo.png" type="image/png" />
+  
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "AIKYAM Foundation",
+    "url": "https://aikyamfoundation.org",
+    "logo": "https://aikyamfoundation.org/assets/branding/logo.png",
+    "description": "AIKYAM brings families together to celebrate culture, volunteer, and create chances for kids to shine through community events and cultural celebrations.",
+    "foundingDate": "2020",
+    "address": {
+      "@type": "PostalAddress",
+      "addressRegion": "California",
+      "addressCountry": "US"
+    },
+    "sameAs": [
+      "https://www.youtube.com/@ManaAIKYAM"
+    ]
+  }
+  </script>
 
 
 </head>
@@ -38,24 +90,24 @@
   <div class="tricolor" aria-hidden="true"></div>
 
   <div id="bg-zoom" aria-hidden="true">
-    <img id="bgZoomImg" src="assets/branding/BgImage.png" alt="">
+    <img id="bgZoomImg" src="assets/branding/BgImage.png" alt="AIKYAM community background" loading="eager">
   </div>
 
   <!-- Header will be loaded by JavaScript -->
   <div id="header-placeholder"></div>
 
   <!-- ===== Hero ===== -->
-  <section class="hero" id="home">
+  <section class="hero" id="home" role="banner">
     <div class="container">
       <div class="hero-left">
         <p class="tagline">AIKYAM brings families together to celebrate culture, volunteer, and create chances
           for kids to shine.</p>
         <div class="next-title">Next up: <span id="nextEventTitle">—</span></div>
-        <div class="countdown" id="countdown" aria-label="countdown"></div>
+        <div class="countdown" id="countdown" aria-label="Event countdown timer" role="timer"></div>
         <div class="cta-row">
-          <a class="btn" href="#events">See Events</a>
-          <a class="btn secondary" href="join.html">Join Us</a>
-          <a class="btn secondary" target="_blank" rel="noopener" href="https://www.youtube.com/@ManaAIKYAM">YouTube</a>
+          <a class="btn" href="#events" aria-label="Navigate to events section">See Events</a>
+          <a class="btn secondary" href="join.html" aria-label="Join AIKYAM community">Join Us</a>
+          <a class="btn secondary" target="_blank" rel="noopener" href="https://www.youtube.com/@ManaAIKYAM" aria-label="Visit AIKYAM YouTube channel (opens in new tab)">YouTube</a>
         </div>
       </div>
       <div class="hero-right">
@@ -63,16 +115,16 @@
           <div class="sweep"></div>
         </div>
         <div class="hero-logo-wrap">
-          <img class="hero-logo" src="assets/branding/BgImage.png" alt="" aria-hidden="true">
+          <img class="hero-logo" src="assets/branding/BgImage.png" alt="AIKYAM hero image" loading="eager">
         </div>
       </div>
     </div>
   </section>
 
   <!-- ===== Team ===== -->
-  <section id="team" class="reveal">
+  <section id="team" class="reveal" role="region" aria-labelledby="team-title">
     <div class="container">
-      <h2 class="section-title">Our Team</h2>
+      <h2 id="team-title" class="section-title">Our Team</h2>
 
       <h3 class="subhead" style="text-align: center; margin-bottom: 20px;">Board of Directors</h3>
       <!-- Chairman in separate row -->
@@ -96,9 +148,9 @@
   </section>
 
   <!-- ===== Events (Past / Calendar / Upcoming) ===== -->
-  <section id="events" class="reveal">
+  <section id="events" class="reveal" role="region" aria-labelledby="events-title">
     <div class="container">
-      <h2 class="section-title">Events</h2>
+      <h2 id="events-title" class="section-title">Events</h2>
       <div class="events-3col">
         <div class="col l">
           <h3 class="subhead">Past Events</h3>
@@ -124,9 +176,9 @@
   </section>
 
   <!-- ===== Member Reviews ===== -->
-  <section id="reviews-section" class="reveal">
+  <section id="reviews-section" class="reveal" role="region" aria-labelledby="reviews-title">
     <div class="container">
-      <h2 class="section-title">Member Reviews</h2>
+      <h2 id="reviews-title" class="section-title">Member Reviews</h2>
       <div class="reviews-marquee-wrapper" style="overflow:hidden;width:var(--maxw);margin:0 auto;">
         <div id="reviewsTrack" class="reviews"
           style="display:flex;gap:18px;justify-content:center;align-items:stretch;width:var(--maxw);margin:0 auto;will-change:transform;">
@@ -147,10 +199,10 @@
   <div id="toast"></div>
 
   <!-- ===== Footer ===== -->
-  <footer>
-    &copy; 2025 AIKYAM, California • All Rights Reserved •
-    <a target="_blank" rel="noopener" href="https://www.youtube.com/@ManaAIKYAM"
-      style="color:var(--accent);font-weight:900;">Our YouTube</a>
+  <footer role="contentinfo">
+    <p>&copy; 2025 AIKYAM Foundation, California • All Rights Reserved • 
+    <a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/@ManaAIKYAM"
+      style="color:var(--accent);font-weight:900;" aria-label="Visit AIKYAM YouTube channel (opens in new tab)">Our YouTube</a></p>
   </footer>
   <script src="script.js"></script>
 </body>

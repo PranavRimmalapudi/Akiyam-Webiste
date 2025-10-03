@@ -4,18 +4,15 @@
   - No complex initialization
 */
 
-console.log('AIKYAM: Script loaded!');
 
 /* ===================== HEADER LOADING ==================== */
 async function loadHeader() {
   try {
     const headerPlaceholder = document.getElementById('header-placeholder');
     if (!headerPlaceholder) {
-      console.log('AIKYAM: Header placeholder not found');
       return;
     }
     
-    console.log('AIKYAM: Fetching header...');
     const response = await fetch('./common/header.html');
     if (!response.ok) {
       console.error('AIKYAM: Failed to fetch header:', response.status);
@@ -23,12 +20,10 @@ async function loadHeader() {
     }
     
     const headerHTML = await response.text();
-    console.log('AIKYAM: Header HTML loaded, length:', headerHTML.length);
     headerPlaceholder.innerHTML = headerHTML;
     
     // Reinitialize mobile navigation after header is loaded
     initMobileNav();
-    console.log('AIKYAM: Header loaded successfully');
   } catch (error) {
     console.error('AIKYAM: Error loading header:', error);
   }
@@ -152,15 +147,14 @@ let globalVendors = [];
 
 // Simple data loading and rendering
 async function loadData() {
-  console.log('AIKYAM: Loading data...');
   
   try {
-    // Load core team
-    console.log('AIKYAM: Fetching core team...');
+    // Load core team with error handling
     const coreResponse = await fetch('./data/coreTeam.json');
-    console.log('AIKYAM: Core response status:', coreResponse.status);
+    if (!coreResponse.ok) {
+      throw new Error(`Failed to load core team data: ${coreResponse.status}`);
+    }
     const coreTeam = await coreResponse.json();
-    console.log('AIKYAM: Core team data:', coreTeam);
     
     // Render core team
     const coreContainer = document.getElementById('coreCards');
@@ -203,16 +197,13 @@ async function loadData() {
         
         coreContainer.appendChild(card);
       });
-      console.log('✅ AIKYAM: Core team rendered -', coreTeam.length, 'members');
     }
     
     // Load events
-    console.log('AIKYAM: Fetching events...');
     const upcomingResponse = await fetch('./data/upcomingEvents.json');
     const upcomingEvents = await upcomingResponse.json();
     const completedResponse = await fetch('./data/completedEvents.json');
     const completedEvents = await completedResponse.json();
-    console.log('AIKYAM: Events loaded - upcoming:', upcomingEvents.length, 'completed:', completedEvents.length);
     
     // Render past events
     const pastContainer = document.getElementById('pastVLoop');
@@ -271,7 +262,6 @@ async function loadData() {
         wrapper.appendChild(card);
       });
       pastContainer.appendChild(wrapper);
-      console.log('✅ AIKYAM: Past events rendered -', completedEvents.length, 'events');
     }
     
     // Render upcoming events
@@ -353,14 +343,11 @@ async function loadData() {
         wrapper.appendChild(card);
       });
       upcomingContainer.appendChild(wrapper);
-      console.log('✅ AIKYAM: Upcoming events rendered -', upcomingEvents.length, 'events');
     }
     
     // Load and render board members
-    console.log('AIKYAM: Fetching board members...');
     const boardResponse = await fetch('./data/boardMembers.json');
     const boardData = await boardResponse.json();
-    console.log('AIKYAM: Board data:', boardData);
     
     // Render chairman separately
     const chairmanContainer = document.getElementById('chairmanCard');
@@ -402,7 +389,6 @@ async function loadData() {
       }
       
       chairmanContainer.appendChild(card);
-      console.log('✅ AIKYAM: Chairman rendered');
     }
     
     // Render other board members
@@ -446,18 +432,14 @@ async function loadData() {
         
         boardContainer.appendChild(card);
       });
-      console.log('✅ AIKYAM: Board members rendered -', boardData.members.length, 'members');
     }
     
     // Render calendar
-    console.log('AIKYAM: Rendering calendar...');
     renderCalendar(upcomingEvents);
     
     // Load and render vendors
-    console.log('AIKYAM: Fetching vendors...');
     const vendorsResponse = await fetch('./data/vendors.json');
     globalVendors = await vendorsResponse.json();
-    console.log('AIKYAM: Vendors data:', globalVendors);
     
     // Render vendor grid
     renderVendors(globalVendors, 'All');
@@ -469,19 +451,32 @@ async function loadData() {
     setupVendorFilters();
     
     // Start countdown for next event
-    console.log('AIKYAM: Starting countdown...');
     startCountdown(upcomingEvents);
     
-    console.log('🎉 AIKYAM: All data loaded successfully!');
     
   } catch (error) {
-    console.error('❌ AIKYAM: Error loading data:', error);
+    // Show user-friendly error message instead of console error
+    const errorContainer = document.createElement('div');
+    errorContainer.style.cssText = `
+      position: fixed; top: 20px; right: 20px; z-index: 9999;
+      background: #ff4444; color: white; padding: 12px 20px;
+      border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      font-family: var(--font-body); font-size: 14px; max-width: 300px;
+    `;
+    errorContainer.textContent = 'Unable to load some content. Please refresh the page.';
+    document.body.appendChild(errorContainer);
+    
+    // Auto-remove error after 5 seconds
+    setTimeout(() => {
+      if (errorContainer.parentNode) {
+        errorContainer.parentNode.removeChild(errorContainer);
+      }
+    }, 5000);
   }
 }
 
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', async function() {
-  console.log('AIKYAM: DOM ready, starting initialization...');
   
   // Load header first
   await loadHeader();
@@ -498,7 +493,6 @@ document.addEventListener('DOMContentLoaded', async function() {
   initThemeToggle();
   // Note: initMobileNav is called after header loads, not here
   initVendorFilters();
-  console.log('AIKYAM: All UI components initialized');
   
   // Load data
   loadData();
@@ -620,7 +614,6 @@ function renderCalendar(upcomingEvents) {
     });
   }
   
-  console.log('✅ AIKYAM: Calendar rendered');
 }
 
 // Add to Calendar functionality
@@ -810,7 +803,6 @@ function startCountdown(upcomingEvents) {
   if (startCountdown._interval) clearInterval(startCountdown._interval);
   startCountdown._interval = setInterval(tick, 1000);
   
-  console.log('✅ AIKYAM: Countdown started for', target.title);
 }
 
 /* ===================== GALLERY MARQUEE ==================== */
@@ -860,7 +852,6 @@ function initGalleryMarquee() {
   }
   requestAnimationFrame(loop);
   
-  console.log('✅ AIKYAM: Gallery marquee initialized');
 }
 
 /* ===================== REVIEWS MARQUEE FUNCTIONALITY ==================== */
@@ -913,7 +904,6 @@ function setupVendorFilters() {
       // Render vendors with filter
       renderVendors(globalVendors, filterCategory);
       
-      console.log('AIKYAM: Filtering vendors by:', filterCategory);
     });
   });
 }
@@ -974,7 +964,6 @@ function renderVendors(vendors, filter = 'All') {
   }
   
   filteredVendors.forEach(vendor => grid.appendChild(makeVendorCard(vendor)));
-  console.log('✅ AIKYAM: Vendors rendered -', filteredVendors.length, 'vendors');
 }
 
 function renderVendorMarquee(vendors) {
@@ -1038,7 +1027,6 @@ function renderVendorMarquee(vendors) {
   }
   requestAnimationFrame(loop);
   
-  console.log('✅ AIKYAM: Vendor marquee initialized');
 }
 
 function initVendorFilters() {
@@ -1051,7 +1039,5 @@ function handleVendorFilter(filter, vendors) {
   renderVendors(vendors, filter);
   // Show toast message
   const message = filter === 'All' ? 'Showing all vendors' : 'Filtered: ' + filter;
-  console.log('AIKYAM:', message);
 }
 
-console.log('AIKYAM: Script setup complete, waiting for DOM...');
