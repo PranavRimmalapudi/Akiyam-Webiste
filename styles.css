@@ -338,6 +338,33 @@ h2.section-title::after {
   box-shadow: 0 12px 24px rgba(255, 204, 0, .35), 0 0 16px var(--accent), 0 0 24px var(--accent-2);
 }
 
+/* ======== Hero Alt (for separate pages) ======== */
+.hero-alt {
+  padding: 120px var(--gutter) 60px;
+  text-align: center;
+  background: linear-gradient(135deg, var(--bg) 0%, rgba(255, 204, 0, 0.05) 100%);
+  border-bottom: 1px solid var(--brd);
+}
+
+.hero-alt h1 {
+  font-size: clamp(2.2rem, 4vw, 3.5rem);
+  margin-bottom: 16px;
+  color: var(--fg);
+}
+
+.hero-alt .tagline {
+  font-size: 1.1rem;
+  color: var(--muted);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .hero-alt {
+    padding: 100px var(--gutter) 40px;
+  }
+}
+
 .sunburst {
   position: absolute;
   width: 640px;
