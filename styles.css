@@ -14,15 +14,17 @@
 
 /* ======== VARS ======== */
 :root {
-  --bg: hsl(0, 0%, 99%);
-  --text: hsl(0, 0%, 15%);
-  --text-muted: hsl(0, 0%, 45%);
-  --accent: #ff6b35;
+  /* Dark theme (default) */
+  --bg: hsl(220, 15%, 8%);
+  --text: hsl(220, 20%, 90%);
+  --text-muted: hsl(220, 10%, 65%);
+  --accent: #ffd700;
+  --accent-2: #ffcc00;
   --secondary: #1a365d;
-  --brd: hsl(0, 0%, 80%);
-  --card: rgba(255, 255, 255, 0.6);
-  --card-alt: rgba(255, 255, 255, 0.8);
-  --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --brd: hsl(220, 15%, 20%);
+  --card: rgba(40, 45, 60, 0.6);
+  --card-alt: rgba(50, 55, 70, 0.8);
+  --shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
   --maxw: 1200px;
   --header-h: 80px;
   --gutter: 20px;
@@ -37,13 +39,14 @@
 }
 
 body.light {
-  --bg: #ffffff;
-  --fg: #0f1115;
-  --muted: #5b667a;
-  --card: #f5f7fb;
-  --brd: #e5e9f2;
-  --shadow: 0 10px 26px rgba(0, 0, 0, .08);
-  --shadow-2: 0 18px 38px rgba(0, 0, 0, .06);
+  /* Light theme */
+  --bg: hsl(0, 0%, 99%);
+  --text: hsl(0, 0%, 15%);
+  --text-muted: hsl(0, 0%, 45%);
+  --brd: hsl(0, 0%, 80%);
+  --card: rgba(255, 255, 255, 0.6);
+  --card-alt: rgba(255, 255, 255, 0.8);
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 html,
@@ -57,7 +60,7 @@ html {
 
 body {
   background: var(--bg);
-  color: var(--fg);
+  color: var(--text);
   overflow-x: hidden;
   line-height: 1.75;
 }
@@ -141,7 +144,7 @@ nav .nav-toggle {
   border-radius: 10px;
   padding: 6px 10px;
   cursor: pointer;
-  color: var(--fg);
+  color: var(--text);
 }
 
 nav .nav-links {
@@ -156,7 +159,7 @@ nav a {
   display: inline-block;
   margin: 0 6px;
   font-weight: 800;
-  color: var(--fg);
+  color: var(--text);
   opacity: .92;
   transition: .25s;
   text-decoration: none;
@@ -170,11 +173,23 @@ nav a:hover {
 .theme-toggle {
   border: 1px solid var(--brd);
   background: var(--card);
-  color: var(--fg);
+  color: var(--text);
   padding: 8px 12px;
-  border-radius: 999px;
+  border-radius: var(--border-radius-lg);
   font-weight: 800;
   cursor: pointer;
+  transition: var(--transition-fast);
+  font-size: 14px;
+}
+
+.theme-toggle:hover {
+  background: var(--card-alt);
+  transform: scale(1.05);
+  box-shadow: var(--shadow);
+}
+
+.theme-toggle:active {
+  transform: scale(0.95);
 }
 
 #scroll-progress {
@@ -303,9 +318,9 @@ h2.section-title::after {
 
 .btn {
   padding: 12px 16px;
-  border: none;
-  background: #fff;
-  color: #121212;
+  border: 1px solid var(--brd);
+  background: var(--card-alt);
+  color: var(--text);
   font-weight: 900;
   border-radius: 999px;
   cursor: pointer;
@@ -326,7 +341,7 @@ h2.section-title::after {
 
 .btn.secondary {
   background: var(--card);
-  color: var(--fg);
+  color: var(--text);
   border: 1px solid var(--brd)
 }
 
@@ -337,7 +352,7 @@ h2.section-title::after {
 
 .btn.link {
   background: var(--accent);
-  color: #121212;
+  color: #ffffff;
 }
 
 .btn.link:hover {
@@ -355,7 +370,7 @@ h2.section-title::after {
 .hero-alt h1 {
   font-size: clamp(2.2rem, 4vw, 3.5rem);
   margin-bottom: 16px;
-  color: var(--fg);
+  color: var(--text);
 }
 
 .hero-alt .tagline {
@@ -699,7 +714,7 @@ h2.section-title::after {
 
 footer {
   background: var(--bg);
-  color: var(--fg);
+  color: var(--text);
   text-align: center;
   padding: 28px;
   margin-top: 20px;
@@ -857,7 +872,7 @@ select {
   border-radius: 12px;
   border: 1px solid var(--brd);
   background: var(--card);
-  color: var(--fg);
+  color: var(--text);
   outline: none;
 }
 
@@ -871,7 +886,7 @@ select {
 .amount-btn {
   border: 1px solid var(--brd);
   background: var(--card);
-  color: var(--fg);
+  color: var(--text);
   border-radius: 12px;
   padding: 10px 14px;
   font-weight: 900;
@@ -938,7 +953,7 @@ select {
 }
 
 body.light .switch input::after {
-  background: #0f1115;
+  background: var(--bg);
 }
 
 .switch input:checked {
@@ -1002,14 +1017,14 @@ body.light .switch input::after {
   display: grid;
   place-items: center;
   font-weight: 900;
-  color: #121212;
+  color: #ffffff;
   background: linear-gradient(180deg, var(--accent), var(--accent-2));
   border: 2px solid rgba(255, 255, 255, .65);
   box-shadow: 0 0 0 3px rgba(255, 204, 0, .2);
 }
 
 body.light .avatar {
-  color: #0f1115;
+  color: var(--text);
 }
 
 .donor .name {
@@ -1144,9 +1159,9 @@ body.light .avatar {
 }
 
 body.light #toTop {
-  background: #ffffff;
-  color: #0f1115;
-  border-color: #d7dce6;
+  background: var(--card-alt);
+  color: var(--text);
+  border-color: var(--brd);
 }
 
 #toTop.show {
@@ -1340,7 +1355,7 @@ body.light #toast {
 
 .calendar-grid .cal-cell.has {
   background: var(--accent);
-  color: #121212;
+  color: #ffffff;
   font-weight: 900;
 }
 
