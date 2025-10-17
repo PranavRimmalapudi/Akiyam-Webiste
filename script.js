@@ -46,6 +46,12 @@ async function loadHeader() {
     
     // Set active navigation item
     setActiveNavItem();
+    
+    // For home page, also check scroll position
+    const currentPage = window.location.pathname.split('/').pop() || 'home.html';
+    if (currentPage === 'home.html' || currentPage === 'index.html' || currentPage === '') {
+      setTimeout(updateActiveNavOnScroll, 100); // Small delay to ensure DOM is ready
+    }
   } catch (error) {
     console.error('AIKYAM: Error loading header:', error);
   }
@@ -168,26 +174,69 @@ function initMobileNav() {
 function setActiveNavItem() {
   const navLinks = document.querySelectorAll('.nav-links a');
   const currentPage = window.location.pathname.split('/').pop() || 'home.html';
+  const currentHash = window.location.hash;
   
   navLinks.forEach(link => {
     link.classList.remove('active');
     
     const linkHref = link.getAttribute('href');
     const linkPage = linkHref.split('#')[0].split('/').pop();
+    const linkHash = linkHref.includes('#') ? '#' + linkHref.split('#')[1] : '';
     
-    // Check if current page matches the link
-    if (linkPage === currentPage || 
-        (currentPage === 'index.html' && linkPage === 'home.html') ||
-        (currentPage === '' && linkPage === 'home.html')) {
-      link.classList.add('active');
-    }
-    
-    // Special case for home page anchors
-    if (currentPage === 'home.html' && linkHref.includes('#') && window.location.hash) {
-      const linkHash = linkHref.split('#')[1];
-      if (linkHash === window.location.hash.substring(1)) {
+    // For non-home pages, just match the page
+    if (currentPage !== 'home.html' && currentPage !== 'index.html' && currentPage !== '') {
+      if (linkPage === currentPage) {
         link.classList.add('active');
       }
+    } 
+    // For home page, handle differently
+    else {
+      // If there's a hash in URL, match it exactly
+      if (currentHash && linkHash === currentHash) {
+        link.classList.add('active');
+      }
+      // If no hash and link is to home without hash, activate it
+      else if (!currentHash && (linkHref === 'home.html' || linkHref.includes('home.html#home'))) {
+        link.classList.add('active');
+      }
+    }
+  });
+}
+
+// Update active nav based on scroll position (for home page)
+function updateActiveNavOnScroll() {
+  const currentPage = window.location.pathname.split('/').pop() || 'home.html';
+  
+  // Only run on home page
+  if (currentPage !== 'home.html' && currentPage !== 'index.html' && currentPage !== '') {
+    return;
+  }
+  
+  const sections = ['home', 'team', 'events', 'reviews-section'];
+  const navLinks = document.querySelectorAll('.nav-links a');
+  let activeSection = 'home'; // default
+  
+  // Find which section is currently in view
+  for (const sectionId of sections) {
+    const section = document.getElementById(sectionId);
+    if (section) {
+      const rect = section.getBoundingClientRect();
+      const viewHeight = window.innerHeight;
+      
+      // Check if section is in viewport (at least 30% visible)
+      if (rect.top <= viewHeight * 0.3 && rect.bottom >= viewHeight * 0.3) {
+        activeSection = sectionId;
+      }
+    }
+  }
+  
+  // Update navigation
+  navLinks.forEach(link => {
+    link.classList.remove('active');
+    const linkHref = link.getAttribute('href');
+    
+    if (linkHref.includes('#' + activeSection)) {
+      link.classList.add('active');
     }
   });
 }
@@ -543,6 +592,9 @@ document.addEventListener('DOMContentLoaded', async function() {
   initThemeToggle();
   // Note: initMobileNav is called after header loads, not here
   initVendorFilters();
+  
+  // Add scroll listener for navigation highlighting (home page only)
+  window.addEventListener('scroll', updateActiveNavOnScroll);
   
   // Load data
   loadData();
