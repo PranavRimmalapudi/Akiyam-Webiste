@@ -991,7 +991,12 @@ function initReviewsMarquee() {
 
 // Setup vendor filter button functionality
 function setupVendorFilters() {
-  const filterButtons = document.querySelectorAll('#vendorSection .filter-button');
+  const filterButtons = document.querySelectorAll('[data-filter]');
+  
+  if (filterButtons.length === 0) return;
+  
+  // Set the first button (All) as active initially
+  filterButtons[0].classList.add('active');
   
   filterButtons.forEach(button => {
     button.addEventListener('click', () => {
@@ -1000,8 +1005,8 @@ function setupVendorFilters() {
       // Add active class to clicked button
       button.classList.add('active');
       
-      // Get the filter category from the button text
-      const filterCategory = button.textContent.trim();
+      // Get the filter category from the data-filter attribute
+      const filterCategory = button.getAttribute('data-filter');
       
       // Render vendors with filter
       renderVendors(globalVendors, filterCategory);

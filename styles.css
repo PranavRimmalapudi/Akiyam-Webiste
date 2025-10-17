@@ -907,6 +907,24 @@ select {
   transform: translateY(-2px);
 }
 
+/* Vendor filter button active state - override amount-btn styles */
+[data-filter].active {
+  background: var(--accent) !important;
+  color: #000000 !important;
+  transform: none !important;
+  outline: none !important;
+  box-shadow: 0 0 8px rgba(255, 215, 0, 0.4) !important;
+  font-weight: 900 !important;
+}
+
+/* Prevent size changes on active filter buttons when hovered or clicked */
+[data-filter].active:hover,
+[data-filter].active:active,
+[data-filter].active:focus {
+  transform: none !important;
+  box-shadow: 0 0 8px rgba(255, 215, 0, 0.4) !important;
+}
+
 .custom-amount {
   display: flex;
   gap: 8px;
