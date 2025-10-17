@@ -43,6 +43,9 @@ async function loadHeader() {
     
     // Reinitialize mobile navigation after header is loaded
     initMobileNav();
+    
+    // Set active navigation item
+    setActiveNavItem();
   } catch (error) {
     console.error('AIKYAM: Error loading header:', error);
   }
@@ -158,6 +161,34 @@ function initMobileNav() {
   
   window.addEventListener('resize', () => {
     if (window.innerWidth > 768) closeMenu();
+  });
+}
+
+// Set active navigation item based on current page
+function setActiveNavItem() {
+  const navLinks = document.querySelectorAll('.nav-links a');
+  const currentPage = window.location.pathname.split('/').pop() || 'home.html';
+  
+  navLinks.forEach(link => {
+    link.classList.remove('active');
+    
+    const linkHref = link.getAttribute('href');
+    const linkPage = linkHref.split('#')[0].split('/').pop();
+    
+    // Check if current page matches the link
+    if (linkPage === currentPage || 
+        (currentPage === 'index.html' && linkPage === 'home.html') ||
+        (currentPage === '' && linkPage === 'home.html')) {
+      link.classList.add('active');
+    }
+    
+    // Special case for home page anchors
+    if (currentPage === 'home.html' && linkHref.includes('#') && window.location.hash) {
+      const linkHash = linkHref.split('#')[1];
+      if (linkHash === window.location.hash.substring(1)) {
+        link.classList.add('active');
+      }
+    }
   });
 }
 

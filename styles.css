@@ -170,6 +170,12 @@ nav a:hover {
   text-shadow: 0 0 12px rgba(255, 204, 0, .85), 0 0 22px rgba(255, 153, 0, .5);
 }
 
+nav a.active {
+  color: var(--accent);
+  text-shadow: 0 0 12px rgba(255, 204, 0, .85), 0 0 22px rgba(255, 153, 0, .5);
+  font-weight: 900;
+}
+
 .theme-toggle {
   border: 1px solid var(--brd);
   background: var(--card);
@@ -1287,6 +1293,11 @@ body.light #toast {
 
   nav .nav-links a:hover {
     background-color: rgba(255, 255, 255, 0.1) !important;
+  }
+
+  nav .nav-links a.active {
+    background-color: rgba(255, 215, 0, 0.2) !important;
+    color: var(--accent) !important;
   }
 
   header {
