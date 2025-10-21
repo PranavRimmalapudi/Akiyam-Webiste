@@ -48,8 +48,8 @@ async function loadHeader() {
     setActiveNavItem();
     
     // For home page, also check scroll position
-    const currentPage = window.location.pathname.split('/').pop() || 'home.html';
-    if (currentPage === 'home.html' || currentPage === 'index.html' || currentPage === '') {
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    if (currentPage === 'index.html' || currentPage === '') {
       setTimeout(updateActiveNavOnScroll, 100); // Small delay to ensure DOM is ready
     }
   } catch (error) {
@@ -173,7 +173,7 @@ function initMobileNav() {
 // Set active navigation item based on current page
 function setActiveNavItem() {
   const navLinks = document.querySelectorAll('.nav-links a');
-  const currentPage = window.location.pathname.split('/').pop() || 'home.html';
+  const currentPage = window.location.pathname.split('/').pop() || 'index.html';
   const currentHash = window.location.hash;
   
   navLinks.forEach(link => {
@@ -184,7 +184,7 @@ function setActiveNavItem() {
     const linkHash = linkHref.includes('#') ? '#' + linkHref.split('#')[1] : '';
     
     // For non-home pages, just match the page
-    if (currentPage !== 'home.html' && currentPage !== 'index.html' && currentPage !== '') {
+    if (currentPage !== 'index.html' && currentPage !== '') {
       if (linkPage === currentPage) {
         link.classList.add('active');
       }
@@ -196,7 +196,7 @@ function setActiveNavItem() {
         link.classList.add('active');
       }
       // If no hash and link is to home without hash, activate it
-      else if (!currentHash && (linkHref === 'home.html' || linkHref.includes('home.html#home'))) {
+      else if (!currentHash && (linkHref === 'index.html' || linkHref.includes('index.html#home'))) {
         link.classList.add('active');
       }
     }
@@ -205,10 +205,10 @@ function setActiveNavItem() {
 
 // Update active nav based on scroll position (for home page)
 function updateActiveNavOnScroll() {
-  const currentPage = window.location.pathname.split('/').pop() || 'home.html';
+  const currentPage = window.location.pathname.split('/').pop() || 'index.html';
   
   // Only run on home page
-  if (currentPage !== 'home.html' && currentPage !== 'index.html' && currentPage !== '') {
+  if (currentPage !== 'index.html' && currentPage !== '') {
     return;
   }
   
