@@ -57,6 +57,28 @@ async function loadHeader() {
   }
 }
 
+/* ===================== FOOTER LOADING ==================== */
+async function loadFooter() {
+  try {
+    const footerPlaceholder = document.getElementById('footer-placeholder');
+    if (!footerPlaceholder) {
+      console.error('AIKYAM: Footer placeholder not found');
+      return;
+    }
+    
+    const response = await fetch('./common/footer.html');
+    if (!response.ok) {
+      console.error('AIKYAM: Failed to fetch footer:', response.status);
+      return;
+    }
+    
+    const footerHTML = await response.text();
+    footerPlaceholder.innerHTML = footerHTML;
+  } catch (error) {
+    console.error('AIKYAM: Error loading footer:', error);
+  }
+}
+
 /* ===================== THEME INITIALIZATION ==================== */
 (function initTheme() {
   const saved = localStorage.getItem('AIKYAM_theme') || 'dark';
@@ -577,8 +599,9 @@ async function loadData() {
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', async function() {
   
-  // Load header first
+  // Load header and footer first
   await loadHeader();
+  await loadFooter();
   
   // Initialize all UI components
   initScrollProgress();
