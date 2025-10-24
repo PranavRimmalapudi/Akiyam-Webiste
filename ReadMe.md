@@ -4,7 +4,7 @@ This site is a single-page static app powered by HTML/CSS/vanilla JS. All lists 
 
 ### Quick start
 - Start local server: python3 -m http.server 8000
-- Open: http://localhost:8000/Website%20Updated.html
+- Open: http://localhost:8000
 - Stop server: pkill -f "python3 -m http.server"
 
 Or use the Makefile:
