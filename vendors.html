@@ -11,16 +11,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description"
     content="Discover AIKYAM's trusted community partners and vendors. Support local businesses that support our cultural community - food, boutique, education, and services." />
-  <meta name="keywords" content="AIKYAM, vendors, partners, community business, local businesses, Indian businesses, cultural community partners" />
+  <meta name="keywords"
+    content="AIKYAM, vendors, partners, community business, local businesses, Indian businesses, cultural community partners" />
   <meta name="author" content="AIKYAM" />
-  
+
   <!-- Open Graph / Social Media -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="AIKYAM Vendors & Partners - Community Business Directory" />
-  <meta property="og:description" content="Discover AIKYAM's trusted community partners and vendors supporting our cultural community." />
+  <meta property="og:description"
+    content="Discover AIKYAM's trusted community partners and vendors supporting our cultural community." />
   <meta property="og:image" content="assets/branding/logo.png" />
   <meta property="og:url" content="https://aikyamusa.org/vendors.html" />
-  
+
   <!-- Performance optimizations -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -39,162 +41,33 @@
   <!-- Header will be loaded by JavaScript -->
   <div id="header-placeholder"></div>
 
-  <!-- ===== Hero Section ===== -->
-  <section class="hero" id="vendors">
-    <div class="container">
-      <div class="hero-left">
-        <p class="tagline">Supporting local businesses that support our community. Discover trusted vendors and partners who share our values of unity, culture, and excellence.</p>
-        <div class="cta-row">
-          <a class="btn" href="#vendor-directory">Browse Directory</a>
-          <a class="btn secondary" href="#partner-benefits">Partner Benefits</a>
-          <a class="btn secondary" href="/#home">Back to Home</a>
-        </div>
-      </div>
-      <div class="hero-right">
-        <div class="sunburst" aria-hidden="true">
-          <div class="sweep"></div>
-        </div>
-        <div class="hero-logo-wrap">
-          <img class="hero-logo" src="assets/branding/BgImage.png" alt="" aria-hidden="true">
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- ===== Vendor Directory ===== -->
-  <section id="vendor-directory" class="reveal">
+  <section id="vendor-directory" class="reveal" aria-labelledby="vendor-directory-title">
     <div class="container">
-      <h2 class="section-title">Vendor Directory</h2>
-      
+      <h2 id="vendor-directory-title" class="section-title">Vendor Directory</h2>
+
       <div class="card margin-bottom-20">
-        <div class="vendor-filter-section">
-          <span class="pill">Filter by Category:</span>
-          <button class="btn mini secondary" data-filter="All">All</button>
-          <button class="btn mini secondary" data-filter="Food">Food</button>
-          <button class="btn mini secondary" data-filter="Boutique">Boutique</button>
-          <button class="btn mini secondary" data-filter="Education">Education</button>
-          <button class="btn mini secondary" data-filter="Services">Services</button>
+        <div class="vendor-filter-section" role="group" aria-label="Vendor category filters">
+          <span class="pill" aria-hidden="true">Filter by Category:</span>
+          <button class="btn btn--sm btn--secondary" data-filter="All" aria-pressed="true">All</button>
+          <button class="btn btn--sm btn--secondary" data-filter="Food" aria-pressed="false">Food</button>
+          <button class="btn btn--sm btn--secondary" data-filter="Boutique" aria-pressed="false">Boutique</button>
+          <button class="btn btn--sm btn--secondary" data-filter="Education" aria-pressed="false">Education</button>
+          <button class="btn btn--sm btn--secondary" data-filter="Services" aria-pressed="false">Services</button>
         </div>
-        <div id="vendorGrid"></div>
+        <div id="vendorGrid" role="grid" aria-label="Vendor listings"></div>
       </div>
 
       <!-- Vendor Marquee -->
-      <div class="wrap vendor-marquee-wrap">
-        <div id="vendorMarquee" class="gtrack vendor-marquee-track"></div>
+      <div class="wrap vendor-marquee-wrap" aria-label="Featured vendors carousel">
+        <div id="vendorMarquee" class="gtrack vendor-marquee-track" role="region" aria-label="Scrolling vendor showcase"></div>
       </div>
     </div>
   </section>
 
-  <!-- ===== Partner Benefits ===== -->
-  <section id="partner-benefits" class="reveal">
-    <div class="container">
-      <h2 class="section-title">Why Partner with AIKYAM?</h2>
-      
-      <div class="vendor-benefits-grid">
-        <div class="card">
-          <h3 class="card-title">🎯 Targeted Community Reach</h3>
-          <p>Connect directly with our engaged community of families who value cultural diversity and quality services.</p>
-        </div>
-        
-        <div class="card">
-          <h3 class="card-title">📈 Increased Visibility</h3>
-          <p>Feature your business prominently on our website, events, and community communications.</p>
-        </div>
-        
-        <div class="card">
-          <h3 class="card-title">🤝 Community Support</h3>
-          <p>Show your commitment to supporting cultural events and community initiatives that matter.</p>
-        </div>
-        
-        <div class="card">
-          <h3 class="card-title">💼 Business Networking</h3>
-          <p>Connect with other community-minded business owners and expand your professional network.</p>
-        </div>
-        
-        <div class="card">
-          <h3 class="card-title">🎉 Event Opportunities</h3>
-          <p>Participate in our cultural events, showcases, and community gatherings as a featured partner.</p>
-        </div>
-        
-        <div class="card">
-          <h3 class="card-title">⭐ Member Discounts</h3>
-          <p>Offer exclusive discounts to our members and build customer loyalty within our community.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== Become a Partner ===== -->
-  <section class="reveal vendor-partnership-section">
-    <div class="container">
-      <h2 class="section-title">Become a Community Partner</h2>
-      
-      <div class="vendor-partnership-content">
-        <p class="vendor-partnership-description">
-          Join our growing network of community partners and help support cultural celebrations, family events, and community initiatives that bring us all together.
-        </p>
-        
-        <div class="vendor-partnership-grid">
-          <div class="card padding-20">
-            <h4 class="card-title">What We Need:</h4>
-            <ul class="list-reset list-spaced">
-              <li>Your business logo (high resolution)</li>
-              <li>Business category (Food, Boutique, Education, Services)</li>
-              <li>Brief description of your services</li>
-              <li>Contact information</li>
-              <li>Website or social media links</li>
-            </ul>
-          </div>
-          
-          <div class="card padding-20">
-            <h4 class="card-title">What You Get:</h4>
-            <ul class="list-reset list-spaced">
-              <li>Featured listing on our vendor page</li>
-              <li>Rotating display in vendor marquee</li>
-              <li>Mention in event communications</li>
-              <li>Networking opportunities</li>
-              <li>Community recognition</li>
-            </ul>
-          </div>
-        </div>
-        
-        <div class="cta-card">
-          <h3 class="cta-title">Ready to Partner with Us?</h3>
-          <p class="cta-text">Email us with your business information and we'll get you featured!</p>
-          <a href="mailto:notify@aikyamusa.org?subject=Vendor Partnership Inquiry" 
-             class="btn cta-button">
-            📧 Contact Us: notify@aikyamusa.org
-          </a>
-        </div>
-        
-        <p class="hint vendor-hint-text">
-          <strong>Questions?</strong> Reach out to <strong>Sowjanya Reddy Jagganna</strong> for more information about partnership opportunities.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== Quick Links ===== -->
-  <section class="reveal explore-section with-background">
-    <div class="container">
-      <h3 class="explore-title">Explore More</h3>
-      <div class="explore-links">
-        <a href="/#events" class="btn secondary">View Events</a>
-        <a href="/#team" class="btn secondary">Meet Our Team</a>
-        <a href="gallery.html" class="btn secondary">Photo Gallery</a>
-        <a href="join.html" class="btn secondary">Join Community</a>
-        <a href="donate.html" class="btn secondary">Donate</a>
-      </div>
-    </div>
-  </section>
-
-  <canvas id="fireworks-canvas"></canvas>
-  <div id="toTop" title="Back to top">↑</div>
-  <div id="toast"></div>
-  
   <!-- Footer will be loaded by JavaScript -->
   <div id="footer-placeholder"></div>
-  
+
   <script src="script.js"></script>
 </body>
 

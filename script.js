@@ -1020,13 +1020,19 @@ function setupVendorFilters() {
   
   // Set the first button (All) as active initially
   filterButtons[0].classList.add('active');
+  filterButtons[0].setAttribute('aria-pressed', 'true');
   
   filterButtons.forEach(button => {
     button.addEventListener('click', () => {
-      // Remove active class from all buttons
-      filterButtons.forEach(btn => btn.classList.remove('active'));
-      // Add active class to clicked button
+      // Remove active class and update aria-pressed for all buttons
+      filterButtons.forEach(btn => {
+        btn.classList.remove('active');
+        btn.setAttribute('aria-pressed', 'false');
+      });
+      
+      // Add active class and update aria-pressed for clicked button
       button.classList.add('active');
+      button.setAttribute('aria-pressed', 'true');
       
       // Get the filter category from the data-filter attribute
       const filterCategory = button.getAttribute('data-filter');
@@ -1034,8 +1040,22 @@ function setupVendorFilters() {
       // Render vendors with filter
       renderVendors(globalVendors, filterCategory);
       
+      // Announce filter change to screen readers
+      const announcement = `Showing ${filterCategory === 'All' ? 'all vendors' : filterCategory + ' vendors'}`;
+      announceToScreenReader(announcement);
     });
   });
+}
+
+// Helper function to announce changes to screen readers
+function announceToScreenReader(message) {
+  const announcement = document.createElement('div');
+  announcement.setAttribute('aria-live', 'polite');
+  announcement.setAttribute('aria-atomic', 'true');
+  announcement.className = 'sr-only';
+  announcement.textContent = message;
+  document.body.appendChild(announcement);
+  setTimeout(() => document.body.removeChild(announcement), 1000);
 }
 
 function makeVendorCard(vendor) {
@@ -1085,15 +1105,28 @@ function renderVendors(vendors, filter = 'All') {
   const grid = document.getElementById('vendorGrid');
   if (!grid || !Array.isArray(vendors)) return;
   
-  grid.innerHTML = '';
-  const filteredVendors = vendors.filter(v => filter === 'All' || v.cat === filter);
+  // Add loading state
+  grid.innerHTML = '<div class="hint" aria-live="polite">Loading vendors...</div>';
   
-  if (filteredVendors.length === 0) {
-    grid.innerHTML = '<div class="hint">No vendors found for this category.</div>';
-    return;
-  }
-  
-  filteredVendors.forEach(vendor => grid.appendChild(makeVendorCard(vendor)));
+  // Small delay to show loading state
+  setTimeout(() => {
+    grid.innerHTML = '';
+    const filteredVendors = vendors.filter(v => filter === 'All' || v.cat === filter);
+    
+    if (filteredVendors.length === 0) {
+      grid.innerHTML = '<div class="hint" role="status">No vendors found for this category.</div>';
+      return;
+    }
+    
+    filteredVendors.forEach(vendor => {
+      const vendorCard = makeVendorCard(vendor);
+      vendorCard.setAttribute('role', 'gridcell');
+      grid.appendChild(vendorCard);
+    });
+    
+    // Update grid aria-label with count
+    grid.setAttribute('aria-label', `Vendor listings - ${filteredVendors.length} vendors found`);
+  }, 100);
 }
 
 function renderVendorMarquee(vendors) {
