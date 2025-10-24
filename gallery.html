@@ -19,7 +19,7 @@
   <meta property="og:title" content="AIKYAM Gallery - Community Moments & Memories" />
   <meta property="og:description" content="Explore AIKYAM's photo gallery showcasing vibrant community events and cultural celebrations." />
   <meta property="og:image" content="assets/branding/logo.png" />
-  <meta property="og:url" content="https://aikyamfoundation.org/gallery.html" />
+  <meta property="og:url" content="https://aikyamusa.org/gallery.html" />
   
   <!-- Performance optimizations -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -46,14 +46,14 @@
     <div class="container">
       <h2 class="section-title">Photo Gallery</h2>
       
-      <div class="wrap" style="margin-bottom: 30px;">
+      <div class="wrap gallery-wrap-section">
         <div class="gtrack" id="gtrack"></div>
       </div>
       
       <!-- Gallery Categories -->
-      <div style="margin-bottom: 30px;">
-        <h3 style="text-align: center; margin-bottom: 20px;">Explore by Category</h3>
-        <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-bottom: 25px;">
+      <div class="gallery-category-section">
+        <h3 class="gallery-category-title">Explore by Category</h3>
+        <div class="gallery-category-buttons">
           <button class="btn mini secondary" onclick="filterGallery('all')">All Moments</button>
           <button class="btn mini secondary" onclick="filterGallery('cultural')">Cultural Events</button>
           <button class="btn mini secondary" onclick="filterGallery('kids')">Kids Showcases</button>
@@ -63,7 +63,7 @@
       </div>
 
       <!-- Gallery Grid -->
-      <div id="galleryGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 30px;">
+      <div id="galleryGrid" class="gallery-grid-container">
         <!-- Gallery items will be populated by JavaScript -->
       </div>
     </div>
@@ -74,41 +74,41 @@
     <div class="container">
       <h2 class="section-title">Recent Event Highlights</h2>
       
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 25px; margin-bottom: 30px;">
-        <div class="card" style="padding: 20px;">
-          <h3 style="margin-bottom: 15px; color: var(--accent);">🎭 Cultural Night 2024</h3>
-          <p style="margin-bottom: 15px;">A spectacular evening celebrating our diverse cultural heritage with dance, music, and performances by community members of all ages.</p>
-          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+      <div class="gallery-highlights-section">
+        <div class="card padding-20">
+          <h3 class="section-subtitle">🎭 Cultural Night 2024</h3>
+          <p class="gallery-highlight-description">A spectacular evening celebrating our diverse cultural heritage with dance, music, and performances by community members of all ages.</p>
+          <div class="gallery-highlight-tags">
             <span class="pill">Dance Performances</span>
             <span class="pill">Traditional Music</span>
             <span class="pill">Cultural Fashion</span>
           </div>
         </div>
         
-        <div class="card" style="padding: 20px;">
-          <h3 style="margin-bottom: 15px; color: var(--accent);">🌟 Kids Talent Showcase</h3>
-          <p style="margin-bottom: 15px;">Our young stars shined bright with their incredible talents in singing, dancing, storytelling, and creative performances.</p>
-          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <div class="card padding-20">
+          <h3 class="section-subtitle">🌟 Kids Talent Showcase</h3>
+          <p class="gallery-highlight-description">Our young stars shined bright with their incredible talents in singing, dancing, storytelling, and creative performances.</p>
+          <div class="gallery-highlight-tags">
             <span class="pill">Young Performers</span>
             <span class="pill">Creative Arts</span>
             <span class="pill">Family Pride</span>
           </div>
         </div>
         
-        <div class="card" style="padding: 20px;">
-          <h3 style="margin-bottom: 15px; color: var(--accent);">🎉 Festival Celebrations</h3>
-          <p style="margin-bottom: 15px;">Vibrant celebrations of traditional festivals bringing families together to share joy, food, and cultural traditions.</p>
-          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <div class="card padding-20">
+          <h3 class="section-subtitle">🎉 Festival Celebrations</h3>
+          <p class="gallery-highlight-description">Vibrant celebrations of traditional festivals bringing families together to share joy, food, and cultural traditions.</p>
+          <div class="gallery-highlight-tags">
             <span class="pill">Traditional Festivals</span>
             <span class="pill">Community Feast</span>
             <span class="pill">Cultural Unity</span>
           </div>
         </div>
         
-        <div class="card" style="padding: 20px;">
-          <h3 style="margin-bottom: 15px; color: var(--accent);">🤝 Volunteer Activities</h3>
-          <p style="margin-bottom: 15px;">Community members coming together to give back through various volunteer initiatives and community service projects.</p>
-          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <div class="card padding-20">
+          <h3 class="section-subtitle">🤝 Volunteer Activities</h3>
+          <p class="gallery-highlight-description">Community members coming together to give back through various volunteer initiatives and community service projects.</p>
+          <div class="gallery-highlight-tags">
             <span class="pill">Community Service</span>
             <span class="pill">Teamwork</span>
             <span class="pill">Giving Back</span>
@@ -119,19 +119,19 @@
   </section>
 
   <!-- ===== Share Your Moments ===== -->
-  <section class="reveal" style="background: var(--card); margin: 40px 0; padding: 40px 0;">
+  <section class="reveal gallery-submission-section">
     <div class="container">
       <h2 class="section-title">Share Your AIKYAM Moments</h2>
       
-      <div style="max-width: 800px; margin: 0 auto; text-align: center;">
-        <p style="font-size: 1.1em; margin-bottom: 25px; line-height: 1.6;">
+      <div class="gallery-submission-content">
+        <p class="gallery-submission-description">
           Have photos from AIKYAM events? We'd love to feature your memories in our gallery! Share your moments and help us build a comprehensive collection of our community's beautiful journey.
         </p>
         
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-bottom: 30px;">
-          <div class="card" style="padding: 25px; text-align: left;">
-            <h3 style="margin-bottom: 15px; color: var(--accent);">📸 Photo Submission Guidelines</h3>
-            <ul style="margin: 0; padding-left: 20px; line-height: 1.6;">
+        <div class="gallery-submission-grid">
+          <div class="card gallery-submission-card">
+            <h3 class="section-subtitle">📸 Photo Submission Guidelines</h3>
+            <ul class="list-reset list-spaced">
               <li>High-resolution photos (minimum 1920x1080)</li>
               <li>Clear, well-lit images showcasing the event</li>
               <li>Include event name and date if possible</li>
@@ -140,9 +140,9 @@
             </ul>
           </div>
           
-          <div class="card" style="padding: 25px; text-align: left;">
-            <h3 style="margin-bottom: 15px; color: var(--accent);">🎯 What We're Looking For</h3>
-            <ul style="margin: 0; padding-left: 20px; line-height: 1.6;">
+          <div class="card gallery-submission-card">
+            <h3 class="section-subtitle">🎯 What We're Looking For</h3>
+            <ul class="list-reset list-spaced">
               <li>Cultural performances and celebrations</li>
               <li>Children's showcases and activities</li>
               <li>Community gatherings and interactions</li>
@@ -152,15 +152,14 @@
           </div>
         </div>
         
-        <div style="background: linear-gradient(135deg, var(--accent) 0%, #ff9900 100%); color: white; padding: 25px; border-radius: 12px; margin-bottom: 25px;">
-          <h3 style="margin-bottom: 15px;">Ready to Share Your Photos?</h3>
-          <p style="margin-bottom: 20px;">Send us your favorite AIKYAM moments and help us celebrate our community's journey!</p>
+        <div class="cta-card">
+          <h3 class="cta-title">Ready to Share Your Photos?</h3>
+          <p class="cta-text">Send us your favorite AIKYAM moments and help us celebrate our community's journey!</p>
           <a href="mailto:notify@aikyamusa.org?subject=Photo Submission for AIKYAM Gallery" 
-             class="btn" 
-             style="background: white; color: var(--accent); border: none; font-weight: bold; margin-right: 10px;">
+             class="btn cta-button">
             📧 Email Photos
           </a>
-          <p style="margin-top: 15px; font-size: 0.9em; opacity: 0.9;">
+          <p class="gallery-submission-note">
             Or reach out to <strong>Sowjanya Reddy Jagganna</strong> directly
           </p>
         </div>
@@ -169,31 +168,31 @@
   </section>
 
   <!-- ===== Memory Stats ===== -->
-  <section class="reveal" style="background: var(--bg); margin: 40px 0; padding: 30px 0;">
+  <section class="reveal gallery-stats-section">
     <div class="container">
-      <h3 style="text-align: center; margin-bottom: 25px;">Our Community in Numbers</h3>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; text-align: center;">
-        <div class="card" style="padding: 20px;">
-          <div style="font-size: 2.5em; font-weight: bold; color: var(--accent); margin-bottom: 10px;">50+</div>
-          <div style="font-weight: bold;">Events Captured</div>
+      <h3 class="gallery-stats-title">Our Community in Numbers</h3>
+      <div class="gallery-stats-grid">
+        <div class="card padding-20">
+          <div class="gallery-stat-number">50+</div>
+          <div class="gallery-stat-label">Events Captured</div>
           <div class="hint">Memorable moments documented</div>
         </div>
         
-        <div class="card" style="padding: 20px;">
-          <div style="font-size: 2.5em; font-weight: bold; color: var(--accent); margin-bottom: 10px;">500+</div>
-          <div style="font-weight: bold;">Happy Families</div>
+        <div class="card padding-20">
+          <div class="gallery-stat-number">500+</div>
+          <div class="gallery-stat-label">Happy Families</div>
           <div class="hint">Community members featured</div>
         </div>
         
-        <div class="card" style="padding: 20px;">
-          <div style="font-size: 2.5em; font-weight: bold; color: var(--accent); margin-bottom: 10px;">100+</div>
-          <div style="font-weight: bold;">Kids Featured</div>
+        <div class="card padding-20">
+          <div class="gallery-stat-number">100+</div>
+          <div class="gallery-stat-label">Kids Featured</div>
           <div class="hint">Young talents showcased</div>
         </div>
         
-        <div class="card" style="padding: 20px;">
-          <div style="font-size: 2.5em; font-weight: bold; color: var(--accent); margin-bottom: 10px;">1000+</div>
-          <div style="font-weight: bold;">Precious Moments</div>
+        <div class="card padding-20">
+          <div class="gallery-stat-number">1000+</div>
+          <div class="gallery-stat-label">Precious Moments</div>
           <div class="hint">Photos in our collection</div>
         </div>
       </div>
@@ -201,10 +200,10 @@
   </section>
 
   <!-- ===== Quick Links ===== -->
-  <section class="reveal" style="margin: 40px 0;">
+  <section class="reveal explore-section">
     <div class="container">
-      <h3 style="text-align: center; margin-bottom: 20px;">Explore More</h3>
-      <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+      <h3 class="explore-title">Explore More</h3>
+      <div class="explore-links">
         <a href="/#events" class="btn secondary">Upcoming Events</a>
         <a href="/#team" class="btn secondary">Meet Our Team</a>
         <a href="join.html" class="btn secondary">Join Community</a>
