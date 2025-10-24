@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Redirecting...</title>
+    <title>Redirecting to AIKYAM Homepage</title>
+    <meta name="description" content="Redirecting to AIKYAM main website">
     <script>
         // Extract the hash from the current URL
         const hash = window.location.hash;
@@ -13,12 +14,25 @@
     <noscript>
         <meta http-equiv="refresh" content="0; url=/index.html">
     </noscript>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            text-align: center; 
+            padding: 50px; 
+            background: #1a1a1a; 
+            color: #fff; 
+        }
+        .loading { animation: pulse 1.5s ease-in-out infinite alternate; }
+        @keyframes pulse { from { opacity: 0.6; } to { opacity: 1; } }
+    </style>
 </head>
 <body>
-    <p>Redirecting to the homepage...</p>
+    <div class="loading">
+        <h2>AIKYAM</h2>
+        <p>Redirecting to the homepage...</p>
+    </div>
 </body>
 </html>
-  <!-- Canonical URL -->
   <link rel="canonical" href="https://aikyamfoundation.org/" />
 
   <!-- Open Graph / Facebook -->
