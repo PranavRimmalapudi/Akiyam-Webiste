@@ -88,6 +88,7 @@ body {
 
 html {
   scrollbar-gutter: stable both-edges;
+  height: 100%;
 }
 
 body {
@@ -95,6 +96,9 @@ body {
   color: var(--text);
   overflow-x: hidden;
   line-height: 1.75;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 img {
@@ -1158,15 +1162,27 @@ h2.section-title::after {
   text-shadow: 0 0 10px rgba(255, 153, 0, .9);
 }
 
+/* Sticky footer layout */
+.page-content {
+  flex: 1 0 auto;
+}
+
+/* Ensure content sections grow to fill available space */
+body > section:not(#footer-placeholder),
+body > main {
+  flex: 1 0 auto;
+}
+
 footer {
   background: var(--bg);
   color: var(--text);
   text-align: center;
   padding: 28px;
-  margin-top: 20px;
+  margin-top: auto;
   border-top: 1px solid var(--brd);
   z-index: 1;
   position: relative;
+  flex-shrink: 0;
 }
 
 footer a {
@@ -1770,26 +1786,18 @@ body.light .avatar {
 /* ======== VENDORS (NEW) ======== */
 .vendor-card {
   background: var(--card);
-  padding: 22px;
+  padding: 16px;
   border: 1px solid var(--brd);
   border-radius: 18px;
   text-align: center;
   box-shadow: var(--shadow);
   transition: .3s;
+  width: 280px;
 }
 
 .vendor-card:hover {
   transform: translateY(-6px) scale(1.02);
   box-shadow: var(--shadow-2);
-}
-
-.vendor-card img {
-  width: 140px;
-  height: 140px;
-  object-fit: cover;
-  border-radius: 16px;
-  margin-bottom: 10px;
-  border: 1px solid var(--brd);
 }
 
 .vendor-card .name {
@@ -1803,10 +1811,73 @@ body.light .avatar {
   margin-top: 2px;
 }
 
+/* Vendor sub-category header */
+.vendor-subcategory-header {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--accent-text);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+  padding: 4px 8px;
+  background: rgba(var(--accent-rgb), 0.1);
+  border-radius: 4px;
+  border: 1px solid rgba(var(--accent-rgb), 0.2);
+  text-align: center;
+}
+
+/* Vendor phone styling */
+.vendor-phone {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 4px 10px;
+  background: var(--accent);
+  color: var(--bg);
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.vendor-phone:hover {
+  background: var(--accent-2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(var(--accent-rgb), 0.3);
+  color: var(--bg);
+  text-decoration: none;
+}
+
+.vendor-phone:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Vendor referral information */
+.vendor-card .referred-by {
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--text-muted);
+  font-style: italic;
+  opacity: 0.8;
+}
+
+.vendor-card .vendor-blurb {
+  margin-top: 6px;
+  font-size: 13px;
+  line-height: 1.3;
+  color: var(--text-muted);
+  background: var(--card-alt);
+  padding: 6px 8px;
+  border-radius: 6px;
+}
+
 #vendorGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, 280px);
   gap: 14px;
+  justify-content: center;
 }
 
 #vendorMarquee .gslide {
@@ -1991,11 +2062,6 @@ body.light #toast {
   .cards {
     grid-template-columns: 1fr 1fr;
   }
-
-  .vendor-card img {
-    width: 110px;
-    height: 110px;
-  }
 }
 
 @media (max-width: 520px) {
@@ -2005,11 +2071,14 @@ body.light #toast {
 
   .vendor-card {
     padding: 16px;
+    width: 100%;
+    max-width: 280px;
   }
 
-  .vendor-card img {
-    width: 88px;
-    height: 88px;
+  #vendorGrid {
+    grid-template-columns: repeat(auto-fit, 100%);
+    max-width: 400px;
+    margin: 0 auto;
   }
 
   #members .embed-body {
@@ -2476,6 +2545,61 @@ body.light #toast {
   justify-content: center;
   margin-bottom: 15px;
 }
+
+/* Vendor Logo Placeholders */
+.vendor-logo-placeholder {
+  width: 100%;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Category-based background colors */
+.vendor-logo-placeholder--services { background: #4CAF50; }
+.vendor-logo-placeholder--food { background: #FF9800; }
+.vendor-logo-placeholder--education { background: #2196F3; }
+.vendor-logo-placeholder--boutique { background: #9C27B0; }
+.vendor-logo-placeholder--default { background: #607D8B; }
+
+/* Vendor Link Styling */
+.vendor-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.vendor-blurb {
+  margin-top: 6px;
+}
+
+/* Vendor Marquee Logo Placeholders */
+.vendor-marquee-logo {
+  width: 100%;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.vendor-marquee-logo--services { background: #4CAF50; }
+.vendor-marquee-logo--food { background: #FF9800; }
+.vendor-marquee-logo--education { background: #2196F3; }
+.vendor-marquee-logo--boutique { background: #9C27B0; }
+.vendor-marquee-logo--default { background: #607D8B; }
 
 .vendor-marquee-wrap {
   overflow: hidden;

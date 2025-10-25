@@ -560,13 +560,20 @@ async function loadData() {
     
     // Load and render vendors
     const vendorsResponse = await fetch('./data/vendors.json');
+    if (!vendorsResponse.ok) {
+      throw new Error(`Failed to load vendors data: ${vendorsResponse.status}`);
+    }
     globalVendors = await vendorsResponse.json();
+    
+    if (!Array.isArray(globalVendors)) {
+      throw new Error('Vendors data is not in expected format');
+    }
+    
+    // Generate dynamic filter buttons based on JSON data
+    generateVendorFilters(globalVendors);
     
     // Render vendor grid
     renderVendors(globalVendors, 'All');
-    
-    // Render vendor marquee
-    renderVendorMarquee(globalVendors);
     
     // Setup vendor filtering
     setupVendorFilters();
@@ -620,7 +627,7 @@ document.addEventListener('DOMContentLoaded', async function() {
   window.addEventListener('scroll', updateActiveNavOnScroll);
   
   // Load data
-  loadData();
+  await loadData();
 });
 
 /* ===================== HERO PARALLAX MICRO-SWAY ==================== */
@@ -1012,6 +1019,45 @@ function initReviewsMarquee() {
 
 /* ===================== VENDORS FUNCTIONALITY ==================== */
 
+// Generate dynamic filter buttons from JSON data
+function generateVendorFilters(vendors) {
+  const filterSection = document.querySelector('.vendor-filter-section');
+  if (!filterSection || !Array.isArray(vendors)) return;
+  
+  // Extract unique main categories from vendors data for broader filtering
+  const categories = [...new Set(vendors.map(vendor => vendor.Category || vendor.cat || 'General'))].sort();
+  
+  // Clear existing filter buttons (keep the label)
+  const existingButtons = filterSection.querySelectorAll('[data-filter]');
+  existingButtons.forEach(button => button.remove());
+  
+  // Create "All" button first
+  const allButton = document.createElement('button');
+  allButton.className = 'btn btn--sm btn--secondary';
+  allButton.setAttribute('data-filter', 'All');
+  allButton.setAttribute('aria-pressed', 'true');
+  allButton.textContent = 'All';
+  filterSection.appendChild(allButton);
+  
+  // Create buttons for each main category
+  categories.forEach(category => {
+    const button = document.createElement('button');
+    button.className = 'btn btn--sm btn--secondary';
+    button.setAttribute('data-filter', category);
+    button.setAttribute('aria-pressed', 'false');
+    button.textContent = category;
+    filterSection.appendChild(button);
+  });
+  
+  // Add screen reader announcement
+  const srAnnouncement = document.createElement('div');
+  srAnnouncement.setAttribute('aria-live', 'polite');
+  srAnnouncement.setAttribute('aria-atomic', 'true');
+  srAnnouncement.className = 'sr-only';
+  srAnnouncement.textContent = `Filter options loaded: ${categories.length + 1} categories available`;
+  filterSection.appendChild(srAnnouncement);
+}
+
 // Setup vendor filter button functionality
 function setupVendorFilters() {
   const filterButtons = document.querySelectorAll('[data-filter]');
@@ -1062,40 +1108,31 @@ function makeVendorCard(vendor) {
   const div = document.createElement('div');
   div.className = 'vendor-card';
   
-  // Category colors for placeholder backgrounds
-  const categoryColors = {
-    'Services': '#4CAF50',
-    'Food': '#FF9800', 
-    'Education': '#2196F3',
-    'Boutique': '#9C27B0',
-    'default': '#607D8B'
-  };
+  // Get category-based CSS class for placeholder using the new JSON structure
+  const category = vendor.Category || vendor.cat || 'General';
+  const subCategory = vendor['Sub-Category'] || category;
+  const vendorName = vendor['Vendor Name'] || vendor.name || 'Unknown Vendor';
+  const vendorPhone = vendor['Vendor Phone'] || '';
+  const referredBy = vendor['Referred By'] || '';
+  const comment = vendor['Referral Comment about Vendor'] || '';
   
-  const bgColor = categoryColors[vendor.cat] || categoryColors.default;
+  const categoryClass = `vendor-logo-placeholder--${category.toLowerCase()}`;
+  const placeholderClass = `vendor-logo-placeholder ${categoryClass}`;
+  
+  // Create phone link if phone number exists
+  const phoneLink = vendorPhone ? `<a href="tel:${vendorPhone}" class="vendor-phone">${vendorPhone}</a>` : '';
   
   div.innerHTML = `
-    <a href="${vendor.url}" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;">
-      <div class="vendor-logo-placeholder" style="
-        width: 100%;
-        height: 120px;
-        background: ${bgColor};
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 8px;
-        margin-bottom: 12px;
-        color: white;
-        font-weight: bold;
-        font-size: 18px;
-        text-align: center;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      ">
-        ${vendor.name.split(' ').map(word => word[0]).join('').slice(0, 3)}
+    <div class="vendor-link">
+      <div class="vendor-subcategory-header">${subCategory}</div>
+      <div class="${placeholderClass}">
+        <!-- Placeholder without abbreviations -->
       </div>
-      <div class="name">${vendor.name}</div>
-      <div class="cat pill">${vendor.cat}</div>
-      <div class="hint" style="margin-top:6px;">${vendor.blurb}</div>
-    </a>
+      <div class="name">${vendorName}</div>
+      ${phoneLink}
+      ${referredBy ? `<div class="referred-by">Referred by: ${referredBy}</div>` : ''}
+      ${comment ? `<div class="hint vendor-blurb">${comment}</div>` : ''}
+    </div>
   `;
   
   return div;
@@ -1111,7 +1148,13 @@ function renderVendors(vendors, filter = 'All') {
   // Small delay to show loading state
   setTimeout(() => {
     grid.innerHTML = '';
-    const filteredVendors = vendors.filter(v => filter === 'All' || v.cat === filter);
+    // Update filter logic to use main categories for broader filtering
+    const filteredVendors = vendors.filter(v => {
+      const category = v.Category || v.cat || 'General';
+      return filter === 'All' || 
+             category === filter || 
+             category.toLowerCase().includes(filter.toLowerCase());
+    });
     
     if (filteredVendors.length === 0) {
       grid.innerHTML = '<div class="hint" role="status">No vendors found for this category.</div>';
@@ -1139,37 +1182,21 @@ function renderVendorMarquee(vendors) {
     s.style.width = '280px';
     s.style.height = '120px';
     
-    // Category colors for placeholder backgrounds
-    const categoryColors = {
-      'Services': '#4CAF50',
-      'Food': '#FF9800', 
-      'Education': '#2196F3',
-      'Boutique': '#9C27B0',
-      'default': '#607D8B'
-    };
+    // Extract data using new JSON structure with fallbacks
+    const category = vendor.Category || vendor.cat || 'General';
+    const vendorName = vendor['Vendor Name'] || vendor.name || 'Unknown Vendor';
     
-    const bgColor = categoryColors[vendor.cat] || categoryColors.default;
+    // Get category-based CSS class for marquee placeholder
+    const categoryClass = `vendor-marquee-logo--${category.toLowerCase()}`;
+    const placeholderClass = `vendor-marquee-logo ${categoryClass}`;
     
     const placeholder = document.createElement('div');
-    placeholder.style.cssText = `
-      width: 100%;
-      height: 100px;
-      background: ${bgColor};
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 8px;
-      color: white;
-      font-weight: bold;
-      font-size: 16px;
-      text-align: center;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    `;
-    placeholder.textContent = vendor.name.split(' ').map(word => word[0]).join('').slice(0, 3);
+    placeholder.className = placeholderClass;
+    placeholder.textContent = ''; // Remove abbreviations
     
     const lb = document.createElement('div');
     lb.className = 'label';
-    lb.textContent = vendor.name;
+    lb.textContent = vendorName;
     
     s.appendChild(placeholder);
     s.appendChild(lb);
