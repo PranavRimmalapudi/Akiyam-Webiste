@@ -7,6 +7,15 @@
 
   <title>AIKYAM - Community Events & Cultural Celebrations | California</title>
   <meta name="description" content="Join AIKYAM for cultural celebrations, family events, and community volunteering. Bringing families together through festivals, kids showcases, and community engagement in California." />
+  <meta name="keywords" content="AIKYAM, community events, cultural celebrations, family activities, volunteering, festivals, California, Indian community, cultural pride, kids showcase" />
+  <meta name="author" content="AIKYAM" />
+
+  <!-- Open Graph / Social Media -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="AIKYAM - Community Events & Cultural Celebrations" />
+  <meta property="og:description" content="Join AIKYAM for cultural celebrations, family events, and community volunteering in California." />
+  <meta property="og:image" content="assets/branding/logo.png" />
+  <meta property="og:url" content="https://aikyamusa.org/" />
 
   <link rel="canonical" href="https://aikyamusa.org/" />
   <link rel="icon" type="image/png" href="assets/branding/logo.png" />
@@ -15,27 +24,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
-
-  <style>
-    /* Mission & Vision (no background, clean text) */
-    .hero .mission-vision {
-      margin-top: 20px;
-      padding: 0;
-      color: #fffff;
-      max-width: 550px;
-      line-height: 1.7;
-      font-size: 1rem;
-    }
-    .hero .mission-vision h4 {
-      color: #ffd700;
-      font-weight: 800;
-      margin-top: 10px;
-      margin-bottom: 6px;
-    }
-    .hero .mission-vision p {
-      margin-bottom: 14px;
-    }
-  </style>
 </head>
 
 <body>
@@ -67,9 +55,9 @@
         <div class="countdown" id="countdown" aria-label="Event countdown timer" role="timer"></div>
 
         <div class="cta-row">
-          <a class="btn" href="#events" aria-label="Navigate to events section">See Events</a>
-          <a class="btn secondary" href="join.html" aria-label="Join AIKYAM community">Join Us</a>
-          <a class="btn secondary" target="_blank" rel="noopener" href="https://www.youtube.com/@ManaAIKYAM" aria-label="Visit AIKYAM YouTube channel (opens in new tab)">YouTube</a>
+          <a class="btn btn--primary" href="#events" aria-label="Navigate to events section">See Events</a>
+          <a class="btn btn--secondary" href="join.html" aria-label="Join AIKYAM community">Join Us</a>
+          <a class="btn btn--secondary" target="_blank" rel="noopener" href="https://www.youtube.com/@ManaAIKYAM" aria-label="Visit AIKYAM YouTube channel (opens in new tab)">YouTube</a>
         </div>
       </div>
       <div class="hero-right">
@@ -88,12 +76,11 @@
     <div class="container">
       <h2 id="team-title" class="section-title">Our Team</h2>
 
-      <h3 class="subhead" style="text-align: center; margin-bottom: 20px;">Board of Directors</h3>
-      <div class="cards" id="chairmanCard"
-        style="justify-content: center; margin-bottom: 30px; display: flex; align-items: center;"></div>
-      <div class="cards" id="boardCards" style="margin-bottom: 40px;"></div>
+      <h3 class="subhead team-section-title">Board of Directors</h3>
+      <div class="cards chairman-cards" id="chairmanCard"></div>
+      <div class="cards board-cards" id="boardCards"></div>
 
-      <h3 class="subhead" style="text-align: center; margin-bottom: 20px;">Core Team</h3>
+      <h3 class="subhead team-section-title">Core Team</h3>
       <div class="cards" id="coreCards"></div>
     </div>
   </section>
@@ -105,7 +92,7 @@
       <div class="events-3col">
         <div class="col l">
           <h3 class="subhead">Past Events</h3>
-          <div class="vloop" id="pastVLoop" style="--vspd:38s"></div>
+          <div class="vloop vloop--past" id="pastVLoop"></div>
         </div>
         <div class="col m">
           <h3 class="subhead">Calendar</h3>
@@ -120,7 +107,7 @@
         </div>
         <div class="col r">
           <h3 class="subhead">Upcoming Events</h3>
-          <div class="vloop" id="upVLoop" style="--vspd:44s"></div>
+          <div class="vloop vloop--upcoming" id="upVLoop"></div>
         </div>
       </div>
     </div>
@@ -130,12 +117,11 @@
   <section id="reviews-section" class="reveal" role="region" aria-labelledby="reviews-title">
     <div class="container">
       <h2 id="reviews-title" class="section-title">Member Reviews</h2>
-      <div class="reviews-marquee-wrapper" style="overflow:hidden;width:var(--maxw);margin:0 auto;">
-        <div id="reviewsTrack" class="reviews"
-          style="display:flex;gap:18px;justify-content:center;align-items:stretch;width:var(--maxw);margin:0 auto;will-change:transform;">
-          <div class="review card">"Wonderful platform to celebrate culture and connect with families."</div>
-          <div class="review card">"Kids loved participating in the festivities and activities."</div>
-          <div class="review card">"Great community spirit and well organized events."</div>
+      <div class="reviews-marquee-wrapper" aria-label="Member testimonials carousel">
+        <div id="reviewsTrack" class="reviews reviews-track" role="group" aria-label="Customer testimonials">
+          <div class="review card" role="blockquote">"Wonderful platform to celebrate culture and connect with families."</div>
+          <div class="review card" role="blockquote">"Kids loved participating in the festivities and activities."</div>
+          <div class="review card" role="blockquote">"Great community spirit and well organized events."</div>
         </div>
       </div>
     </div>

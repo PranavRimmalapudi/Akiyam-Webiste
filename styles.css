@@ -3225,6 +3225,72 @@ body.light #toast {
   border: 0 !important;
 }
 
+/* ===================== HOMEPAGE SPECIFIC STYLES ===================== */
+
+/* Mission & Vision Section */
+.hero .mission-vision {
+  margin-top: 20px;
+  padding: 0;
+  color: #ffffff;
+  max-width: 550px;
+  line-height: 1.7;
+  font-size: 1rem;
+}
+
+.hero .mission-vision h4 {
+  color: var(--accent-text);
+  font-weight: 800;
+  margin-top: 10px;
+  margin-bottom: 6px;
+}
+
+.hero .mission-vision p {
+  margin-bottom: 14px;
+}
+
+/* Team Section Styles */
+.team-section-title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.chairman-cards {
+  justify-content: center;
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+}
+
+.board-cards {
+  margin-bottom: 40px;
+}
+
+/* Event Loop Styles */
+.vloop--past {
+  --vspd: 38s;
+}
+
+.vloop--upcoming {
+  --vspd: 44s;
+}
+
+/* Reviews Section Styles */
+.reviews-marquee-wrapper {
+  overflow: hidden;
+  width: var(--maxw);
+  margin: 0 auto;
+}
+
+.reviews-track {
+  display: flex;
+  gap: 18px;
+  justify-content: center;
+  align-items: stretch;
+  width: var(--maxw);
+  margin: 0 auto;
+  will-change: transform;
+}
+
 /* Print Styles */
 @media print {
   .no-print {
