@@ -527,6 +527,30 @@ h2.section-title::after {
   align-items: center;
 }
 
+/* Ripple effect styles - prevent layout shifts and size changes */
+.btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn .r {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0);
+  animation: ripple 0.62s ease-out forwards;
+}
+
+@keyframes ripple {
+  to {
+    transform: translate(-50%, -50%) scale(4);
+    opacity: 0;
+  }
+}
+
 
 
 /* Legacy Support - Maintain existing functionality */
@@ -539,6 +563,30 @@ h2.section-title::after {
 .btn.mini {
   padding: 0.5rem 0.75rem;
   font-size: 0.75rem;
+}
+
+/* Register button click effect - controlled animation */
+.btn-click-effect {
+  transform: scale(1.02) !important;
+  transition: transform 0.15s ease !important;
+}
+
+/* Prevent hover effects during click state for register buttons */
+.btn[data-clicking="1"] {
+  pointer-events: none;
+}
+
+.btn[data-clicking="1"]:hover {
+  transform: scale(1.02) !important;
+}
+
+/* Force reset transforms for register links to prevent accumulation */
+a[href="#register"].btn {
+  will-change: transform;
+}
+
+a[href="#register"].btn:not(.btn-click-effect):not(:hover) {
+  transform: none !important;
 }
 
 

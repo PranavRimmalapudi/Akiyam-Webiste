@@ -93,6 +93,34 @@ function initButtonRipple() {
   document.addEventListener('click', (e) => {
     const b = e.target.closest('.btn');
     if (!b) return;
+    
+    // Special handling for register buttons to prevent size/transform accumulation
+    if (b.href && b.href.includes('#register')) {
+      // Prevent multiple rapid clicks
+      if (b.dataset.clicking === '1') {
+        e.preventDefault();
+        return;
+      }
+      
+      // Mark as clicking and reset transforms
+      b.dataset.clicking = '1';
+      b.style.transform = '';
+      
+      // Add click effect class temporarily
+      b.classList.add('btn-click-effect');
+      
+      setTimeout(() => {
+        b.classList.remove('btn-click-effect');
+        b.dataset.clicking = '0';
+        // Ensure transform is cleared
+        b.style.transform = '';
+      }, 200);
+    }
+    
+    // Limit concurrent ripples to prevent layout issues
+    const existingRipples = b.querySelectorAll('.r');
+    if (existingRipples.length > 1) return;
+    
     const r = document.createElement('span');
     r.className = 'r';
     const rect = b.getBoundingClientRect();
