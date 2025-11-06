@@ -767,7 +767,7 @@ a[href="#register"].btn:not(.btn-click-effect):not(:hover) {
 }
 
 .vloop {
-  height: 580px;
+  height: 690px;
   overflow: hidden;
   position: relative;
   border-radius: 16px;
@@ -781,6 +781,8 @@ a[href="#register"].btn:not(.btn-click-effect):not(:hover) {
   animation: vscroll var(--vspd, 36s) linear infinite;
   will-change: transform;
   padding: 16px;
+  /* Ensure minimum height for scrolling effect */
+  min-height: calc(100% + 20px);
 }
 
 @keyframes vscroll {

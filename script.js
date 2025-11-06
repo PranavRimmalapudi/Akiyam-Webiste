@@ -344,7 +344,9 @@ async function loadData() {
       const wrapper = document.createElement('div');
       wrapper.className = 'vtrack';
       
-      completedEvents.forEach(event => {
+      // Duplicate events for continuous scrolling effect
+      const duplicatedEvents = [...completedEvents, ...completedEvents];
+      duplicatedEvents.forEach(event => {
         const card = document.createElement('div');
         card.className = 'event-card';
         card.innerHTML = `
@@ -403,7 +405,9 @@ async function loadData() {
       const wrapper = document.createElement('div');
       wrapper.className = 'vtrack';
       
-      upcomingEvents.forEach(event => {
+      // Duplicate events for continuous scrolling effect
+      const duplicatedUpcoming = [...upcomingEvents, ...upcomingEvents];
+      duplicatedUpcoming.forEach(event => {
         const card = document.createElement('div');
         card.className = 'event-card';
         const when = event.tbd ? 'Date TBD' : new Date(event.start).toLocaleString([], { 
