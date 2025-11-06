@@ -9,16 +9,6 @@
             "name": "Raju Kakani",
             "role": "Board of Director",
             "img": "assets/people/Raju.jpeg"
-        },
-        {
-            "name": "Vijay Jestadi",
-            "role": "Board of Director",
-            "img": "assets/people/vijay.jpg"
-        },
-        {
-            "name": "Ramarao Rimmalapudi",
-            "role": "Board of Director",
-            "img": "assets/people/ramarao.jpeg"
-        }
+        }        
     ]
 }

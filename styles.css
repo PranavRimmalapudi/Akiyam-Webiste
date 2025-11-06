@@ -705,6 +705,8 @@ a[href="#register"].btn:not(.btn-click-effect):not(:hover) {
   backdrop-filter: blur(4px);
   transition: transform .35s ease, box-shadow .35s ease;
   box-shadow: var(--shadow);
+  max-width: 320px;
+  width: 100%;
 }
 
 .person-card:hover {
@@ -715,6 +717,7 @@ a[href="#register"].btn:not(.btn-click-effect):not(:hover) {
 .person-card img {
   width: 180px;
   height: 180px;
+  max-width: 100%;
   border-radius: 50%;
   object-fit: cover;
   margin-bottom: 12px;
@@ -2125,11 +2128,33 @@ body.light #toast {
   .cards {
     grid-template-columns: 1fr 1fr;
   }
+  
+  /* Board cards responsive behavior */
+  .board-cards {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 280px));
+    max-width: 600px;
+  }
+  
+  /* Chairman cards responsive behavior */
+  .chairman-cards {
+    max-width: 280px;
+  }
 }
 
 @media (max-width: 520px) {
   .cards {
     grid-template-columns: 1fr;
+  }
+  
+  /* Board cards mobile behavior */
+  .board-cards {
+    grid-template-columns: 1fr;
+    max-width: 320px;
+  }
+  
+  /* Chairman cards mobile behavior */
+  .chairman-cards {
+    max-width: 300px;
   }
 
   .vendor-card {
@@ -3551,10 +3576,37 @@ body.light #toast {
   margin-bottom: 30px;
   display: flex;
   align-items: center;
+  max-width: 320px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.chairman-cards .person-card {
+  max-width: 320px;
+  width: 100%;
+  flex-shrink: 0;
 }
 
 .board-cards {
   margin-bottom: 40px;
+  /* Limit board card width to prevent excessive stretching */
+  grid-template-columns: repeat(auto-fit, minmax(260px, 320px));
+  justify-content: center;
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* When there's only one board member, prevent it from stretching */
+.board-cards:has(.person-card:only-child) {
+  max-width: 320px;
+}
+
+/* Fallback for browsers that don't support :has() */
+@supports not selector(:has(*)) {
+  .board-cards {
+    max-width: 700px;
+  }
 }
 
 /* Event Loop Styles */
