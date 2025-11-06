@@ -767,7 +767,7 @@ a[href="#register"].btn:not(.btn-click-effect):not(:hover) {
 }
 
 .vloop {
-  height: 690px;
+  height: 685px;
   overflow: hidden;
   position: relative;
   border-radius: 16px;
@@ -781,8 +781,10 @@ a[href="#register"].btn:not(.btn-click-effect):not(:hover) {
   animation: vscroll var(--vspd, 36s) linear infinite;
   will-change: transform;
   padding: 16px;
-  /* Ensure minimum height for scrolling effect */
-  min-height: calc(100% + 20px);
+  /* Ensure sufficient height for scrolling effect */
+  min-height: 300%;
+  animation-play-state: running;
+  animation-fill-mode: forwards;
 }
 
 @keyframes vscroll {
@@ -791,7 +793,7 @@ a[href="#register"].btn:not(.btn-click-effect):not(:hover) {
   }
 
   100% {
-    transform: translateY(-50%)
+    transform: translateY(-33.33%)
   }
 }
 
@@ -3529,6 +3531,12 @@ body.light #toast {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+  
+  /* Exception: Keep essential content scrolling animations for UX */
+  .vtrack {
+    animation-duration: var(--vspd, 36s) !important;
+    animation-iteration-count: infinite !important;
+  }
 }
 
 /* Accessibility Utilities */
@@ -3613,11 +3621,11 @@ body.light #toast {
 
 /* Event Loop Styles */
 .vloop--past {
-  --vspd: 38s;
+  --vspd: 20s;
 }
 
 .vloop--upcoming {
-  --vspd: 44s;
+  --vspd: 25s;
 }
 
 /* Reviews Section Styles */
