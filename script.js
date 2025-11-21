@@ -12,6 +12,12 @@ async function loadHeader() {
   try {
     const headerPlaceholder = document.getElementById('header-placeholder');
     if (!headerPlaceholder) {
+      // Standalone launch header support: initialize nav if inline header exists
+      const launchHeader = document.querySelector('header[data-launch-header]');
+      if (launchHeader) {
+        initMobileNav();
+        setActiveNavItem();
+      }
       return;
     }
     
@@ -23,6 +29,18 @@ async function loadHeader() {
     
     const headerHTML = await response.text();
     headerPlaceholder.innerHTML = headerHTML;
+    // Anchor navigation fallback: if target section missing on current page (e.g., launch.html), redirect to index.html#section
+    const hashLinks = headerPlaceholder.querySelectorAll('.nav-links a[href^="#"]');
+    hashLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        const hash = link.getAttribute('href');
+        const id = hash.slice(1);
+        if (!document.getElementById(id)) {
+          e.preventDefault();
+          window.location.href = 'index.html' + hash;
+        }
+      });
+    });
     
     // Reinitialize mobile navigation after header is loaded
     initMobileNav();
@@ -643,6 +661,18 @@ document.addEventListener('DOMContentLoaded', async function() {
   
   // Load data
   await loadData();
+
+  // Global hash fallback for anchors outside the header (e.g., hero "See Events" on launch page)
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest('a[href^="#"]');
+    if (!a) return;
+    const hash = a.getAttribute('href');
+    const id = hash.slice(1);
+    if (!document.getElementById(id)) {
+      e.preventDefault();
+      window.location.href = 'index.html' + hash;
+    }
+  });
 });
 
 /* ===================== HERO PARALLAX MICRO-SWAY ==================== */

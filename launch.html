@@ -33,8 +33,34 @@
     <img id="bgZoomImg" src="assets/branding/BgImage.png" alt="AIKYAM community background" loading="eager">
   </div>
 
-  <!-- Header will be loaded by JavaScript -->
-  <div id="header-placeholder"></div>
+  <!-- Standalone Header (Launch Page Only) -->
+  <header class="reveal" id="siteHeader" data-launch-header>
+    <div class="header-inner">
+      <div>
+        <div class="sunburst" aria-hidden="true" style="width:80px;height:80px;">
+          <div class="sweep"></div>
+        </div>
+        <div class="hero-logo-wrap" id="heroWrap" style="margin: 3px;">
+          <img class="hero-logo" id="heroLogo" src="assets/branding/logo.png" alt="AIKYAM Logo"
+            style="width:70px;height:70px;">
+        </div>
+      </div>
+      <nav>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+        <div class="nav-links">
+          <a href="index.html#home" data-launch-home>Home</a>
+          <a href="index.html#team">Team</a>
+          <!-- Direct to main site sections not present on launch -->
+          <a href="index.html#events">Events</a>
+          <a href="gallery.html">Gallery</a>
+          <a href="vendors.html">Vendors</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </nav>
+      <button class="theme-toggle" id="themeToggle"> ☀/🌙</button>
+    </div>
+  </header>
+  <div id="scroll-progress"></div>
 
   <!-- ===== Hero ===== -->
   <section class="hero" id="home" role="banner">
@@ -51,8 +77,6 @@
           strengthens the city we love.</p>
         </div>
 
-        <div class="next-title">Next up: <span id="nextEventTitle">—</span></div>
-        <div class="countdown" id="countdown" aria-label="Event countdown timer" role="timer"></div>
 
         <div class="cta-row">
           <a class="btn btn--primary" href="#events" aria-label="Navigate to events section">See Events</a>
@@ -82,48 +106,6 @@
 
       <h3 class="subhead team-section-title">Core Team</h3>
       <div class="cards" id="coreCards"></div>
-    </div>
-  </section>
-
-  <!-- ===== Events ===== -->
-  <section id="events" class="reveal" role="region" aria-labelledby="events-title">
-    <div class="container">
-      <h2 id="events-title" class="section-title">Events</h2>
-      <div class="events-3col">
-        <div class="col l">
-          <h3 class="subhead">Past Events</h3>
-          <div class="vloop vloop--past" id="pastVLoop"></div>
-        </div>
-        <div class="col m">
-          <h3 class="subhead">Calendar</h3>
-          <div class="calendar-card">
-            <div class="calendar-head">
-              <strong>Mini Calendar</strong>
-              <span class="pill" id="calendarMonth"></span>
-            </div>
-            <div class="calendar-grid" id="calendarGrid" aria-label="Mini Calendar"></div>
-            <div class="schedule" id="upcomingSchedule" aria-label="Upcoming schedule"></div>
-          </div>
-        </div>
-        <div class="col r">
-          <h3 class="subhead">Upcoming Events</h3>
-          <div class="vloop vloop--upcoming" id="upVLoop"></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== Member Reviews ===== -->
-  <section id="reviews-section" class="reveal" role="region" aria-labelledby="reviews-title">
-    <div class="container">
-      <h2 id="reviews-title" class="section-title">Member Reviews</h2>
-      <div class="reviews-marquee-wrapper" aria-label="Member testimonials carousel">
-        <div id="reviewsTrack" class="reviews reviews-track" role="group" aria-label="Customer testimonials">
-          <div class="review card" role="blockquote">"Wonderful platform to celebrate culture and connect with families."</div>
-          <div class="review card" role="blockquote">"Kids loved participating in the festivities and activities."</div>
-          <div class="review card" role="blockquote">"Great community spirit and well organized events."</div>
-        </div>
-      </div>
     </div>
   </section>
 
@@ -162,6 +144,8 @@
       justify-content: center;
       backdrop-filter: blur(3px);
       animation: overlayFadeIn 0.8s ease-out;
+      /* Allow underlying page buttons (nav, CTA) to remain clickable */
+      pointer-events: none;
     }
     #fireworks-overlay::before {
       content: '';
@@ -242,6 +226,8 @@
       backdrop-filter: blur(10px);
       border: 2px solid rgba(255, 255, 255, 0.2);
       z-index: 100002;
+      /* Restore interaction inside controls while overlay is non-interactive */
+      pointer-events: auto;
     }
     
     .diwali-welcome {
@@ -327,6 +313,16 @@
         this.particles = [];
         this.fireworks = [];
         this.colors = ['#ff6b35', '#f7931e', '#ffcc00', '#ff1744', '#e91e63', '#9c27b0', '#3f51b5', '#2196f3', '#4caf50', '#ff9800'];
+        // Performance / speed tuning constants (can override via window before start)
+        this.ROCKET_CHANCE = window.FIREWORKS_ROCKET_CHANCE || 0.30; // probability per frame
+        this.ROCKET_SPEED_MIN = window.FIREWORKS_ROCKET_SPEED_MIN || 5;
+        this.ROCKET_SPEED_VAR = window.FIREWORKS_ROCKET_SPEED_VAR || 3; // added to min
+        this.PARTICLE_BASE = window.FIREWORKS_PARTICLE_BASE || 55; // base particle count
+        this.PARTICLE_VAR = window.FIREWORKS_PARTICLE_VAR || 35; // random additional particles
+        this.PARTICLE_VEL_MIN = window.FIREWORKS_PARTICLE_VEL_MIN || 3;
+        this.PARTICLE_VEL_VAR = window.FIREWORKS_PARTICLE_VEL_VAR || 5; // velocity added to min
+        this.PARTICLE_DECAY_MIN = window.FIREWORKS_PARTICLE_DECAY_MIN || 0.02; // faster fade
+        this.PARTICLE_DECAY_VAR = window.FIREWORKS_PARTICLE_DECAY_VAR || 0.01;
         this.audioCtx = null;
         this.fireworkBuffer = null;
         this.backgroundSource = null;
@@ -353,7 +349,7 @@
       }
       
       createFirework(x, y) {
-        const particleCount = 30 + Math.random() * 20;
+        const particleCount = this.PARTICLE_BASE + Math.random() * this.PARTICLE_VAR;
         const color = this.colors[Math.floor(Math.random() * this.colors.length)];
         
         // Play burst sound immediately when firework explodes
@@ -361,7 +357,7 @@
         
         for (let i = 0; i < particleCount; i++) {
           const angle = (Math.PI * 2 * i) / particleCount;
-          const velocity = 2 + Math.random() * 4;
+          const velocity = this.PARTICLE_VEL_MIN + Math.random() * this.PARTICLE_VEL_VAR;
           
           this.particles.push({
             x: x,
@@ -369,7 +365,7 @@
             vx: Math.cos(angle) * velocity,
             vy: Math.sin(angle) * velocity,
             life: 1,
-            decay: 0.015 + Math.random() * 0.01,
+            decay: this.PARTICLE_DECAY_MIN + Math.random() * this.PARTICLE_DECAY_VAR,
             color: color,
             size: 2 + Math.random() * 3
           });
@@ -388,7 +384,7 @@
           x: x,
           y: this.canvas.height,
           targetY: targetY,
-          speed: 3 + Math.random() * 2,
+          speed: this.ROCKET_SPEED_MIN + Math.random() * this.ROCKET_SPEED_VAR,
           color: '#ffcc00'
         });
         
@@ -531,8 +527,8 @@
           });
         }
         
-        // Auto-stop after 15 seconds
-        this.autoStopTimeout = setTimeout(() => this.stop(), 15000);
+        // Auto-stop after 10 seconds
+        this.autoStopTimeout = setTimeout(() => this.stop(), window.FIREWORKS_DURATION || 10000);
         
         // Start fireworks show immediately
         this.animate();
@@ -573,8 +569,11 @@
         this.update();
         
         // Create new rockets randomly
-        if (Math.random() < 0.15) {
+        // Increase chance of rocket creation for faster show
+        if (Math.random() < this.ROCKET_CHANCE) {
           this.createRocket();
+          // Occasionally spawn a second rocket to intensify
+          if (Math.random() < 0.25) this.createRocket();
         }
         
         requestAnimationFrame(() => this.animate());
@@ -642,11 +641,11 @@
           this.overlay.style.opacity = '0';
           setTimeout(() => {
             this.overlay.style.display = 'none';
-            // Redirect to homepage after fireworks end
-            window.location.href = 'index.html';
+            // Redirect to homepage after fireworks end (replace so user doesn't go back to fireworks page)
+            window.location.replace('index.html');
           }, 500);
         } else {
-          window.location.href = 'index.html';
+          window.location.replace('index.html');
         }
 
         // Reset canvas display for completeness
@@ -679,12 +678,11 @@
     }
     
     // Initialize when DOM is ready
+    // Global duration constant (milliseconds) for easy tuning
+    window.FIREWORKS_DURATION = 10000; // 10 seconds total run time
     document.addEventListener('DOMContentLoaded', function() {
-      console.log('DOM loaded; starting fireworks shortly...');
-      // Wait for page elements to settle
-      setTimeout(() => {
-        startFireworksShow();
-      }, 2000);
+      console.log('DOM loaded; starting fireworks immediately for 10s duration');
+      startFireworksShow();
     });
     
     // Restart on page visibility change (handles refresh scenarios)
