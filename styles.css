@@ -2135,7 +2135,7 @@ body.light #toast {
   
   /* Board cards responsive behavior */
   .board-cards {
-    grid-template-columns: repeat(auto-fit, minmax(240px, 280px));
+    grid-template-columns: repeat(auto-fit, minmax(220px, 260px));
     max-width: 600px;
   }
   
@@ -3605,6 +3605,53 @@ body.light #toast {
   max-width: 1000px;
   margin-left: auto;
   margin-right: auto;
+}
+
+/* Explicit single-row layout when requested (JS adds modifier class) */
+.board-cards.board-cards--single-row {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  gap: 26px;
+}
+
+/* Allow direct use of modifier without needing base class specificity */
+.board-cards--single-row {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  gap: 26px;
+}
+
+/* Constrain card widths in single-row mode so they sit side-by-side */
+.board-cards.board-cards--single-row .person-card,
+.board-cards--single-row .person-card {
+  flex: 0 0 240px;
+  width: 240px;
+  max-width: 240px;
+  padding: 18px;
+}
+
+/* Compact image size for single-row board members */
+.board-cards.board-cards--single-row .person-card img,
+.board-cards--single-row .person-card img {
+  width: 140px;
+  height: 140px;
+  margin-bottom: 10px;
+}
+
+/* Responsive: allow wrapping on narrow screens */
+@media (max-width: 680px) {
+  .board-cards.board-cards--single-row,
+  .board-cards--single-row {
+    flex-wrap: wrap;
+  }
+  .board-cards.board-cards--single-row .person-card,
+  .board-cards--single-row .person-card {
+    flex: 1 1 200px;
+    width: 100%;
+    max-width: 260px;
+  }
 }
 
 /* When there's only one board member, prevent it from stretching */

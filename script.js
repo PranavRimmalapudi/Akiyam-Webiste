@@ -348,6 +348,59 @@ async function loadData() {
         coreContainer.appendChild(card);
       });
     }
+
+    // Attempt to load 2026 core team placed under Events section
+    const core2026Container = document.getElementById('coreTeam2026Cards');
+    if (core2026Container) {
+      try {
+        const core2026Response = await fetch('./data/coreTeam2026.json');
+        if (core2026Response.ok) {
+          const coreTeam2026 = await core2026Response.json();
+          if (Array.isArray(coreTeam2026)) {
+            core2026Container.innerHTML = '';
+            coreTeam2026.forEach(member => {
+              const card = document.createElement('div');
+              card.className = 'person-card';
+              card.innerHTML = `
+                <img src="${member.img}" alt="${member.name}" width="180" height="180" loading="lazy">
+                <div class="name">${member.name}</div>
+                <div class="role">${member.role}</div>
+              `;
+              const img = card.querySelector('img');
+              if (img) {
+                img.addEventListener('error', () => {
+                  const initials = member.name.split(' ').map(w => w[0]).join('').slice(0,2);
+                  const placeholder = document.createElement('div');
+                  placeholder.style.cssText = `
+                    width: 180px;
+                    height: 180px;
+                    background: linear-gradient(135deg, #ffcc00, #ff9900);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border-radius: 50%;
+                    color: #000;
+                    font-weight: bold;
+                    font-size: 36px;
+                    text-align: center;
+                    margin: 0 auto 16px auto;
+                    box-shadow: 0 8px 24px rgba(255, 204, 0, 0.3);
+                  `;
+                  placeholder.textContent = initials;
+                  img.replaceWith(placeholder);
+                }, { once: true });
+              }
+              core2026Container.appendChild(card);
+            });
+          }
+        } else {
+          // Non-fatal: leave container empty if 404 or error
+          console.warn('Core Team 2026 data not found:', core2026Response.status);
+        }
+      } catch (e) {
+        console.warn('Failed loading Core Team 2026:', e.message);
+      }
+    }
     
     // Load events
     const upcomingResponse = await fetch('./data/upcomingEvents.json');
@@ -586,6 +639,14 @@ async function loadData() {
         
         boardContainer.appendChild(card);
       });
+      // If exactly three board members, apply single-row layout modifier
+      if (boardData.members.length === 3) {
+        // Ensure base class present then apply modifier
+        if (!boardContainer.classList.contains('board-cards')) {
+          boardContainer.classList.add('board-cards');
+        }
+        boardContainer.classList.add('board-cards--single-row');
+      }
     }
     
     // Render calendar
