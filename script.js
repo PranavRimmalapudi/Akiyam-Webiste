@@ -1343,8 +1343,24 @@ async function loadGallery() {
   grid.innerHTML = '<div class="hint">Loading gallery...</div>';
   grid.setAttribute('aria-busy', 'true');
   try {
-    const res = await fetch('data/galleryImages.json');
-    if (!res.ok) throw new Error('Gallery manifest fetch failed');
+    // Use ./ prefix for consistency with other data fetches; attempt fallback if first fails
+    let res;
+    const primaryPath = './data/galleryImages.json';
+    const altPath = '/data/galleryImages.json'; // In case site is deployed at domain root and relative path breaks
+    try {
+      res = await fetch(primaryPath);
+    } catch (e) {
+      console.warn('Gallery primary fetch threw before response:', e);
+    }
+    if (!res || !res.ok) {
+      console.warn('Gallery primary path failed:', primaryPath, res && res.status);
+      try {
+        res = await fetch(altPath);
+      } catch (e) {
+        console.warn('Gallery alt fetch threw before response:', e);
+      }
+    }
+    if (!res || !res.ok) throw new Error('Gallery manifest fetch failed (tried: ' + primaryPath + (primaryPath !== altPath ? ', ' + altPath : '') + ')');
     const items = await res.json();
     if (!Array.isArray(items)) throw new Error('Invalid gallery manifest');
     grid.innerHTML = '';
@@ -1366,6 +1382,14 @@ async function loadGallery() {
       if (item.width) img.width = item.width;
       if (item.height) img.height = item.height;
       img.fetchPriority = 'low';
+      img.addEventListener('error', () => {
+        console.warn('Gallery image failed:', img.src);
+        // Basic placeholder if image missing
+        const ph = document.createElement('div');
+        ph.style.cssText = 'width:100%;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#ffcc00,#ff9900);font-weight:700;font-size:14px;color:#000;';
+        ph.textContent = (item.caption || 'Image').slice(0,40);
+        img.replaceWith(ph);
+      }, { once: true });
       picture.appendChild(source);
       picture.appendChild(img);
       const cap = document.createElement('figcaption');
@@ -1376,10 +1400,14 @@ async function loadGallery() {
     });
     grid.removeAttribute('aria-busy');
     announceToScreenReader(`Gallery loaded: ${items.length} images`);
+    console.log('AIKYAM Gallery: loaded', items.length, 'items');
+    // Ensure "All" filter active visually
+    filterGallery('all');
   } catch (err) {
     console.error('Gallery load error', err);
     grid.innerHTML = '<div class="hint">Failed to load gallery.</div>';
     grid.removeAttribute('aria-busy');
+    grid.setAttribute('data-gallery-error', err.message || 'unknown');
   }
 }
 
