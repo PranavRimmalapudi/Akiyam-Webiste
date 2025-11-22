@@ -709,6 +709,7 @@ document.addEventListener('DOMContentLoaded', async function() {
   initButtonRipple();
   initBackgroundZoom();
   initRevealOnScroll();
+  // Legacy marquee (only runs if #gtrack exists on a page)
   initGalleryMarquee();
   setTimeout(initReviewsMarquee, 100);
   initHeroParallax();
@@ -720,8 +721,13 @@ document.addEventListener('DOMContentLoaded', async function() {
   // Add scroll listener for navigation highlighting (home page only)
   window.addEventListener('scroll', updateActiveNavOnScroll);
   
-  // Load data
+  // Load data (teams, events, vendors, etc.)
   await loadData();
+
+  // Dynamic gallery load if gallery page present
+  if (document.getElementById('galleryGrid')) {
+    await loadGallery();
+  }
 
   // Global hash fallback for anchors outside the header (e.g., hero "See Events" on launch page)
   document.addEventListener('click', (e) => {
@@ -1328,5 +1334,78 @@ function renderVendorMarquee(vendors) {
 function initVendorFilters() {
   // Initialize vendor filters after vendors are loaded
   setupVendorFilters();
+}
+
+/* ===================== DYNAMIC GALLERY ==================== */
+async function loadGallery() {
+  const grid = document.getElementById('galleryGrid');
+  if (!grid) return;
+  grid.innerHTML = '<div class="hint">Loading gallery...</div>';
+  grid.setAttribute('aria-busy', 'true');
+  try {
+    const res = await fetch('data/galleryImages.json');
+    if (!res.ok) throw new Error('Gallery manifest fetch failed');
+    const items = await res.json();
+    if (!Array.isArray(items)) throw new Error('Invalid gallery manifest');
+    grid.innerHTML = '';
+    items.forEach(item => {
+      const fig = document.createElement('figure');
+      fig.className = 'gallery-item';
+      fig.dataset.categories = (item.categories || []).join(',');
+      fig.setAttribute('data-category', (item.categories && item.categories[0]) || 'community');
+      const picture = document.createElement('picture');
+      const source = document.createElement('source');
+      source.type = 'image/webp';
+      source.sizes = '(max-width: 600px) 50vw, (max-width: 1200px) 33vw, 300px';
+      source.srcset = (item.srcsetWebp || []).join(', ');
+      const img = document.createElement('img');
+      img.src = item.imageJpeg;
+      img.alt = item.alt || item.caption || 'Gallery image';
+      img.loading = 'lazy';
+      img.decoding = 'async';
+      if (item.width) img.width = item.width;
+      if (item.height) img.height = item.height;
+      img.fetchPriority = 'low';
+      picture.appendChild(source);
+      picture.appendChild(img);
+      const cap = document.createElement('figcaption');
+      cap.textContent = item.caption || item.alt || 'Untitled';
+      fig.appendChild(picture);
+      fig.appendChild(cap);
+      grid.appendChild(fig);
+    });
+    grid.removeAttribute('aria-busy');
+    announceToScreenReader(`Gallery loaded: ${items.length} images`);
+  } catch (err) {
+    console.error('Gallery load error', err);
+    grid.innerHTML = '<div class="hint">Failed to load gallery.</div>';
+    grid.removeAttribute('aria-busy');
+  }
+}
+
+function filterGallery(category) {
+  const grid = document.getElementById('galleryGrid');
+  if (!grid) return;
+  const figs = grid.querySelectorAll('.gallery-item');
+  const target = category.toLowerCase();
+  figs.forEach(f => {
+    if (target === 'all') {
+      f.style.display = '';
+    } else {
+      const cats = (f.dataset.categories || '').toLowerCase().split(',').filter(Boolean);
+      f.style.display = cats.includes(target) ? '' : 'none';
+    }
+  });
+  // Button active state
+  document.querySelectorAll('.gallery-category-buttons .btn').forEach(btn => {
+    const text = btn.textContent.toLowerCase();
+    const isAll = target === 'all' && text.includes('all');
+    const matches = text.includes(target);
+    btn.classList.toggle('active', isAll || matches);
+  });
+  if (window.showToast) {
+    showToast(`Showing ${target === 'all' ? 'all' : target} moments`);
+  }
+  announceToScreenReader(`Filtered gallery: ${target} moments`);
 }
 
