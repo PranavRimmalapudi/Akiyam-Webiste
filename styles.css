@@ -508,6 +508,19 @@ h2.section-title::after {
   border-color: var(--accent);
 }
 
+.btn--highlight {
+  background: linear-gradient(90deg, #ff9933 0%, #ffffff 50%, #138808 100%);
+  color: #1a1a1a;
+  border-color: transparent;
+  box-shadow: 0 0.6rem 1.25rem rgba(var(--accent-rgb), 0.35);
+}
+
+.btn--highlight:hover {
+  background: linear-gradient(90deg, #ffa94d 0%, #ffffff 50%, #1faa59 100%);
+  border-color: transparent;
+  box-shadow: 0 0.85rem 1.5rem rgba(var(--accent-rgb), 0.45);
+}
+
 
 
 
@@ -625,6 +638,7 @@ a[href="#register"].btn:not(.btn-click-effect):not(:hover) {
   border-radius: 50%;
   z-index: 0;
   filter: saturate(1.05);
+  pointer-events: none;
 }
 
 .sunburst::before {
@@ -655,6 +669,7 @@ a[href="#register"].btn:not(.btn-click-effect):not(:hover) {
   position: relative;
   z-index: 1;
   filter: drop-shadow(0 0 22px rgba(255, 153, 0, .22)) drop-shadow(0 0 48px rgba(255, 153, 0, .08));
+  pointer-events: none;
 }
 
 .hero-logo {

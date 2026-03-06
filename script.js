@@ -392,13 +392,21 @@ async function loadData() {
               }
               core2026Container.appendChild(card);
             });
+              if (coreTeam2026.length === 0) {
+                core2026Container.innerHTML = '<div class="hint" style="padding:24px;text-align:center;">No Executive Committee members for 2026 yet.</div>';
+              }
           }
+            else {
+              core2026Container.innerHTML = '<div class="hint" style="padding:24px;text-align:center;">Executive Committee 2026 data format error.</div>';
+            }
         } else {
           // Non-fatal: leave container empty if 404 or error
-          console.warn('Core Team 2026 data not found:', core2026Response.status);
+            core2026Container.innerHTML = `<div class="hint" style="padding:24px;text-align:center;">Executive Committee 2026 data not found (${core2026Response.status}).</div>`;
+            console.warn('Core Team 2026 data not found:', core2026Response.status);
         }
       } catch (e) {
-        console.warn('Failed loading Core Team 2026:', e.message);
+          core2026Container.innerHTML = `<div class="hint" style="padding:24px;text-align:center;">Error loading Executive Committee 2026: ${e.message}</div>`;
+          console.warn('Failed loading Core Team 2026:', e.message);
       }
     }
     
@@ -1340,6 +1348,13 @@ function initVendorFilters() {
 async function loadGallery() {
   const grid = document.getElementById('galleryGrid');
   if (!grid) return;
+  // If static pre-render present, just initialize filters and announce
+  if (grid.querySelector('.gallery-item')) {
+    filterGallery('all');
+    announceToScreenReader('Gallery ready (static)');
+    console.log('AIKYAM Gallery: using static pre-render');
+    return;
+  }
   grid.innerHTML = '<div class="hint">Loading gallery...</div>';
   grid.setAttribute('aria-busy', 'true');
   try {
@@ -1358,6 +1373,44 @@ async function loadGallery() {
         res = await fetch(altPath);
       } catch (e) {
         console.warn('Gallery alt fetch threw before response:', e);
+      }
+    }
+    // Inline fallback: if both fetch attempts failed, try embedded JSON script tag
+    if ((!res || !res.ok)) {
+      const inline = document.getElementById('galleryData');
+      if (inline) {
+        console.warn('Gallery: using inline JSON fallback');
+        const items = JSON.parse(inline.textContent || '[]');
+        if (Array.isArray(items) && items.length) {
+          grid.innerHTML = '';
+          items.forEach(item => {
+            const fig = document.createElement('figure');
+            fig.className = 'gallery-item';
+            fig.dataset.categories = (item.categories || []).join(',');
+            fig.setAttribute('data-category', (item.categories && item.categories[0]) || 'community');
+            const picture = document.createElement('picture');
+            const source = document.createElement('source');
+            source.type = 'image/webp';
+            source.sizes = '(max-width: 600px) 50vw, (max-width: 1200px) 33vw, 300px';
+            source.srcset = (item.srcsetWebp || []).join(', ');
+            const img = document.createElement('img');
+            img.src = item.imageJpeg;
+            img.alt = item.alt || item.caption || 'Gallery image';
+            img.loading = 'lazy';
+            img.decoding = 'async';
+            picture.appendChild(source);
+            picture.appendChild(img);
+            const cap = document.createElement('figcaption');
+            cap.textContent = item.caption || item.alt || 'Untitled';
+            fig.appendChild(picture);
+            fig.appendChild(cap);
+            grid.appendChild(fig);
+          });
+          grid.removeAttribute('aria-busy');
+          announceToScreenReader(`Gallery loaded: ${items.length} images (inline)`);
+          filterGallery('all');
+          return;
+        }
       }
     }
     if (!res || !res.ok) throw new Error('Gallery manifest fetch failed (tried: ' + primaryPath + (primaryPath !== altPath ? ', ' + altPath : '') + ')');
@@ -1414,16 +1467,29 @@ async function loadGallery() {
 function filterGallery(category) {
   const grid = document.getElementById('galleryGrid');
   if (!grid) return;
-  const figs = grid.querySelectorAll('.gallery-item');
+  const figs = Array.from(grid.querySelectorAll('.gallery-item'));
   const target = category.toLowerCase();
+  let visibleCount = 0;
   figs.forEach(f => {
     if (target === 'all') {
       f.style.display = '';
+      visibleCount++;
     } else {
       const cats = (f.dataset.categories || '').toLowerCase().split(',').filter(Boolean);
-      f.style.display = cats.includes(target) ? '' : 'none';
+      const show = cats.includes(target);
+      f.style.display = show ? '' : 'none';
+      if (show) visibleCount++;
     }
   });
+  // Remove prior empty state
+  const oldEmpty = grid.querySelector('.gallery-empty');
+  if (oldEmpty) oldEmpty.remove();
+  if (visibleCount === 0) {
+    const empty = document.createElement('div');
+    empty.className = 'gallery-empty hint';
+    empty.textContent = `No images yet for "${category}" – coming soon.`;
+    grid.appendChild(empty);
+  }
   // Button active state
   document.querySelectorAll('.gallery-category-buttons .btn').forEach(btn => {
     const text = btn.textContent.toLowerCase();
@@ -1432,8 +1498,8 @@ function filterGallery(category) {
     btn.classList.toggle('active', isAll || matches);
   });
   if (window.showToast) {
-    showToast(`Showing ${target === 'all' ? 'all' : target} moments`);
+    showToast(`Showing ${target === 'all' ? 'all' : target} moments (${visibleCount})`);
   }
-  announceToScreenReader(`Filtered gallery: ${target} moments`);
+  announceToScreenReader(`Filtered gallery: ${target} moments (${visibleCount} shown)`);
 }
 

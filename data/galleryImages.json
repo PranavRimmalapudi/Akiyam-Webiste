@@ -88,36 +88,7 @@
     ],
     "imageJpeg": "assets/gallery/migrated/2025_VolleyBall3.jpeg"
   },
-  {
-    "id": "Pic1",
-    "fileBase": "Pic1",
-    "alt": "Sankranthi 2025",
-    "caption": "Sankranthi 2025",
-    "categories": ["festivals"],
-    "width": 1600,
-    "height": 1200,
-    "srcsetWebp": [
-      "assets/gallery/migrated/Pic1-800.webp 800w",
-      "assets/gallery/migrated/Pic1-1600.webp 1600w",
-      "assets/gallery/migrated/Pic1.webp 1600w"
-    ],
-    "imageJpeg": "assets/gallery/migrated/Pic1.jpeg"
-  },
-  {
-    "id": "Pic2",
-    "fileBase": "Pic2",
-    "alt": "Women's Day 2025",
-    "caption": "Women's Day 2025",
-    "categories": ["cultural"],
-    "width": 3840,
-    "height": 5120,
-    "srcsetWebp": [
-      "assets/gallery/migrated/Pic2-800.webp 800w",
-      "assets/gallery/migrated/Pic2-1600.webp 1600w",
-      "assets/gallery/migrated/Pic2.webp 3000w"
-    ],
-    "imageJpeg": "assets/gallery/migrated/Pic2.jpeg"
-  },
+  
   {
     "id": "Pic3",
     "fileBase": "Pic3",
